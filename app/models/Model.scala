@@ -27,9 +27,7 @@ case class Team(name: String, twitterHandle: Option[String], link: String, playe
 case class League(name: String, teams: Seq[Team])
 
 trait CSVData {
-  
  
-  
   val internationalTeams = {
     val internationalTeamFiles = Seq(
         "Argentina" -> "argentina",
@@ -59,21 +57,27 @@ trait CSVData {
       "Samoa" -> Widget(292023576607985664L, "Follow_Rugby", "samoa"),
       "Tonga" -> Widget(292023437034127360L, "Follow_Rugby", "tonga"),
       "Ex Players" -> Widget(291672287927734273L, "Follow_Rugby", "ex-players")
-  )
+    )
     
-      mapToData("international", internationalTeamFiles, internationalWidgets)
+    mapToData("international", internationalTeamFiles, internationalWidgets)
    
   }
   
   val top14Teams = {
     val top14TeamFiles = Seq(
+        "Agen Rugby" -> "agen",
+        "Biarritz" -> "biarritz",
+        "Bayonne" -> "bayonne",
         "Bordeaux" -> "bordeaux",
+        "Clermont Auvergne" -> "clermont",
         "Castres" -> "castres",
         "Grenoble" -> "grenoble",
         "Montpellier" -> "montpellier",
         "Perpignan" -> "perpignan",
         "Racing Metro" -> "racingmetro",
         "Stade Francais" -> "stadefrancais",
+        "Stade Montois" -> "stademontois",
+        "Toulon" -> "toulon",
         "Toulouse" -> "toulouse")
         
     val top14Widgets = Map(
@@ -87,7 +91,7 @@ trait CSVData {
       "Stade Francais" -> Widget(291664414610964480L, "Follow_RugbyT14", "stade-francais"),
       "Racing Metro" -> Widget(291664602603864064L, "Follow_RugbyT14", "racing-metro"),
       "Montpellier" -> Widget(291669182448279554L, "Follow_RugbyT14", "montpellier"),
-      "Clermont" -> Widget(291669407703371777L, "Follow_RugbyT14", "clermont"),
+      "Clermont Auvergne" -> Widget(291669407703371777L, "Follow_RugbyT14", "clermont"),
       "Grenoble" -> Widget(291669548514557954L, "Follow_RugbyT14", "grenoble"),
       "Castres" -> Widget(291669684292567044L, "Follow_RugbyT14", "castres"),
       "Biarritz" -> Widget(291669934264696832L, "Follow_RugbyT14", "biarritz"),

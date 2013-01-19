@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-  @teams.map { team =>
+  @teams.sortBy(_.name).map { team =>
     <tr>
       <td><a href="@routes.Application.teamPlayers(category, team.link)">@team.name</a></td>
     </tr>
@@ -28,7 +28,7 @@
     </tr>
   </thead>
   <tbody>
-  @players.map { player => 
+  @players.sortBy(_.name).map { player => 
     <tr>
        <td> @player.name </td>
        <td> @if(player.twitterHandle.isDefined) {
