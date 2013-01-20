@@ -2,25 +2,20 @@
 
 @main("Follow Rugby"){
   <div class="span3">
-  <table class="table">
-  <thead>
-    <tr>
-      <th>@teamTableInfo.teamHead</th>
-    </tr>
-  </thead>
-  <tbody>
-  @teams.sortBy(_.name).map { team =>
-    <tr>
-      <td><a href="@routes.Application.teamPlayers(category, team.link)">@team.name</a></td>
-    </tr>
-    }
-    
-  </tbody>
-  </table>
-  </div>  
-
-  <div class="span4">
-  <table class="table">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list>
+      <li class="nav-header>@teamTableInfo.teamHead</li>
+      @teams.sortBy(_.name).map { team =>
+        <li><a href="@routes.Application.teamPlayers(category, team.link)">@team.name</a></li>
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="span5">
+  @if(players.isEmpty) {
+    <p class="lead">Click on a team on the left to see their players and twitter feed.</p>
+  } else {
+  <table class="table table-bordered table-condensed">
   <thead>
     <tr>
       <th>@teamTableInfo.playerHead</th>
@@ -28,7 +23,7 @@
     </tr>
   </thead>
   <tbody>
-  @players.sortBy(_.name).map { player => 
+  @players.filter(_.twitterHandle.isDefined).sortBy(_.name).map { player:Player => 
     <tr>
        <td> @player.name </td>
        <td> @if(player.twitterHandle.isDefined) {
@@ -41,11 +36,10 @@
   </tbody>
   
   </table>
+  }
   </div>
   
-  
-  
-} { 
+}{ 
   @widget.map { list =>
     <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{list.userHandle}/@{list.listName}" data-widget-id="@list.id"></a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

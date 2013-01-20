@@ -83,7 +83,6 @@ trait CSVData {
     val top14Widgets = Map(
       "Toulon" -> Widget(291639009048928256L, "Follow_RugbyT14", "toulon"),
       "Stade Montois" -> Widget(291638398656053249L, "Follow_RugbyT14", "stademontois"),
-      "Toulon" -> Widget(291639009048928256L, "Follow_RugbyT14", "toulon"),
       "Top14" -> Widget(291663641890144256L, "Follow_RugbyT14", "top-14-clubs"),
       "Perpignan" -> Widget(291663882198589440L, "Follow_RugbyT14", "perpignan"),
       "Bordeaux" -> Widget(291664102215000064L, "Follow_RugbyT14", "bordeaux-begles"),
@@ -102,6 +101,47 @@ trait CSVData {
     mapToData("top14", top14TeamFiles, top14Widgets)
   }
   
+  val super15Teams = {
+    val super15TeamFiles = Seq(
+      "Brumbies" -> "brumbies",   
+      "The Highlanders" -> "highlanders",
+      "Melbourne Rebels" -> "melbourne",
+      "Queensland Reds" -> "queensland",
+      "The Stormers" -> "stormers",
+      "The Crusaders" -> "crusaders",
+      "The Hurricanes" -> "hurricanes",
+      "New South Wales Waratahs" -> "nsw",
+      "The Sharks" -> "sharks",
+      "The Western Force" -> "westernforce"
+    )
+    
+    val super15Widgets = Map(
+      "Super 15 Teams" -> Widget(292611168047075328L, "Follow_RugbyS15", "super-15-teams"),
+      "The Sharks" -> Widget(293099620165361664L, "Follow_RugbyS15", "the-sharks"),
+      "The Stormers" -> Widget(293099968737181696L, "Follow_RugbyS15", "the-stormers"),
+      "The Western Force" -> Widget(293100250531512320L, "Follow_RugbyS15", "the-western-force"),
+      "Brumbies" -> Widget(293100543629459456L, "Follow_RugbyS15", "brumbies"),
+      "Queensland Reds" -> Widget(293100806541021184L, "Follow_RugbyS15", "queensland-reds"),
+      "New South Wales Waratahs" -> Widget(293101073932095489L, "Follow_RugbyS15", "new-south-wales-waratahs"),
+      "Melbourne Rebels" -> Widget(293101360897990656L, "Follow_RugbyS15", "melbourne-rebels"),
+      "The Hurricanes" -> Widget(293101570143424513L, "Follow_RugbyS15", "hurricanes"),
+      "The Highlanders" -> Widget(293101806454718464L, "Follow_RugbyS15", "the-highlanders"),
+      "The Crusaders" -> Widget(293102136068276225L, "Follow_RugbyS15", "the-crusaders"),
+      "New Zealand Conference" -> Widget(293102351378677760L, "Follow_RugbyS15", "new-zealand-conference"),
+      "Australian Conference" -> Widget(293102563396554753L, "Follow_RugbyS15", "australian-conference"),
+      "South African Conference" -> Widget(293102786709700608L, "Follow_RugbyS15", "south-african-conference"),
+      "The Chiefs" -> Widget(293103002624073729L, "Follow_RugbyS15", "the-chiefs"),
+      "Cheetahs" -> Widget(293103231943450624L, "Follow_RugbyS15", "cheetahs"),
+      "The Blues" -> Widget(293103709158785024L, "Follow_RugbyS15", "the-blues"),
+      "Super 15" -> Widget(293103940323639297L, "Follow_RugbyS15", "super-15"),
+      "Blue Bulls" -> Widget(292614787366522881L, "Follow_RugbyS15", "blue-bulls")
+    )
+    
+    mapToData("super15", super15TeamFiles, super15Widgets)
+  }
+    
+    
+  
   def generalTeamConsume(name: String, data: InputStream, widget: Widget) = {
     val consumedData = Source.fromInputStream(data, "ISO-8859-1").getLines.toSeq
     val teamTwitterHandle = consumedData.head.split(",") match {
@@ -111,7 +151,7 @@ trait CSVData {
     val link = name.replaceAll(" ", "")
     val players = for {
       line:String <- consumedData.tail
-      details = line.split(",")  
+      details = line.split(",") 
       playerName = details(0)
       twitter = if(details.size > 1 && details(1).length > 2) Some(details(1).split("@")(1).trim) else None
     } yield Player(playerName, twitter)
@@ -135,11 +175,13 @@ trait CSVData {
 object Data extends CSVData {
    val teams = Map(
     "International" -> internationalTeams,
+    "Super15" -> super15Teams,
     "Top14" -> top14Teams
   )
   val tableInfos = Map(
-    "International" -> TableInfo("International Team", "Players", "Twitter Name"),
-    "Top14" -> TableInfo("Top 14 Team", "Players", "Twitter Name")
+    "International" -> TableInfo("International Team", "Player", "Twitter Name"),
+    "Super15" -> TableInfo("Super 15 Team", "Player", "Twitter Name"),
+    "Top14" -> TableInfo("Top 14 Team", "Player", "Twitter Name")
   )
  
   

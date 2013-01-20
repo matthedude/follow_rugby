@@ -30,7 +30,7 @@ object Application extends Controller {
     val tableInfo = Data.tableInfos(category)
     val players = selectedTeam.players
     
-    Ok(views.html.categories(category)(teams.values.toSeq)(players)(TableInfo("International Team", "Players", "Twitter Name"))(Some(selectedTeam.widget)))
+    Ok(views.html.categories(category)(teams.values.toSeq)(players)(tableInfo)(Some(selectedTeam.widget)))
   }
   
   def hashtags = Action {
