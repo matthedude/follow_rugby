@@ -15,7 +15,7 @@ case object Top14 extends RugbyCategory
 case object Super15 extends RugbyCategory
 case object ExPlayers extends RugbyCategory
 
-case class TableInfo(teamHead: String, playerHead: String, twitterHead: String)
+case class CategoryViewInfo(teamHead: String, playerHead: String, twitterHead: String, widget: Option[Widget])
 case class Widget(id: Long, userHandle: String, listName: String)
 
 trait DBData {
@@ -139,6 +139,44 @@ trait CSVData {
     
     mapToData("super15", super15TeamFiles, super15Widgets)
   }
+  
+  val pro12Teams = {
+    val pro12TeamFiles = Seq(
+        "Treviso" -> "benetton",
+        "Cardiff Blues" -> "cardiff",
+        "Connacht" -> "connacht",
+        "Newport Gwent Dragons" -> "dragons",
+        "Glasgow" -> "glasgow",
+        "Leinster" -> "leinster",
+        "Munster" -> "munster",
+        "Ospreys" -> "ospreys",
+        "Llanelli Scarlets" -> "scarlets",
+        "Ulster" -> "ulster")
+       
+
+    val pro12Widgets = Map(
+      "Pro 12 Clubs" -> Widget(293094801786667008L, "Follow_RugbyP12", "pro-12-clubs"),
+      "Edinburgh" -> Widget(293095122143428608L, "Follow_RugbyP12", "edinburgh"),
+      "Zebre" -> Widget(293095378260205570L, "Follow_RugbyP12", "zebre"),
+      "Ulster" -> Widget(293095599845281792L, "Follow_RugbyP12", "ulster"),
+      "Llanelli Scarlets" -> Widget(293095843190407168L, "Follow_RugbyP12", "llanelli-scarlets"),
+      "Ospreys" -> Widget(293096105888063488L, "Follow_RugbyP12", "ospreys"),
+      "Munster" -> Widget(293096317557809153L, "Follow_RugbyP12", "munster"),
+      "Leinster" -> Widget(293096543744032769L, "Follow_RugbyP12", "leinster"),
+      "Glasgow" -> Widget(293096845918486529L, "Follow_RugbyP12", "glasgow"),
+      "Scottish Teams" -> Widget(293097071429427202L, "Follow_RugbyP12", "scottish-teams"),
+      "Newport Gwent Dragons" -> Widget(293097307438727169L, "Follow_RugbyP12", "newport-gwent-dragons"),
+      "Connacht" -> Widget(293097613274783744L, "Follow_RugbyP12", "connacht"),
+      "Irish Teams" -> Widget(293097926408945664L, "Follow_RugbyP12", "irish-teams"),
+      "Cardiff Blues" -> Widget(293098198581510144L, "Follow_RugbyP12", "cardiff-blues"),
+      "Wales Teams" -> Widget(293098524453765122L, "Follow_RugbyP12", "wales-teams"),
+      "Italian Teams" -> Widget(293098791144394752L, "Follow_RugbyP12", "italian-teams"),
+      "Treviso" -> Widget(293099051891695619L, "Follow_RugbyP12", "treviso"),
+      "Pro 12" -> Widget(292718406866706433L, "Follow_RugbyP12", "pro-12")
+  )
+        
+    mapToData("pro12", pro12TeamFiles, pro12Widgets)
+  }
     
     
   
@@ -176,12 +214,14 @@ object Data extends CSVData {
    val teams = Map(
     "International" -> internationalTeams,
     "Super15" -> super15Teams,
-    "Top14" -> top14Teams
+    "Top14" -> top14Teams,
+    "Pro12" -> pro12Teams
   )
   val tableInfos = Map(
-    "International" -> TableInfo("International Team", "Player", "Twitter Name"),
-    "Super15" -> TableInfo("Super 15 Team", "Player", "Twitter Name"),
-    "Top14" -> TableInfo("Top 14 Team", "Player", "Twitter Name")
+    "International" -> CategoryViewInfo("International Team", "Player", "Twitter Name", None),
+    "Super15" -> CategoryViewInfo("Super 15 Team", "Player", "Twitter Name", Some(Widget(293103940323639297L, "Follow_RugbyS15", "super-15"))),
+    "Top14" -> CategoryViewInfo("Top 14 Team", "Player", "Twitter Name", Some(Widget(291663641890144256L, "Follow_RugbyT14", "top-14-clubs"))),
+    "Pro12" -> CategoryViewInfo("Pro 12 Team", "Player", "Twitter Name", Some(Widget(292718406866706433L, "Follow_RugbyP12", "pro-12"))) 
   )
  
   

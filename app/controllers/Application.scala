@@ -17,9 +17,9 @@ object Application extends Controller {
   def categories(category: String) = Action {
     
     val teams = Data.teams(category)
-    val tableInfo = Data.tableInfos(category)
+    val categoryViewInfo = Data.tableInfos(category)
     
-    Ok(views.html.categories(category)(teams.values.toSeq)(Nil)(tableInfo)(None))
+    Ok(views.html.categories(category)(teams.values.toSeq)(Nil)(categoryViewInfo)(categoryViewInfo.widget))
     
   }
   
