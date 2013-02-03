@@ -1,12 +1,12 @@
-@(category: String)(teams: Seq[models.Team])(players: Seq[models.Player])(teamTableInfo: models.CategoryViewInfo)(widget: Option[models.Widget])
+@(category: Category)(teams: Seq[models.Team])(players: Seq[models.Member])(widget: Option[models.Widget])
 
 @main("Follow Rugby"){
   <div class="span3">
     <div class="well sidebar-nav">
       <ul class="nav nav-list>
-      <li class="nav-header>@teamTableInfo.teamHead</li>
+      <li class="nav-header>@category.name</li>
       @teams.sortBy(_.name).map { team =>
-        <li><a href="@routes.Application.teamPlayers(category, team.link)">@team.name</a></li>
+        <li><a href="@routes.Application.selectTeam(category.id.get, team.id.get)">@team.name</a></li>
         }
       </ul>
     </div>
@@ -18,17 +18,17 @@
   <table class="table table-bordered table-condensed">
   <thead>
     <tr>
-      <th>@teamTableInfo.playerHead</th>
-      <th>@teamTableInfo.twitterHead</th>
+      <th>Player</th>
+      <th>Twitter Name</th>
     </tr>
   </thead>
   <tbody>
-  @players.filter(_.twitterHandle.isDefined).sortBy(_.name).map { player:Player => 
+  @players.sortBy(_.name).map { player:Member => 
     <tr>
        <td> @player.name </td>
-       <td> @if(player.twitterHandle.isDefined) {
-          <a href="https://www.twitter.com/intent/user?screen_name=@{player.twitterHandle}">@@@player.twitterHandle</a> 
-       }
+       <td> 
+          <a href="https://www.twitter.com/intent/user?screen_name=@{player.twitterName}">@@@player.twitterName</a> 
+       
        </td>
     </tr>  
     }
@@ -41,7 +41,7 @@
   
 }{ 
   @widget.map { list =>
-    <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{list.userHandle}/@{list.listName}" data-widget-id="@list.id"></a>
+    <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{list.twitterAccount}/@{list.url}" data-widget-id="@list.id"></a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
   }

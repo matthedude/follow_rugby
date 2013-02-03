@@ -3,12 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /:category                  controllers.Application.categories(category: String)
-GET     /:category/:team            controllers.Application.teamPlayers(category: String, team: String)
-GET     /hashtags                   controllers.Application.hashtags
-GET     /suggestions                controllers.Application.suggestions
-GET     /about                      controllers.Application.about
+GET     /                                 controllers.Application.index
+GET     /category:id                      controllers.Application.selectCategory(id: Int)
+GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId: Int, teamId: Int)
+GET     /hashtags                         controllers.Application.hashtags
+GET     /suggestions                      controllers.Application.suggestions
+GET     /about                            controllers.Application.about
 
 
 

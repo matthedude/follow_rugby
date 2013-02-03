@@ -12,7 +12,7 @@ class CSVDataSpec extends Specification {
     "consume a csv file and create a team" in {
       val testData =  this.getClass.getResourceAsStream("testTeam.csv")
       object DataTester extends CSVData
-      val team = DataTester.generalTeamConsume("Australia", testData, Widget(292024035225772032L, "Follow_Rugby", "australia")) 
+      val team = DataTester.generalTeamConsume("Australia", testData, WidgetDB(292024035225772032L, "Follow_Rugby", "australia")) 
       team.players must have size(42)
       team.name must_== "Australia"
       team.twitterHandle must_== "@QantasWallabies"

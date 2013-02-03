@@ -6,6 +6,8 @@ import models._
 
 object Application extends Controller {
   
+  import Data._
+  
   def index = Action {
     Ok(views.html.index())
   }
@@ -14,23 +16,26 @@ object Application extends Controller {
     Ok(views.html.index())
   }
   
-  def categories(category: String) = Action {
+  def selectCategory(id: Int) = Action {
+    val category = idToCategories(id)
+    val teams = categoriesToTeams(category)
+    val widget = category.widgetId map (wId => idToWidgets(wId))
     
-    val teams = Data.teams(category)
-    val categoryViewInfo = Data.tableInfos(category)
     
-    Ok(views.html.categories(category)(teams.values.toSeq)(Nil)(categoryViewInfo)(categoryViewInfo.widget))
+    Ok(views.html.categories(category)(teams)(Nil)(widget))
     
   }
   
-  def teamPlayers(category: String, team: String) = Action {
+  def selectTeam(categoryId: Int, teamId: Int) = Action {
+    val category = idToCategories(categoryId)
+    val teams = categoriesToTeams(category)
+    val selectedTeam = idToTeams(teamId)
+    val members = teamsToMembers(selectedTeam)
     
-    val teams = Data.teams(category)
-    val selectedTeam = teams(team)
-    val tableInfo = Data.tableInfos(category)
-    val players = selectedTeam.players
+    val widget = idToWidgets(selectedTeam.widgetId)
     
-    Ok(views.html.categories(category)(teams.values.toSeq)(players)(tableInfo)(Some(selectedTeam.widget)))
+    
+    Ok(views.html.categories(category)(teams)(members)(Some(widget)))
   }
   
   def hashtags = Action {
