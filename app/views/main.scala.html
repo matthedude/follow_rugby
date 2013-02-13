@@ -40,7 +40,8 @@
             <li><a href="@routes.Application.selectCategory(3)">Top 14</a></li>
             <li><a href="@routes.Application.selectCategory(2)">Super 15</a></li>
             <li><a href="@routes.Application.selectCategory(6)">Other</a></li>
-      	    <li><a href="@routes.Application.hashtags">Hashtags</a></li>
+      	    <li><a href="@routes.Application.matchCentre">Match Centre</a></li>
+            <li><a href="@routes.Application.hashtags">Hashtags</a></li>
       	    <li><a href="@routes.Application.suggestions">Search</a></li>
       	    <li><a href="@routes.Application.about">About</a></li>
         	</ul>
@@ -57,7 +58,7 @@
     <div class="row">
       
       @content
-      <div class="span4"> @widgets </div>
+      @widgets
     </div>
     
   </div>     

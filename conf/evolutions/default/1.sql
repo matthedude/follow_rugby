@@ -21,12 +21,15 @@ CREATE TABLE team (
 	category_id INT NOT NULL, 
 	PRIMARY KEY(id));
 
-create table member (
+CREATE TABLE member (
 	id INT NOT NULL AUTO_INCREMENT, 
 	name VARCHAR(50) NOT NULL, 
 	twitter_name VARCHAR(30), 
 	team_id INT NOT NULL,
 	PRIMARY KEY(id));
+
+
+
 
 # --- !Downs
  
@@ -37,4 +40,5 @@ DROP TABLE if exists category;
 DROP TABLE if exists team;
 
 DROP TABLE if exists member;
+
 

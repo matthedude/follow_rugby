@@ -16,6 +16,10 @@ object Application extends Controller {
     Ok(views.html.index())
   }
   
+  def matchCentre = Action {
+    Ok(views.html.matchCentre(Data.matches))
+  }
+  
   def selectCategory(id: Int) = Action {
     val category = idToCategories(id)
     val teams = categoriesToTeams(category)

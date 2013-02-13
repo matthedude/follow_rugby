@@ -1,0 +1,45 @@
+@(games: Seq[models.MatchCentreGame])
+
+@main("Follow Rugby"){
+  
+  
+
+
+  
+  @games.zipWithIndex.map { case (game, idx) =>
+    
+      
+    
+      <div class="span4">
+        <p>@@@game.game.time</p>
+        <p>@game.team1.name</p>
+        <p>vs</p>
+        <p>@game.team2.name</p>
+     </div>
+     
+     <div class="span4">
+        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team1Widget.twitterAccount}/@{game.team1Widget.url}" data-widget-id="@game.team1Widget.id"></a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+     </div>
+          
+   
+     <div class="span4">
+        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team2Widget.twitterAccount}/@{game.team2Widget.url}" data-widget-id="@game.team2Widget.id"></a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+     </div>
+
+      
+    
+    <br>
+  } 
+  
+  
+}{ 
+ 
+}
+    
+      
+
+

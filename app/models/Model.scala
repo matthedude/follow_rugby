@@ -8,6 +8,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
+case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget)
 object Data {
   val categories:Seq[Category] = Category.all
   
@@ -24,6 +25,14 @@ object Data {
     
   val idToWidgets:Map[Long, Widget] = 
     {Widget.all map (w => w.id.get -> w)}.toMap
+    
+  val matches:Seq[MatchCentreGame] = 
+    Game.all map { game => 
+      val t1 = idToTeams(game.team1Id)
+      val t2 = idToTeams(game.team2Id)
+      MatchCentreGame(t1, t2, game, idToWidgets(t1.widgetId), idToWidgets(t2.widgetId))
+    }
+    
 
 }
 
