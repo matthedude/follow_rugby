@@ -1,0 +1,68 @@
+# --- !Ups
+
+insert into widget (id, twitter_account, url) values (291669407703371777, 'Follow_RugbyT14', 'clermont');
+insert into widget (id, twitter_account, url) values (291664102215000064, 'Follow_RugbyT14', 'bordeaux-begles');
+insert into widget (id, twitter_account, url) values (291669684292567044, 'Follow_RugbyT14', 'castres');
+insert into widget (id, twitter_account, url) values (291664414610964480, 'Follow_RugbyT14', 'stade-francais');
+insert into widget (id, twitter_account, url) values (291663882198589440, 'Follow_RugbyT14', 'perpignan');
+insert into widget (id, twitter_account, url) values (291670221247365120, 'Follow_RugbyT14', 'agen-rugby');
+insert into widget (id, twitter_account, url) values (291638398656053249, 'Follow_RugbyT14', 'stademontois');
+insert into widget (id, twitter_account, url) values (291664264987557890, 'Follow_RugbyT14', 'toulouse-17');
+insert into widget (id, twitter_account, url) values (291670079786061824, 'Follow_RugbyT14', 'bayonne');
+insert into widget (id, twitter_account, url) values (291669182448279554, 'Follow_RugbyT14', 'montpellier');
+insert into widget (id, twitter_account, url) values (291664602603864064, 'Follow_RugbyT14', 'racing-metro');
+insert into widget (id, twitter_account, url) values (291669548514557954, 'Follow_RugbyT14', 'grenoble');
+insert into widget (id, twitter_account, url) values (291639009048928256, 'Follow_RugbyT14', 'toulon');
+insert into widget (id, twitter_account, url) values (291669934264696832, 'Follow_RugbyT14', 'biarritz');
+insert into widget (id, twitter_account, url) values (292023576607985664, 'Follow_Rugby', 'samoa');
+insert into widget (id, twitter_account, url) values (292024225466814464, 'Follow_Rugby', 'argentina');
+insert into widget (id, twitter_account, url) values (292025297484783618, 'Follow_Rugby', 'wales');
+insert into widget (id, twitter_account, url) values (292024963949535232, 'Follow_Rugby', 'scotland');
+insert into widget (id, twitter_account, url) values (292023705746411521, 'Follow_Rugby', 'south-africa');
+insert into widget (id, twitter_account, url) values (292023859073392640, 'Follow_Rugby', 'new-zealand');
+insert into widget (id, twitter_account, url) values (292024035225772032, 'Follow_Rugby', 'australia');
+insert into widget (id, twitter_account, url) values (292024543126622210, 'Follow_Rugby', 'italy');
+insert into widget (id, twitter_account, url) values (292025150117904384, 'Follow_Rugby', 'ireland');
+insert into widget (id, twitter_account, url) values (292024793702735873, 'Follow_Rugby', 'france');
+insert into widget (id, twitter_account, url) values (292023437034127360, 'Follow_Rugby', 'tonga');
+insert into widget (id, twitter_account, url) values (292025438644084737, 'Follow_Rugby', 'england');
+insert into widget (id, twitter_account, url) values (293101360897990656, 'Follow_RugbyS15', 'melbourne-rebels');
+insert into widget (id, twitter_account, url) values (293101806454718464, 'Follow_RugbyS15', 'the-highlanders');
+insert into widget (id, twitter_account, url) values (293099620165361664, 'Follow_RugbyS15', 'the-sharks');
+insert into widget (id, twitter_account, url) values (293099968737181696, 'Follow_RugbyS15', 'the-stormers');
+insert into widget (id, twitter_account, url) values (293100250531512320, 'Follow_RugbyS15', 'the-western-force');
+insert into widget (id, twitter_account, url) values (293100543629459456, 'Follow_RugbyS15', 'brumbies');
+insert into widget (id, twitter_account, url) values (293101073932095489, 'Follow_RugbyS15', 'new-south-wales-waratahs');
+insert into widget (id, twitter_account, url) values (293100806541021184, 'Follow_RugbyS15', 'queensland-reds');
+insert into widget (id, twitter_account, url) values (293101570143424513, 'Follow_RugbyS15', 'hurricanes');
+insert into widget (id, twitter_account, url) values (293102136068276225, 'Follow_RugbyS15', 'the-crusaders');
+insert into widget (id, twitter_account, url) values (293097307438727169, 'Follow_RugbyP12', 'newport-gwent-dragons');
+insert into widget (id, twitter_account, url) values (293096105888063488, 'Follow_RugbyP12', 'ospreys');
+insert into widget (id, twitter_account, url) values (293095599845281792, 'Follow_RugbyP12', 'ulster');
+insert into widget (id, twitter_account, url) values (293096317557809153, 'Follow_RugbyP12', 'munster');
+insert into widget (id, twitter_account, url) values (293098198581510144, 'Follow_RugbyP12', 'cardiff-blues');
+insert into widget (id, twitter_account, url) values (293095843190407168, 'Follow_RugbyP12', 'llanelli-scarlets');
+insert into widget (id, twitter_account, url) values (293097613274783744, 'Follow_RugbyP12', 'connacht');
+insert into widget (id, twitter_account, url) values (293099051891695619, 'Follow_RugbyP12', 'treviso');
+insert into widget (id, twitter_account, url) values (293096845918486529, 'Follow_RugbyP12', 'glasgow');
+insert into widget (id, twitter_account, url) values (293096543744032769, 'Follow_RugbyP12', 'leinster');
+insert into widget (id, twitter_account, url) values (293091621183029251, 'Follow_RugbyPR', 'northampton-saints');
+insert into widget (id, twitter_account, url) values (293093137839165440, 'Follow_RugbyPR', 'gloucester-rugby');
+insert into widget (id, twitter_account, url) values (293091005249503232, 'Follow_RugbyPR', 'saracens');
+insert into widget (id, twitter_account, url) values (293092675853369346, 'Follow_RugbyPR', 'london-irish');
+insert into widget (id, twitter_account, url) values (293091259747287040, 'Follow_RugbyPR', 'sale-sharks');
+insert into widget (id, twitter_account, url) values (293085374954213377, 'Follow_RugbyPR', 'worcester-warriors');
+insert into widget (id, twitter_account, url) values (293092119067893761, 'Follow_RugbyPR', 'london-welsh');
+insert into widget (id, twitter_account, url) values (293093648860577793, 'Follow_RugbyPR', 'leicester-tigers');
+insert into widget (id, twitter_account, url) values (293093389975560193, 'Follow_RugbyPR', 'exeter-chiefs');
+insert into widget (id, twitter_account, url) values (293091906274082818, 'Follow_RugbyPR', 'harlequins');
+insert into widget (id, twitter_account, url) values (293092398798606336, 'Follow_RugbyPR', 'london-wasps');
+insert into widget (id, twitter_account, url) values (292713176934522882, 'Follow_RugbyPR', 'bath');
+insert into widget (id, twitter_account, url) values (292718406866706433, 'Follow_RugbyP12', 'pro-12');
+insert into widget (id, twitter_account, url) values (293103940323639297, 'Follow_RugbyS15', 'super-15');
+insert into widget (id, twitter_account, url) values (291663641890144256, 'Follow_RugbyT14', 'top-14-clubs');
+insert into widget (id, twitter_account, url) values (293090598284566529, 'Follow_RugbyPR', 'premiership-rugby-teams');
+
+# --- !Downs
+
+delete from widget;
