@@ -10,6 +10,12 @@ GET     /hashtags                         controllers.Application.hashtags
 GET     /matchCentre                      controllers.Application.matchCentre
 GET     /suggestions                      controllers.Application.suggestions
 GET     /about                            controllers.Application.about
+GET     /admin                            controllers.Administrator.admin
+
+# Members list (look at the default values for pagination parameters)
+GET     /admin/members                    controllers.Administrator.memberList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/members/:id                controllers.Administrator.editMember(id: Long)
+GET     /admin/members/create             controllers.Administrator.createMember
 
 
 

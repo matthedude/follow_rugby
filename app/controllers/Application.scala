@@ -25,9 +25,7 @@ object Application extends Controller {
     val teams = categoriesToTeams(category)
     val widget = category.widgetId map (wId => idToWidgets(wId))
     
-    
     Ok(views.html.categories(category)(teams)(Nil)(widget))
-    
   }
   
   def selectTeam(categoryId: Int, teamId: Int) = Action {
@@ -37,7 +35,6 @@ object Application extends Controller {
     val members = teamsToMembers(selectedTeam)
     
     val widget = idToWidgets(selectedTeam.widgetId)
-    
     
     Ok(views.html.categories(category)(teams)(members)(Some(widget)))
   }
