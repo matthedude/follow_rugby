@@ -7,7 +7,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Team(id: Pk[Int] = NotAssigned, name: String, categoryId: Long, widgetId: Long)
+case class Team(id: Pk[Int] = NotAssigned, name: String, categoryId: Int, widgetId: Long)
 
 object Team {
 
@@ -46,6 +46,81 @@ object Team {
       
       teams
     }
+  }
+  
+  def findById(id: Int):Option[Team] = {
+    DB.withConnection { implicit connection =>
+      
+      val team = SQL(
+        """
+          select *
+          from team 
+          where id = {id}
+        """
+      ).on('id -> id).as(Team.simple singleOpt)
+      
+      team
+    }
+  
+  }
+  
+ 
+  def update(id: Int, team: Team) = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          update team
+          set name = {name}, category_id = {categoryId}, widget_id = {widgetId}
+          where id = {id}
+        """
+      ).on(
+        'id -> id,
+        'name -> team.name,
+        'categoryId -> team.categoryId,
+        'widgetId -> team.widgetId
+      ).executeUpdate()
+    }
+  }
+  
+  def delete(id: Int) = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from team where id = {id}").on('id -> id).executeUpdate()
+    }
+  }
+  
+  def list(page: Int = 0, pageSize: Int = 20, orderBy: Int = 1, filter: String = "%"): Page[Team] = {
+    
+    val offest = pageSize * page
+    
+    DB.withConnection { implicit connection =>
+      
+      val teams = SQL(
+        """
+          select * from team
+          where team.name like {filter}
+          order by {orderBy} 
+          limit {pageSize} offset {offset}
+        """
+      ).on(
+        'pageSize -> pageSize, 
+        'offset -> offest,
+        'filter -> filter,
+        'orderBy -> orderBy
+      ).as(Team.simple *)
+
+      val totalRows = SQL(
+        """
+          select count(*) from member
+          where member.name like {filter}
+        """
+      ).on(
+        'filter -> filter
+      ).as(scalar[Long].single)
+
+      Page(teams, page, offest, totalRows)
+      
+    }
+    
   }
   
 }

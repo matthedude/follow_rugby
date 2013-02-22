@@ -41,6 +41,45 @@ object Member {
     }
   }
   
+  def findById(id: Int):Option[Member] = {
+    DB.withConnection { implicit connection =>
+      
+      val member = SQL(
+        """
+          select *
+          from member 
+          where id = {id}
+        """
+      ).on('id -> id).as(Member.simple singleOpt)
+      
+      member
+    }
+  
+  }
+  
+ 
+  def update(id: Int, member: Member) = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          update member
+          set name = {name}, twitter_name = {twitterName}
+          where id = {id}
+        """
+      ).on(
+        'id -> id,
+        'name -> member.name,
+        'twitterName -> member.twitterName
+      ).executeUpdate()
+    }
+  }
+  
+  def delete(id: Int) = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from member where id = {id}").on('id -> id).executeUpdate()
+    }
+  }
+  
   /**
    * Return a page of (Computer,Company).
    *

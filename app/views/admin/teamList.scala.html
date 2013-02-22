@@ -1,10 +1,10 @@
-@(currentPage: Page[Member], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@(currentPage: Page[Team], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.memberList(newPage, newOrderBy.map { orderBy =>
+    routes.Administrator.teamList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
     }.getOrElse(currentOrderBy), currentFilter)
     
@@ -21,7 +21,7 @@
 
 @main {
     
-    <h1>Members</h1>
+    <h1>Teams</h1>
 
     @flash.get("success").map { message =>
         <div class="alert-message warning">
@@ -31,32 +31,29 @@
 
     <div id="actions">
         
-        @helper.form(action=routes.Administrator.memberList()) {
+        @helper.form(action=routes.Administrator.teamList()) {
             <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by member name...">
             <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
         }
         
-        <a class="btn success" id="add" href="@routes.Administrator.createMember()">Add a new member</a>
+        <a class="btn success" id="add" href="@routes.Administrator.createTeam()">Add a new team</a>
         
     </div>
     
-    @Option(currentPage.items).filterNot(_.isEmpty).map { members =>
+    @Option(currentPage.items).filterNot(_.isEmpty).map { teams =>
         
-        <table class="members table-striped">
+        <table class="teams table-striped">
             <thead>
                 <tr>
-                    @header(2, "Member name")
+                    @header(2, "Team name")
                     @header(3, "Twitter Name")
                 </tr>
             </thead>
             <tbody>
 
-                @members.map { member => 
+                @teams.map { team => 
                         <tr>
-                            <td><a href="@routes.Administrator.editMember(member.id.get)">@member.name</a></td>
-                            <td>
-                                @member.twitterName
-                            </td>
+                            <td><a href="@routes.Administrator.editTeam(team.id.get)">@team.name</a></td>
                         </tr>
                     
                 }
@@ -76,7 +73,7 @@
                     </li>
                 }
                 <li class="current">
-                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + members.size) of @currentPage.total</a>
+                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + teams.size) of @currentPage.total</a>
                 </li>
                 @currentPage.next.map { page =>
                     <li class="next">

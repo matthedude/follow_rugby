@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                                 controllers.Application.index
-GET     /category:id                      controllers.Application.selectCategory(id: Int)
-GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId: Int, teamId: Int)
+GET     /category:id                      controllers.Application.selectCategory(id:Int)
+GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId:Int, teamId:Int)
 GET     /hashtags                         controllers.Application.hashtags
 GET     /matchCentre                      controllers.Application.matchCentre
 GET     /suggestions                      controllers.Application.suggestions
@@ -14,9 +14,17 @@ GET     /admin                            controllers.Administrator.admin
 
 # Members list (look at the default values for pagination parameters)
 GET     /admin/members                    controllers.Administrator.memberList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/members/:id                controllers.Administrator.editMember(id: Long)
+GET     /admin/members/:id                controllers.Administrator.editMember(id:Int)
 GET     /admin/members/create             controllers.Administrator.createMember
+POST    /admin/members/:id                controllers.Administrator.updateMember(id:Int)
+POST    /admin/members/:id/delete         controllers.Administrator.deleteMember(id:Int)
 
+# Members list (look at the default values for pagination parameters)
+GET     /admin/team                    controllers.Administrator.teamList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/team/:id                controllers.Administrator.editTeam(id:Int)
+GET     /admin/team/create             controllers.Administrator.createTeam
+POST    /admin/team/:id                controllers.Administrator.updateTeam(id:Int)
+POST    /admin/team/:id/delete         controllers.Administrator.deleteTeam(id:Int)
 
 
 # Map static resources from the /public folder to the /assets URL path

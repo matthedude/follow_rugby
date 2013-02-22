@@ -1,0 +1,38 @@
+@(id: Int)(teamForm: Form[Team])(categories: Seq[(String, String)])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main {
+  <h1>Edit Team</h1>
+    
+    @form(routes.Administrator.updateTeam(id)) {
+        
+        <fieldset>
+        
+            @inputText(teamForm("name"), '_label -> "Team name")
+            @select(
+                teamForm("categoryId"), 
+                categories, 
+                '_label -> "Category", '_default -> "-- Choose a category --",
+                '_showConstraints -> false
+            )
+            @inputText(teamForm("widgetId"), '_label -> "Widget")
+            
+           
+        
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save this member" class="btn primary"> or 
+            <a href="@routes.Administrator.teamList(0, 2, "")" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    @form(routes.Administrator.deleteTeam(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this team" class="btn danger">
+    }
+  
+}
