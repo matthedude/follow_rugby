@@ -14,6 +14,7 @@ object Administrator extends Controller {
   val MemberHome = Redirect(routes.Administrator.memberList(0, 2, ""))
   val TeamHome = Redirect(routes.Administrator.teamList(0, 2, ""))
   
+  
   val memberForm = Form(
     mapping(
       "id" -> ignored(NotAssigned:Pk[Int]),
@@ -24,11 +25,14 @@ object Administrator extends Controller {
   
   val teamForm = Form(
     mapping(
-      "id" -> ignored(NotAssigned:Pk[Int]),
-      "name" -> nonEmptyText,
-      "categoryId" -> number,
-      "widgetId" -> longNumber
-    )(Team.apply)(Team.unapply)
+      "team" -> mapping(
+        "id" -> ignored(NotAssigned:Pk[Int]),
+        "name" -> nonEmptyText,
+        "categoryId" -> number,
+        "widgetId" -> longNumber
+      )(Team.apply)(Team.unapply),
+      "members" -> list(number))
+    (TeamMembers.apply)(TeamMembers.unapply)
   )
   
   def admin = Action {
@@ -80,16 +84,24 @@ object Administrator extends Controller {
   
   def editTeam(id: Int) = Action {
     Team.findById(id).map { team =>
-      Ok(views.html.admin.editTeam(id)(teamForm.fill(team))(Category.all.map(c => (c.id.get.toString, c.name))))
+    	val membersIds = Team.findMembersById(id)
+    	val members = membersIds.map(Member.findById).flatten
+    	val teamMembers = TeamMembers(team, membersIds.toList)
+      Ok(views.html.admin.editTeam(id)(teamForm.fill(teamMembers))(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all))
     } .getOrElse(NotFound)
   }
   
   def updateTeam(id: Int) = Action { implicit request =>
+  	val membersIds = Team.findMembersById(id)
+    val members = membersIds.map(Member.findById).flatten
+    println(request.body)
     teamForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.admin.editTeam(id)(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))),
+      formWithErrors => 
+      	BadRequest(views.html.admin.editTeam(id)(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all)),
       team => {
-        Team.update(id, team)
-        TeamHome.flashing("success" -> "Team %s has been updated".format(team.name))
+        Team.update(id, team.team)
+        Team.updateTeamMembers(id, team.members.toSet)
+        TeamHome.flashing("success" -> "Team %s has been updated".format(team.team.name))
       }
     )
   }

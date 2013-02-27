@@ -21,6 +21,10 @@ object Team {
     }
   }
   
+  val member = {
+  	get[Int]("team_member.member_id") 
+  }
+  
   def all:Seq[Team] = {
     DB.withConnection { implicit connection =>
       
@@ -64,6 +68,20 @@ object Team {
   
   }
   
+  def findMembersById(id: Int):Seq[Int] = {
+  	 DB.withConnection { implicit connection =>
+      
+      val members = SQL(
+        """
+          select member_id
+          from team_member 
+          where team_id = {id}
+        """
+      ).on('id -> id).as(Team.member *)
+      
+      members
+    }
+  }
  
   def update(id: Int, team: Team) = {
     DB.withConnection { implicit connection =>
@@ -80,6 +98,43 @@ object Team {
         'widgetId -> team.widgetId
       ).executeUpdate()
     }
+  }
+  
+  def updateTeamMembers(teamId: Int, newMembers: Set[Int]) = {
+  	val oldMembers = findMembersById(teamId).toSet
+  	val membersToDelete = oldMembers &~ newMembers
+  	val membersToInsert = newMembers &~ oldMembers
+  	
+  	membersToInsert foreach (insertTeamMember(teamId, _))
+  	membersToDelete foreach (deleteTeamMember(teamId, _))
+  	
+  	def insertTeamMember(teamId: Int, memberId: Int) = {
+  		DB.withConnection { implicit connection =>
+        SQL(
+          """
+            insert into team_member (team_id, member_id) values (
+              {teamId}, {memberId}
+            )
+          """
+        ).on(
+          'teamId -> teamId,
+          'memberId -> memberId
+        ).executeUpdate()
+      }
+  	}
+  	
+  	def deleteTeamMember(teamId: Int, memberId: Int) = {
+  		DB.withConnection { implicit connection =>
+        SQL("""
+        		delete from team_member 
+        		where team_id = {teamId}
+        		and member_id = {memberId}
+        		""").on(
+          'teamId -> teamId,
+          'memberId -> memberId
+        ).executeUpdate()
+      }
+  	}
   }
   
   def delete(id: Int) = {
@@ -110,8 +165,8 @@ object Team {
 
       val totalRows = SQL(
         """
-          select count(*) from member
-          where member.name like {filter}
+          select count(*) from team
+          where team.name like {filter}
         """
       ).on(
         'filter -> filter

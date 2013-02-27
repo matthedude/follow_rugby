@@ -25,6 +25,19 @@ object Member {
     case member~team=> (member, team)
   }
   
+  def all:Seq[Member] = {
+    DB.withConnection { implicit connection =>
+      
+      val members = SQL(
+        """
+          select * from member
+        """
+      ).as(Member.simple *)
+      
+      members
+    }
+  }
+  
   def findByTeamId(teamId: Pk[Int]):Seq[Member] = {
     DB.withConnection { implicit connection =>
       

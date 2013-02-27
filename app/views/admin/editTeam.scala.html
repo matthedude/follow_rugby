@@ -1,4 +1,4 @@
-@(id: Int)(teamForm: Form[Team])(categories: Seq[(String, String)])
+@(id: Int)(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(teamMembers: Seq[Member])(allOtherMembers: Seq[Member])
 
 @import helper._
 
@@ -6,23 +6,47 @@
 
 @main {
   <h1>Edit Team</h1>
+
     
-    @form(routes.Administrator.updateTeam(id)) {
+    @form(action = routes.Administrator.updateTeam(id), 'onsubmit -> "selectAllOptions('members');") {
         
         <fieldset>
         
-            @inputText(teamForm("name"), '_label -> "Team name")
+            @inputText(teamForm("team")("name"), '_label -> "Team name")
             @select(
-                teamForm("categoryId"), 
+                teamForm("team")("categoryId"), 
                 categories, 
                 '_label -> "Category", '_default -> "-- Choose a category --",
                 '_showConstraints -> false
             )
-            @inputText(teamForm("widgetId"), '_label -> "Widget")
+            @inputText(teamForm("team")("widgetId"), '_label -> "Widget")
             
            
         
         </fieldset>
+      
+        <table>
+          <tr>
+            <td>
+              <select multiple size="50" name="newMembers" style="width:150">
+                @allOtherMembers.sortWith((a,b) => a.name.compareTo(b.name) < 0).map { member =>
+                	<option value="@member.id">@member.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newMembers,this.form.members)" value="->"><br/>
+              <input type="button" onClick="move(this.form.members,this.form.newMembers)" value="<-">
+            </td>
+            <td>
+              <select multiple="multiple" size="50" id="members" name="members[]" style="width:150">
+                @teamMembers.sortWith((a,b) => a.name.compareTo(b.name) < 0).map { member =>
+                  <option value="@member.id">@member.name</option>
+                }
+              </select>
+            </td>
+          </tr>
+        </table>
         
         <div class="actions">
             <input type="submit" value="Save this member" class="btn primary"> or 
