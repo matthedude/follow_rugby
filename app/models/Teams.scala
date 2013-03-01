@@ -143,6 +143,34 @@ object Team {
     }
   }
   
+  def create(team: Team):Int = {
+  	DB.withConnection { implicit connection =>
+        SQL("""
+            insert into team (name, category_id, widget_id) values (
+              {name}, {categoryId}, {widgetId}
+            )
+            """).on(
+          'name -> team.name,
+          'categoryId -> team.categoryId,
+          'widgetId -> team.widgetId
+        ).executeUpdate()
+        
+        val newTeam = SQL("""
+            select *
+        		from team
+        		where name = {name}
+        		and category_id = {categoryId}
+        		and widget_id = {widgetId}
+            """).on(
+          'name -> team.name,
+          'categoryId -> team.categoryId,
+          'widgetId -> team.widgetId
+        ).as(Team.simple single)
+        
+        newTeam.id.get
+      }
+  }
+  
   def list(page: Int = 0, pageSize: Int = 20, orderBy: Int = 1, filter: String = "%"): Page[Team] = {
     
     val offest = pageSize * page

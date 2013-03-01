@@ -54,11 +54,11 @@ object Administrator extends Controller {
   }
   
   def createMember = Action {
-    Ok(views.html.admin.tables())
+    Ok(views.html.admin.createMember(memberForm))
   }
   
   def createTeam = Action {
-    Ok(views.html.admin.tables())
+    Ok(views.html.admin.createTeam(teamForm)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all))
   }
   
   def editMember(id: Int) = Action {
@@ -67,10 +67,22 @@ object Administrator extends Controller {
     } .getOrElse(NotFound)
   }
   
+  def saveMember = Action { implicit request =>
+    memberForm.bindFromRequest.fold(
+      formWithErrors => 
+        BadRequest(views.html.admin.createMember(formWithErrors)),
+      member => {
+        Member.create(member)
+        MemberHome.flashing("success" -> "Member %s has been created".format(member.name))
+      }
+    )
+  }
+  
   def updateMember(id: Int) = Action { implicit request =>
     memberForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.admin.editMember(id)(formWithErrors)),
       member => {
+      	println(member)
         Member.update(id, member)
         MemberHome.flashing("success" -> "Member %s has been updated".format(member.name))
       }
@@ -94,7 +106,6 @@ object Administrator extends Controller {
   def updateTeam(id: Int) = Action { implicit request =>
   	val membersIds = Team.findMembersById(id)
     val members = membersIds.map(Member.findById).flatten
-    println(request.body)
     teamForm.bindFromRequest.fold(
       formWithErrors => 
       	BadRequest(views.html.admin.editTeam(id)(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all)),
@@ -102,6 +113,18 @@ object Administrator extends Controller {
         Team.update(id, team.team)
         Team.updateTeamMembers(id, team.members.toSet)
         TeamHome.flashing("success" -> "Team %s has been updated".format(team.team.name))
+      }
+    )
+  }
+  
+  def saveTeam = Action { implicit request =>
+    teamForm.bindFromRequest.fold(
+      formWithErrors => 
+        BadRequest(views.html.admin.createTeam(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all)),
+      team => {
+        val id = Team.create(team.team)
+        Team.updateTeamMembers(id, team.members.toSet)
+        TeamHome.flashing("success" -> "Team %s has been created".format(team.team.name))
       }
     )
   }

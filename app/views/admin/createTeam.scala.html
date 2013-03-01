@@ -1,0 +1,56 @@
+@(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(allOtherMembers: Seq[Member])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main {
+  <h1>Create Team</h1>
+
+    
+    @form(action = routes.Administrator.saveTeam, 'onsubmit -> "selectAllOptions('members');") {
+        
+        <fieldset>
+        
+            @inputText(teamForm("team")("name"), '_label -> "Team name")
+            @select(
+                teamForm("team")("categoryId"), 
+                categories, 
+                '_label -> "Category", '_default -> "-- Choose a category --",
+                '_showConstraints -> false
+            )
+            @inputText(teamForm("team")("widgetId"), '_label -> "Widget")
+            
+           
+        
+        </fieldset>
+      
+        <table>
+          <tr>
+            <td>
+              <select multiple size="50" name="newMembers" style="width:150">
+                @allOtherMembers.sortWith((a,b) => a.name.compareTo(b.name) < 0).map { member =>
+                	<option value="@member.id">@member.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newMembers,this.form.members)" value="->"><br/>
+              <input type="button" onClick="move(this.form.members,this.form.newMembers)" value="<-">
+            </td>
+            <td>
+              <select multiple="multiple" size="50" id="members" name="members[]" style="width:150">
+               
+              </select>
+            </td>
+          </tr>
+        </table>
+        
+        <div class="actions">
+            <input type="submit" value="Save this team" class="btn primary"> or 
+            <a href="@routes.Administrator.teamList(0, 2, "")" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+}

@@ -70,6 +70,18 @@ object Member {
   
   }
   
+  def create(member: Member) = {
+    DB.withConnection { implicit connection =>
+        SQL("""
+            insert into member (name, twitter_name) values (
+              {name}, {twitterName}
+            )
+            """).on(
+          'name -> member.name,
+          'twitterName -> member.twitterName
+        ).executeUpdate()
+    }
+  }
  
   def update(id: Int, member: Member) = {
     DB.withConnection { implicit connection =>
