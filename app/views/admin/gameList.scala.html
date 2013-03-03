@@ -1,12 +1,12 @@
-@(currentPage: Page[Team], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@(currentPage: Page[(Game, Option[Team], Option[Team])], currentOrderBy: Int)(implicit flash: play.api.mvc.Flash)
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.teamList(newPage, newOrderBy.map { orderBy =>
+    routes.Administrator.gameList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
-    }.getOrElse(currentOrderBy), currentFilter)
+    }.getOrElse(currentOrderBy))
     
 }
 
@@ -21,7 +21,7 @@
 
 @main {
     
-    <h1>Teams</h1>
+    <h1>Games</h1>
 
     @flash.get("success").map { message =>
         <div class="alert-message warning">
@@ -31,30 +31,40 @@
 
     <div id="actions">
         
-        @helper.form(action=routes.Administrator.teamList()) {
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by member name...">
-            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
-        }
-        
-        <a class="btn success" id="add" href="@routes.Administrator.createTeam">Add a new team</a>
+        <a class="btn success" id="add" href="@routes.Administrator.createGame()">Add a new game</a>
         
     </div>
     
-    @Option(currentPage.items).filterNot(_.isEmpty).map { teams =>
+    @Option(currentPage.items).filterNot(_.isEmpty).map { games =>
         
-        <table class="teams table-striped">
+        <table class="games table-striped">
             <thead>
                 <tr>
-                    @header(2, "Team name")
+                  @header(2, "Home Team")
+                  @header(3, "Away Team")
+                  @header(4, "Time")
+                  @header(5, "Date")
                 </tr>
             </thead>
             <tbody>
 
-                @teams.map { team => 
+                @games.map { case (game, team1, team2) => 
                         <tr>
-                            <td><a href="@routes.Administrator.editTeam(team.id.get)">@team.name</a></td>
+                            <td>@team1.map { t => 
+                            	<a href="@routes.Administrator.editGame(game.team1Id, game.team2Id)">@t.name</a>
+                            }
+                            </td>
+                            <td>@team2.map { t => 
+                              <a href="@routes.Administrator.editGame(game.team1Id, game.team2Id)">@t.name</a>
+                            }
+                            </td>
+                            <td>
+                                @game.time
+                            </td>
+                	          <td>
+                	              @game.gameDate
+                	          </td>
                         </tr>
-                    
                 }
 
             </tbody>
@@ -72,7 +82,7 @@
                     </li>
                 }
                 <li class="current">
-                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + teams.size) of @currentPage.total</a>
+                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + games.size) of @currentPage.total</a>
                 </li>
                 @currentPage.next.map { page =>
                     <li class="next">

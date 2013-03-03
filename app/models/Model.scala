@@ -36,7 +36,7 @@ object Data {
     {(categoriesToTeams.values flatten) map (team => (team, Member.findByTeamId(team.id)))}.toMap
     
   val idToWidgets:Map[Long, Widget] = 
-    {Widget.all map (w => w.id.get -> w)}.toMap
+    {Widget.all map (w => w.id -> w)}.toMap
     
   val matches:Seq[MatchCentreGame] = 
     Game.all map { game => 

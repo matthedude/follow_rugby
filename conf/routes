@@ -36,6 +36,14 @@ GET     /admin/widget/:id                controllers.Administrator.editWidget(id
 POST    /admin/widget/:id                controllers.Administrator.updateWidget(id:Long)
 POST    /admin/widget/:id/delete         controllers.Administrator.deleteWidget(id:Long)
 
+# Games list (look at the default values for pagination parameters)
+GET     /admin/game                               controllers.Administrator.gameList(p:Int ?= 0, s:Int ?= 2)
+GET     /admin/game/create                        controllers.Administrator.createGame
+POST    /admin/game                               controllers.Administrator.saveGame
+GET     /admin/game/team1Id/:team2Id              controllers.Administrator.editGame(team1Id:Int, team2Id:Int)
+POST    /admin/game/team1Id/:team2Id                           controllers.Administrator.updateGame(team1Id:Int, team2Id:Int)
+POST    /admin/game/team1Id/:team2Id/delete                    controllers.Administrator.deleteGame(team1Id:Int, team2Id:Int)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,10 +1,10 @@
-@(currentPage: Page[Team], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@(currentPage: Page[Widget], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.teamList(newPage, newOrderBy.map { orderBy =>
+    routes.Administrator.widgetList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
     }.getOrElse(currentOrderBy), currentFilter)
     
@@ -21,7 +21,7 @@
 
 @main {
     
-    <h1>Teams</h1>
+    <h1>Widgets</h1>
 
     @flash.get("success").map { message =>
         <div class="alert-message warning">
@@ -31,28 +31,36 @@
 
     <div id="actions">
         
-        @helper.form(action=routes.Administrator.teamList()) {
-            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by member name...">
-            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        @helper.form(action=routes.Administrator.widgetList()) {
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by widget url...">
+            <input type="submit" id="searchsubmit" value="Filter by url" class="btn primary">
         }
         
-        <a class="btn success" id="add" href="@routes.Administrator.createTeam">Add a new team</a>
+        <a class="btn success" id="add" href="@routes.Administrator.createWidget()">Add a new widget</a>
         
     </div>
     
-    @Option(currentPage.items).filterNot(_.isEmpty).map { teams =>
+    @Option(currentPage.items).filterNot(_.isEmpty).map { widgets =>
         
-        <table class="teams table-striped">
+        <table class="widgets table-striped">
             <thead>
                 <tr>
-                    @header(2, "Team name")
+                    @header(2, "Widget id")
+                    @header(3, "Twitter Account")
+                    @header(4, "URL")
                 </tr>
             </thead>
             <tbody>
 
-                @teams.map { team => 
+                @widgets.map { widget => 
                         <tr>
-                            <td><a href="@routes.Administrator.editTeam(team.id.get)">@team.name</a></td>
+                            <td><a href="@routes.Administrator.editWidget(widget.id)">@widget.id</a></td>
+                            <td>
+                                @widget.twitterAccount
+                            </td>
+                            <td>
+                                @widget.url
+                            </td>
                         </tr>
                     
                 }
@@ -72,7 +80,7 @@
                     </li>
                 }
                 <li class="current">
-                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + teams.size) of @currentPage.total</a>
+                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + widgets.size) of @currentPage.total</a>
                 </li>
                 @currentPage.next.map { page =>
                     <li class="next">
