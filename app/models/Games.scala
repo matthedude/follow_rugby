@@ -9,7 +9,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Game(team1Id: Int, team2Id: Int, time: String, gameDate: Date)
+case class Game(team1Id: Int, team2Id: Int, time: String, gameDate: Date, widgetId: Long)
 
 
 object Game {
@@ -19,8 +19,9 @@ object Game {
     get[Int]("game.team1_id") ~
     get[Int]("game.team2_id") ~
     get[String]("game.time") ~
-    get[Date]("game.game_date") map {
-      case team1Id~team2Id~time~gameDate => Game(team1Id, team2Id, time, gameDate)
+    get[Date]("game.game_date") ~
+    get[Long]("game.widget_id") map {
+      case team1Id~team2Id~time~gameDate~widgetId => Game(team1Id, team2Id, time, gameDate, widgetId)
     }
   }
   
@@ -66,14 +67,15 @@ object Game {
   def create(game: Game) = {
     DB.withConnection { implicit connection =>
         SQL("""
-            insert into game (team1_id, team2_id, time, game_date) values (
-              {team1Id}, {team2Id}, {time}, {gameDate}
+            insert into game (team1_id, team2_id, time, game_date, widget_id) values (
+              {team1Id}, {team2Id}, {time}, {gameDate}, {widgetId}
             )
             """).on(
           'team1Id -> game.team1Id,
           'team2Id -> game.team2Id,
           'time -> game.time,
-          'gameDate -> game.gameDate
+          'gameDate -> game.gameDate,
+          'widgetId -> game.widgetId
         ).executeUpdate()
     }
   }
@@ -83,7 +85,7 @@ object Game {
       SQL(
         """
           update game
-          set time = {time}, game_date = {gameDate}
+          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}
           where team1_id = {team1Id}
           and team2_id = {team2Id}
         """
@@ -91,7 +93,8 @@ object Game {
         'team1Id -> game.team1Id,
         'team2Id -> game.team2Id,
         'time -> game.time,
-        'gameDate -> game.gameDate      
+        'gameDate -> game.gameDate,
+        'widgetId -> game.widgetId      
       ).executeUpdate()
     }
   }

@@ -11,6 +11,9 @@ import anorm._
 object Administrator extends Controller {
   import Data._
   
+  
+  //Do security and add a widget for the Games so we can have a hashtag widget
+  //Add Japan 
   val MemberHome = Redirect(routes.Administrator.memberList(0, 2, ""))
   val TeamHome = Redirect(routes.Administrator.teamList(0, 2, ""))
   val WidgetHome = Redirect(routes.Administrator.widgetList(0, 2, ""))
@@ -49,7 +52,8 @@ object Administrator extends Controller {
       "team1Id" -> number,
       "team2Id" -> number,
       "time" -> nonEmptyText,
-      "gameDate"  -> date("yyyy-MM-dd")
+      "gameDate"  -> date("yyyy-MM-dd"),
+      "widgetId" -> longNumber
     )(Game.apply)(Game.unapply)
   )
   
