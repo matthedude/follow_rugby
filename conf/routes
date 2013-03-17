@@ -12,6 +12,11 @@ GET     /suggestions                      controllers.Application.suggestions
 GET     /about                            controllers.Application.about
 GET     /admin                            controllers.Administrator.admin
 
+# Authentication
+GET     /login                              controllers.Administrator.login
+POST    /login                              controllers.Administrator.authenticate
+GET     /logout                             controllers.Administrator.logout
+
 # Members list (look at the default values for pagination parameters)
 GET     /admin/members                    controllers.Administrator.memberList(p:Int ?= 0, s:Int ?= 2, f ?= "")
 GET     /admin/members/create             controllers.Administrator.createMember
