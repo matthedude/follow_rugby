@@ -1,4 +1,4 @@
-@(gameForm: Form[Game])(teams: Seq[(String, String)])
+@(gameForm: Form[Game])(teams: Seq[(String, String)])(competitions: Seq[(String, String)])
 
 @import helper._
 
@@ -23,7 +23,12 @@
                 '_label -> "Away Team", '_default -> "-- Choose a team --",
                 '_showConstraints -> false
             )
-            
+            @select(
+                gameForm("competitionId"), 
+                competitions, 
+                '_label -> "Away Team", '_default -> "-- Choose a competition --",
+                '_showConstraints -> false
+            )
           @inputText(gameForm("time"), '_label -> "Time (00:00)")
           @inputText(gameForm("gameDate"), '_label -> "Date YYYY-MM-DD")
           @inputText(gameForm("widgetId"), '_label -> "Widget Id")

@@ -38,7 +38,7 @@ object Member {
     }
   }
   
-  def findByTeamId(teamId: Pk[Int]):Seq[Member] = {
+  def findByTeamId(teamId: Int):Seq[Member] = {
     DB.withConnection { implicit connection =>
       
       val members = SQL(

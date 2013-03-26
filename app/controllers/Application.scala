@@ -6,37 +6,35 @@ import models._
 
 object Application extends Controller {
   
-  import Data._
-  
   def index = Action {
     Ok(views.html.index())
   }
   
   def about = Action {
-    Ok(views.html.index())
+    Ok(views.html.about())
   }
   
-  def matchCentre = Action {
-    Ok(views.html.matchCentre(Data.matches))
+  def matchCentre(id: Int) = Action {
+    Ok(views.html.matchCentre(Game.findByCompetitionId(id)))
   }
   
   def selectCategory(id: Int) = Action {
-    val category = idToCategories(id)
-    val teams = categoriesToTeams(category)
-    val widget = category.widgetId map (wId => idToWidgets(wId))
+    val category = Category.findById(id).get
+    val teams = Team.findByCategoryId(id)
+    val widget = category.widgetId map (wId => Widget.findById(wId).get)
     
-    Ok(views.html.categories(category)(teams)(Nil)(widget))
+    Ok(views.html.categories(category)(teams)(None)(Nil)(widget))
   }
   
   def selectTeam(categoryId: Int, teamId: Int) = Action {
-    val category = idToCategories(categoryId)
-    val teams = categoriesToTeams(category)
-    val selectedTeam = idToTeams(teamId)
-    val members = teamsToMembers(selectedTeam)
+    val category = Category.findById(categoryId).get
+    val teams = Team.findByCategoryId(categoryId)
+    val selectedTeam = Team.findById(teamId)
+    val members = Member.findByTeamId(teamId)
     
-    val widget = idToWidgets(selectedTeam.widgetId)
+    val widget = Widget.findById(selectedTeam.get.widgetId)
     
-    Ok(views.html.categories(category)(teams)(members)(Some(widget)))
+    Ok(views.html.categories(category)(teams)(selectedTeam)(members)(widget))
   }
   
   def hashtags = Action {

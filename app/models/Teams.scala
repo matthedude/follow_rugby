@@ -7,17 +7,18 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Team(id: Pk[Int] = NotAssigned, name: String, categoryId: Int, widgetId: Long)
+case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long)
 
 object Team {
 
-  
+  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L)
   val simple = {
     get[Pk[Int]]("team.id") ~
     get[String]("team.name") ~
+    get[Option[String]]("team.twitter_name") ~
     get[Int]("team.category_id") ~ 
     get[Long]("team.widget_id") map {
-      case id~name~categoryId~widgetId => Team(id, name, categoryId, widgetId)
+      case id~name~twitterName~categoryId~widgetId => Team(id, name, twitterName, categoryId, widgetId)
     }
   }
   
@@ -38,7 +39,7 @@ object Team {
     }
   }
   
-  def findByCategoryId(categoryId: Pk[Int]):Seq[Team] = {
+  def findByCategoryId(categoryId: Int):Seq[Team] = {
     DB.withConnection { implicit connection =>
       
       val teams = SQL(
@@ -88,12 +89,13 @@ object Team {
       SQL(
         """
           update team
-          set name = {name}, category_id = {categoryId}, widget_id = {widgetId}
+          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}
           where id = {id}
         """
       ).on(
         'id -> id,
         'name -> team.name,
+        'twitterName -> team.twitterName,
         'categoryId -> team.categoryId,
         'widgetId -> team.widgetId
       ).executeUpdate()
@@ -146,11 +148,12 @@ object Team {
   def create(team: Team):Int = {
   	DB.withConnection { implicit connection =>
         SQL("""
-            insert into team (name, category_id, widget_id) values (
-              {name}, {categoryId}, {widgetId}
+            insert into team (name, twitter_name, category_id, widget_id) values (
+              {name}, {twitterName}, {categoryId}, {widgetId}
             )
             """).on(
           'name -> team.name,
+          'twitterName -> team.twitterName,
           'categoryId -> team.categoryId,
           'widgetId -> team.widgetId
         ).executeUpdate()

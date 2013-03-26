@@ -32,4 +32,20 @@ object Category {
     }
   }
   
+  def findById(id: Int):Option[Category] = {
+    DB.withConnection { implicit connection =>
+      
+      val category = SQL(
+        """
+          select *
+          from category 
+          where id = {id}
+        """
+      ).on('id -> id).as(Category.simple singleOpt)
+      
+      category
+    }
+  
+  }
+  
 }

@@ -9,7 +9,8 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Game(team1Id: Int, team2Id: Int, time: String, gameDate: Date, widgetId: Long)
+case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long)
+case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget)
 
 
 object Game {
@@ -18,10 +19,11 @@ object Game {
   val simple = {
     get[Int]("game.team1_id") ~
     get[Int]("game.team2_id") ~
+    get[Int]("game.competition_id") ~
     get[String]("game.time") ~
     get[Date]("game.game_date") ~
     get[Long]("game.widget_id") map {
-      case team1Id~team2Id~time~gameDate~widgetId => Game(team1Id, team2Id, time, gameDate, widgetId)
+      case team1Id~team2Id~competitionId~time~gameDate~widgetId => Game(team1Id, team2Id, competitionId, time, gameDate, widgetId)
     }
   }
   
@@ -44,6 +46,16 @@ object Game {
     }
   }
   
+  def allMatches(games: Seq[Game]):Seq[MatchCentreGame] = {
+  	DB.withConnection { implicit connection =>
+    	games map { game =>
+    		val team1 = Team.findById(game.team1Id).get
+    		val team2 = Team.findById(game.team2Id).get
+    		MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get)
+    	}
+  	}
+  }
+  
   def findById(team1Id: Long, team2Id: Long):Option[Game] = {
     DB.withConnection { implicit connection =>
       
@@ -64,15 +76,33 @@ object Game {
   
   }
   
+  def findByCompetitionId(competitionId: Int):Seq[MatchCentreGame] = {
+    DB.withConnection { implicit connection =>
+      
+      val games = SQL(
+        """
+          select *
+          from game 
+          where competition_id = {competitionId}
+        """
+      ).on(
+          'competitionId -> competitionId).as(Game.simple *)
+      
+      allMatches(games)
+    }
+  
+  }
+  
   def create(game: Game) = {
     DB.withConnection { implicit connection =>
         SQL("""
-            insert into game (team1_id, team2_id, time, game_date, widget_id) values (
-              {team1Id}, {team2Id}, {time}, {gameDate}, {widgetId}
+            insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id) values (
+              {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}
             )
             """).on(
           'team1Id -> game.team1Id,
           'team2Id -> game.team2Id,
+          'competitionId -> game.competitionId,
           'time -> game.time,
           'gameDate -> game.gameDate,
           'widgetId -> game.widgetId
@@ -85,13 +115,14 @@ object Game {
       SQL(
         """
           update game
-          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}
+          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}, competition_id = {competitionId}
           where team1_id = {team1Id}
           and team2_id = {team2Id}
         """
       ).on(
         'team1Id -> game.team1Id,
         'team2Id -> game.team2Id,
+        'competitionId -> game.competitionId,
         'time -> game.time,
         'gameDate -> game.gameDate,
         'widgetId -> game.widgetId      
@@ -101,7 +132,7 @@ object Game {
   
   def delete(team1Id: Long, team2Id: Long) = {
     DB.withConnection { implicit connection =>
-      SQL("delete from game where team1_id = {team1_id} and team2_id = {team2_id}"
+      SQL("delete from game where team1_id = {team1Id} and team2_id = {team2Id}"
       		).on(
       	'team1Id -> team1Id,
         'team2Id -> team2Id).executeUpdate()

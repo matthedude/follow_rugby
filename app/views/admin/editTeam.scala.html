@@ -13,6 +13,7 @@
         <fieldset>
         
             @inputText(teamForm("team")("name"), '_label -> "Team name")
+            @inputText(teamForm("team")("twitterName"), '_label -> "Twitter Name")
             @select(
                 teamForm("team")("categoryId"), 
                 categories, 

@@ -21,7 +21,6 @@
       }
       
       .titleimage {
-        padding-bottom:5px;
       }
       
       
@@ -29,32 +28,45 @@
 </head>
 <body>
    <div class="container">
+<div class="row">
+      <div class="span12">
+        <div class="titleimage">
+        <a href="@routes.Application.index"><img src="@routes.Assets.at("images/title1.png")" padding-bottom></img></a>
+        </div>
+      </div>
+    </div>
         <div class="navbar navbar-inverse">
         <div class="navbar-inner">
         <div class="container">
              	
           <ul class="nav nav-pills">
+            <li class="dropdown">
+                      <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Match Centre<b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        @Competition.all.sortBy(_.pos).map { comp =>
+                        	<li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.matchCentre(comp.id.get)">@comp.name</a></li>
+                        }
+                      </ul>
+            </li>
             <li><a href="@routes.Application.selectCategory(1)">International</a></li>
-            <li><a href="@routes.Application.selectCategory(4)">Aviva Premiership</a></li>
-            <li><a href="@routes.Application.selectCategory(5)">Pro 12</a></li>
-            <li><a href="@routes.Application.selectCategory(3)">Top 14</a></li>
-            <li><a href="@routes.Application.selectCategory(2)">Super 15</a></li>
-            <li><a href="@routes.Application.selectCategory(6)">Other</a></li>
-      	    <li><a href="@routes.Application.matchCentre">Match Centre</a></li>
-            <li><a href="@routes.Application.hashtags">Hashtags</a></li>
-      	    <li><a href="@routes.Application.suggestions">Search</a></li>
+            <li class="dropdown">
+                      <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Club Rugby<b class="caret"></b></a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(4)">Aviva Premiership</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(5)">RaboDirect PRO 12</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(3)">Top 14</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(2)">Super 15</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(6)">Japan</a></li>
+                      </ul>
+            </li>
+            <li><a href="@routes.Application.selectCategory(8)">More Rugby</a></li>
       	    <li><a href="@routes.Application.about">About</a></li>
+            <li><a href="@routes.Application.hashtags">Coming Soon</a></li>
         	</ul>
         </div>
         </div>
         </div>
-    <div class="row">
-      <div class="span12">
-        <div class="titleimage">
-        <a href="@routes.Application.index"><img src="@routes.Assets.at("images/title.jpg")" padding-bottom></img></a>
-        </div>
-      </div>
-    </div>
+    
     <div class="row">
       
       @content

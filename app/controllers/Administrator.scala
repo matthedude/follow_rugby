@@ -9,11 +9,6 @@ import play.api.data.Forms._
 import anorm._
 
 object Administrator extends Controller with Secured {
-  import Data._
-  
-  
-  //Do security and add a widget for the Games so we can have a hashtag widget
-  //Add Japan 
   
   val loginForm = Form(
     tuple(
@@ -68,6 +63,7 @@ object Administrator extends Controller with Secured {
       "team" -> mapping(
         "id" -> ignored(NotAssigned:Pk[Int]),
         "name" -> nonEmptyText,
+        "twitterName" -> optional(text),
         "categoryId" -> number,
         "widgetId" -> longNumber
       )(Team.apply)(Team.unapply),
@@ -87,6 +83,7 @@ object Administrator extends Controller with Secured {
     mapping(
       "team1Id" -> number,
       "team2Id" -> number,
+      "competitionId" -> number,
       "time" -> nonEmptyText,
       "gameDate"  -> date("yyyy-MM-dd"),
       "widgetId" -> longNumber
@@ -244,21 +241,21 @@ object Administrator extends Controller with Secured {
   }
   
   def createGame = IsAuthenticated { _ => _ =>
-    Ok(views.html.admin.createGame(gameForm)(Team.all map (t => (t.id.get.toString, t.name) )))
+    Ok(views.html.admin.createGame(gameForm)(Team.all map (t => (t.id.get.toString, t.name) ))(Competition.all map (c => (c.id.get.toString, c.name))))
   }
   
   def editGame(team1Id: Int, team2Id: Int) = IsAuthenticated { _ => _ =>
     Game.findById(team1Id, team2Id).map { game =>
     	val team1 = Team.findById(team1Id).get
     	val team2 = Team.findById(team2Id).get
-      Ok(views.html.admin.editGame(gameForm.fill(game))(team1)(team2)(Team.all map (t => (t.id.get.toString, t.name) )))
+      Ok(views.html.admin.editGame(gameForm.fill(game))(team1)(team2)(Team.all map (t => (t.id.get.toString, t.name) ))(Competition.all map (c => (c.id.get.toString, c.name))))
     } .getOrElse(NotFound)
   }
   
   def saveGame = IsAuthenticated { _ => implicit request =>
     gameForm.bindFromRequest.fold(
       formWithErrors => 
-        BadRequest(views.html.admin.createGame(formWithErrors)(Team.all map (t => (t.id.get.toString, t.name) ))),
+        BadRequest(views.html.admin.createGame(formWithErrors)(Team.all map (t => (t.id.get.toString, t.name) ))(Competition.all map (c => (c.id.get.toString, c.name)))),
       game => {
         Game.create(game)
         GameHome.flashing("success" -> "Game has been created")
@@ -268,7 +265,7 @@ object Administrator extends Controller with Secured {
   
   def updateGame(team1Id: Int, team2Id: Int) = IsAuthenticated { _ => implicit request =>
     gameForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.admin.editGame(formWithErrors)(Team.findById(team1Id).get)(Team.findById(team2Id).get)(Team.all map (t => (t.id.get.toString, t.name) ))),
+      formWithErrors => BadRequest(views.html.admin.editGame(formWithErrors)(Team.findById(team1Id).get)(Team.findById(team2Id).get)(Team.all map (t => (t.id.get.toString, t.name) ))(Competition.all map (c => (c.id.get.toString, c.name)))),
       game => {
         Game.update(team1Id, team2Id, game)
         GameHome.flashing("success" -> "Game has been updated")
