@@ -37,8 +37,8 @@ object Application extends Controller {
     Ok(views.html.categories(category)(teams)(selectedTeam)(members)(widget))
   }
   
-  def hashtags = Action {
-    Ok(views.html.index())
+  def comingSoon = Action {
+    Ok(views.html.comingSoon())
   }
   
   def suggestions = Action {

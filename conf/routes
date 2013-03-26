@@ -6,7 +6,7 @@
 GET     /                                 controllers.Application.index
 GET     /category:id                      controllers.Application.selectCategory(id:Int)
 GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId:Int, teamId:Int)
-GET     /hashtags                         controllers.Application.hashtags
+GET     /comingsoon                       controllers.Application.comingSoon
 GET     /matchCentre:id                   controllers.Application.matchCentre(id:Int)
 GET     /suggestions                      controllers.Application.suggestions
 GET     /about                            controllers.Application.about

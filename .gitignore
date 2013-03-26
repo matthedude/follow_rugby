@@ -23,4 +23,4 @@ target
 # Play
 logs
 RUNNING_PID
-.conf
+conf/application.conf
