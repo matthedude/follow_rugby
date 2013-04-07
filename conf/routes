@@ -4,13 +4,15 @@
 
 # Home page
 GET     /                                 controllers.Application.index
+GET     /competition                      controllers.Application.competition
+POST    /competition                      controllers.Application.enterCompetition
 GET     /category:id                      controllers.Application.selectCategory(id:Int)
 GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId:Int, teamId:Int)
 GET     /comingsoon                       controllers.Application.comingSoon
 GET     /matchCentre:id                   controllers.Application.matchCentre(id:Int)
-GET     /suggestions                      controllers.Application.suggestions
 GET     /about                            controllers.Application.about
 GET     /admin                            controllers.Administrator.admin
+
 
 # Authentication
 GET     /login                              controllers.Administrator.login

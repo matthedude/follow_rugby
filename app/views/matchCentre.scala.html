@@ -1,25 +1,46 @@
-@(games: Seq[models.MatchCentreGame])
+@(games: Seq[models.MatchCentreGame])(competition: Option[Competition])
+@import java.text.SimpleDateFormat
+@import java.util.Date
+
+@strDate(date: Date) = @{
+    val sd = new SimpleDateFormat("dd MMMM yyyy")
+    sd.format(date)
+  }
+
 
 @main("Follow Rugby"){
-  
-  
-
-
-  
-  @games.zipWithIndex.map { case (game, idx) =>
-    
-      <div class="span12">
-<div class="well">
-      <h2 class="text-center">@game.team1.name V @game.team2.name</h1>
-      <h2 class="text-center">@@@game.game.time</h1>
+	@competition.map { comp =>
+  <div class="row">
+ <div class="span12">
+           <h1>@comp.name</h1>
+         </div>
 </div>
-      </div>
-    
-     <div class="span4">
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team1Widget.twitterAccount}/@{game.team1Widget.url}" data-widget-id="@game.team1Widget.id"></a>
+	}
+	
+	<ul>
+   @games.sortBy(_.game.gameDate).zipWithIndex.map { case (game, idx) =>
+  	<li><a href="#game@idx">@game.team1.name V @game.team2.name</a></li>
+  }
+  </ul>
+  
+   @games.sortBy(_.game.gameDate).zipWithIndex.map { case (game, idx) =>
+        <div class="row">
+
+       <div class="span12">
+   <a name="game@idx"></a>
+<div class="well">
+           <p class="lead text-center">@strDate(game.game.gameDate) @@@game.game.time</p>
+           <h3 class="text-center">@game.team1.name V @game.team2.name</h3>
+         </div>
+  </div>
+</div>
+  
+  	 <div class="row"> 
+       <div class="span4">
+         <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team1Widget.twitterAccount}/@{game.team1Widget.url}" data-widget-id="@game.team1Widget.id"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-     </div>
+         </div>
+       </div>
           
    
      <div class="span4">
@@ -27,21 +48,22 @@
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
      </div>
-          
+     @game.matchWidget.map { w =>    
      <div class="span4">
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?q=%23rugby" data-widget-id="277844769160429571">Tweets about "#rugby"</a></div>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</div>
+        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+     </div>
+     }
+     </div>
      
+     </br>
 
       
     
-    <br>
   } 
   
   
-}{ 
- 
 }
     
       

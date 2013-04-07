@@ -10,7 +10,7 @@ import anorm.SqlParser._
 import play.api.Play
 
 case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long)
-case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget)
+case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget, matchWidget: Option[Widget])
 
 
 object Game {
@@ -51,7 +51,7 @@ object Game {
     	games map { game =>
     		val team1 = Team.findById(game.team1Id).get
     		val team2 = Team.findById(game.team2Id).get
-    		MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get)
+    		MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get, Widget.findById(game.widgetId))
     	}
   	}
   }

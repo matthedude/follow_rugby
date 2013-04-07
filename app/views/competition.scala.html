@@ -1,0 +1,344 @@
+@(lionsCompPlayers: Seq[LionsCompPlayer])(lionsCompForm: Form[LionsCompTeam])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main("Follow Rugby"){
+  <div class="row">
+  <div class="span12">
+
+@lionsCompForm.globalError.map { error =>
+  <div class="alert alert-error">@error.message</div>
+}
+    
+    <p class="lead">To celebrate the launch of Follow-Rugby we have created a competition to end the greatest rugby clubhouse and pub debates of the year. Which players will be chosen to tour with the 2013 British and Irish Lions? And who will Warren Gatland choose to captain the side?</p>
+
+    <p>We compiled an extensive list of possible tourists for you to choose from. If you want to include a player not listed please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add the player as an option.</p>
+    
+    <p>We have teamed up with _ rugby to provide fitting prizes – 3 Official HSBC Lions shirts and some other Official Lions merchandise .</p>
+
+    <p>To enter:</p>
+    <ul>
+      <li>Select the players and captain that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
+      <li>When you are 100% happy with your squad, enter your full name, contact number, Twitter handle (if you have one) and e-mail address - finally click SUBMIT .</li>
+      <li>Maximum of one entry per person and e-mail address.</li>
+      <li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces his squad (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to make the squad).</li>
+      <li>All entries must be in 7 days before the actual squad announcement (April 23rd). This is to avoid Lions press leak competition sabotage!</li>
+    </ul>
+
+    <p>Scoring:</p>
+    <ul>
+      <li>1 point for each correct player.</li>
+      <li>2 bonus points for guessing the official Lions captain. Leave the field blank if you believe that Gatland will not announce a test captain at the official Lions squad announcement launch - if this is correct you will also score 2 points.</li>
+      <li>2 bonus points for guessing correct number of players selected (if this is unconfirmed before the competition close).</li>
+      <li>The winners will be the entrants with the most points. If more than 3 entrants are tied there will be a draw to decide who wins the official prizes.</li>
+    </ul>
+
+    <p>We hope you enjoy www.follow-rugby.com. Take a looked through all the pages to view rugby Twitter updates that are grouped into competitions, teams, other rugby figures showing their recent Twitter updates and a database of rugby Twitter accounts. Please feel free to suggest new rugby Twitter accounts to <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add these to the relevant rugby sections.</p>
+
+
+
+
+
+
+
+
+
+</br>
+</br>
+    </br>
+ @form(action = routes.Application.enterCompetition, 'onsubmit -> "selectAllOptions('props');selectAllOptions('hookers');selectAllOptions('locks');selectAllOptions('backRows');selectAllOptions('scrumHalfs');selectAllOptions('flyHalfs');selectAllOptions('centres');selectAllOptions('wings');selectAllOptions('fullBacks');") {
+    
+	   <div class="row">
+       <div class="span3"></div>
+       <div class="span9">
+               <fieldset>
+                @inputText(lionsCompForm("name"), '_label -> "Full Name")
+                @inputText(lionsCompForm("email"), '_label -> "Email")
+                @inputText(lionsCompForm("phone"), '_label -> "Phone No")
+                </fieldset>
+                
+       </div>
+     </div>
+	 
+      <div class="row">
+       <div class="span6"><h3>Props</h3></div>
+       <div class="span6"><h3>Hookers</h3></div>
+     </div>
+
+	
+   <table>
+       <thead>
+       <tr>
+      <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Props</th>
+     <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Hookers</th>
+    </tr>
+  </thead>
+  <tbody>
+          <tr>
+            <td>
+              <select multiple size="8" name="newProps" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Prop").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newProps,this.form.props,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.props,this.form.newProps,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="props" name="props[]" style="width:100">
+               
+              </select>
+            </td>
+          
+            <td>
+              <select multiple size="8" name="newHookers" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Hooker").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newHookers,this.form.hookers,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.hookers,this.form.newHookers,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="hookers" name="hookers[]" style="width:100">
+               
+              </select>
+            </td>
+          </tr>
+          </tbody>    
+        </table>
+
+      <div class="row">
+       <div class="span6"><h3>Locks</h3></div>
+       <div class="span6"><h3>Back Row</h3></div>
+     </div>
+
+  
+   <table>
+       <thead>
+       <tr>
+      <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Locks</th>
+     <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Back Row</th>
+    </tr>
+  </thead>
+  <tbody>
+           <tr>
+            <td>
+              <select multiple size="8" name="newLocks" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Lock").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newLocks,this.form.locks,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.locks,this.form.newLocks,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="locks" name="locks[]" style="width:100">
+               
+              </select>
+            </td>
+          
+            <td>
+              <select multiple size="8" name="newBackRows" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Back Row").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newBackRows,this.form.backRows,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.backRows,this.form.newBackRows,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="backRows" name="backRows[]" style="width:100">
+               
+              </select>
+            </td>
+          </tr>
+</tbody>    
+        </table>
+
+      <div class="row">
+       <div class="span6"><h3>Scrum Halfs</h3></div>
+       <div class="span6"><h3>Fly Halfs</h3></div>
+     </div>
+
+  
+   <table>
+       <thead>
+       <tr>
+      <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Scrum Halfs</th>
+     <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Fly Halfs</th>
+    </tr>
+  </thead>
+  <tbody>
+                <tr>
+            <td>
+              <select multiple size="8" name="newScrumHalfs" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Scrum Half").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newScrumHalfs,this.form.scrumHalfs,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.scrumHalfs,this.form.newScrumHalfs,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="scrumHalfs" name="scrumHalfs[]" style="width:100">
+               
+              </select>
+            </td>
+            <td>
+              <select multiple size="8" name="newFlyHalfs" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Fly Half").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newFlyHalfs,this.form.flyHalfs,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.flyHalfs,this.form.newFlyHalfs,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="flyHalfs" name="flyHalfs[]" style="width:100">
+               
+              </select>
+            </td>
+          </tr>
+                </tbody>    
+        </table>
+
+      <div class="row">
+       <div class="span6"><h3>Centres</h3></div>
+       <div class="span6"><h3>Wings</h3></div>
+     </div>
+
+   
+   <table>
+       <thead>
+       <tr>
+      <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Centres</th>
+     <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Wings</th>
+    </tr>
+  </thead>
+  <tbody>
+                <tr>
+            <td>
+              <select multiple size="8" name="newCentres" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Centre").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newCentres,this.form.centres,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.centres,this.form.newCentres,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="centres" name="centres[]" style="width:100">
+               
+              </select>
+            </td>
+            <td>
+              <select multiple size="8" name="newWings" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Wing").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newWings,this.form.wings,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.wings,this.form.newWings,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="wings" name="wings[]" style="width:100">
+               
+              </select>
+            </td>
+          </tr>
+</tbody>    
+        </table>
+
+     
+
+  <div class="row">
+       <div class="span6"><h3>Full Backs</h3>
+     
+   <table>
+       <thead>
+       <tr>
+      <th>Choose from...</th>
+     <th></th>
+      <th>Final Team Full Backs</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+                <tr>
+            <td>
+              <select multiple size="8" name="newFullBacks" style="width:100">
+                @lionsCompPlayers.filter(_.position == "Full Back").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
+              </select>
+            </td>
+            <td align="center" valign="middle">
+              <input type="button" onClick="move(this.form.newFullBacks,this.form.fullBacks,true)" value=">"><br/>
+              <input type="button" onClick="move(this.form.fullBacks,this.form.newFullBacks,false)" value="<">
+            </td>
+            <td>
+              <select multiple="multiple" size="8" id="fullBacks" name="fullBacks[]" style="width:100">
+               
+              </select>
+            </td>
+          </tr>
+          </tbody>    
+        </table></div><div class="span1"></div><div class="span5">
+</br></br>
+                <table><tr><td><h1 id="counter">0</h1></td><td><h1> players selected</h1></td></tr></table></div>
+  </div>
+  <div class="row">
+    <div class="span5"></div><div class="span5"><div class="actions">
+            <input type="submit" value="Enter Competition" class="btn primary"> 
+        </div></div>
+  </div>
+
+
+
+ 
+        
+    }
+
+  </div>
+  
+ 
+  
+ </div>   
+
+
+}
