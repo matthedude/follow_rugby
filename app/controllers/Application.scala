@@ -25,11 +25,23 @@ object Application extends Controller {
       "fullBacks" -> list(text),
       "name" -> nonEmptyText,
       "email" -> (nonEmptyText verifying email.constraints.head),
+      "password" -> nonEmptyText,
       "phone" -> nonEmptyText
     )(LionsCompTeam.apply)(LionsCompTeam.unapply)
-  ).verifying("A person with this email has already entered the competition.", entry => CompEntry.findByEmail(entry.email) == None))
+  ))
+  
+  val loadCompForm = Form(
+    tuple(
+      "email" -> text,
+      "password" -> text
+    ) verifying ("Invalid email or password", result => result match {
+      case (email, password) => CompEntry.loadEntry(email, password).isDefined
+    })
+  )
   
   def index = Action { implicit request =>
+  
+  	
     Ok(views.html.index())
   }
 	
@@ -37,10 +49,18 @@ object Application extends Controller {
 		println(request)
     lionsCompForm.bindFromRequest.fold(
       formWithErrors => 
-        BadRequest(views.html.competition(LionsCompPlayer.all)(formWithErrors.withGlobalError("You have made an error filling out the form. Please make sure you have supplied your name, a valid email and a telephone number."))),
+        BadRequest(views.html.competition(LionsCompPlayer.all)(Nil)(formWithErrors.withGlobalError("You have made an error filling out the form. Please make sure you have supplied your name, a valid email and a telephone number."))(loadCompForm)),
       compEntry => {
         val players = (compEntry.props ++ compEntry.hookers ++ compEntry.locks ++ compEntry.backRows ++ compEntry.scrumHalfs ++ compEntry.flyHalfs ++ compEntry.centres ++ compEntry.wings ++ compEntry.fullBacks).mkString(",")
-        CompEntry.create(CompEntry(compEntry.name, compEntry.email, compEntry.phone, players))
+      	val entry = CompEntry(compEntry.name, compEntry.email, compEntry.password, compEntry.phone, players)
+        if(CompEntry.findByEmail(compEntry.email) == None) {
+          CompEntry.create(entry)
+      	} else {
+      		val updated = CompEntry.update(entry)
+      		if(!updated) {
+      			Home.flashing("error" -> "There was a problem entering the competition, please try again.")
+      		}
+      	}
         Home.flashing("success" -> "You have successfully entered the Follow Rugby Lions competition. Please check your email shortly for a confirmation email.")
 //        Home
       }
@@ -80,9 +100,24 @@ object Application extends Controller {
   }
   
   def competition = Action { implicit request =>
-  	Ok(views.html.competition(LionsCompPlayer.all)(lionsCompForm))
+  	Ok(views.html.competition(LionsCompPlayer.all)(Nil)(lionsCompForm)(loadCompForm))
   }
   
-  
-  
+  def loadCompetition = Action { implicit request =>
+    println(request)
+    loadCompForm.bindFromRequest.fold(
+      formWithErrors => 
+        BadRequest(views.html.competition(LionsCompPlayer.all)(Nil)(lionsCompForm)(formWithErrors)),
+      login => {
+        val entry = CompEntry.loadEntry(login._1, login._2)
+        if(entry.isDefined) {
+          val compSelectedPlayers = LionsCompPlayer.findByIds(entry.get.players)
+          val compOtherPlayers = LionsCompPlayer.findNotByIds(entry.get.players)
+          Ok(views.html.competition(compOtherPlayers)(compSelectedPlayers)(lionsCompForm.fill(LionsCompTeam.entryToTeam(entry.get)))(loadCompForm))
+        } else {
+        	Ok(views.html.competition(LionsCompPlayer.all)(Nil)(lionsCompForm)(loadCompForm))
+        }
+      }
+    )
+  }
 }

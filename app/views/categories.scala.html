@@ -15,7 +15,7 @@
   </div>
   <div class="span5">
   @if(players.isEmpty) {
-    <p class="lead">Click on a team on the left to see their players and twitter feed.</p>
+    <p class="lead">Click on a group on the left to see its updated Twitter feed and all associated Twitter profiles.</p>
   } else {
   @team.map { t =>
     <h2>@t.name</h2>
@@ -29,12 +29,7 @@
   
   
   <table class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-      <th>Player</th>
-      <th>Twitter Name</th>
-    </tr>
-  </thead>
+  
   <tbody>
   @players.sortBy(_.name).map { player:Member => 
     <tr>

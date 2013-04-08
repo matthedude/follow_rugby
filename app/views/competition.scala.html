@@ -1,4 +1,4 @@
-@(lionsCompPlayers: Seq[LionsCompPlayer])(lionsCompForm: Form[LionsCompTeam])
+@(lionsCompPlayers: Seq[LionsCompPlayer])(lionsCompSelectedPlayers: Seq[LionsCompPlayer])(lionsCompForm: Form[LionsCompTeam])(loadCompForm: Form[(String, String)])
 
 @import helper._
 
@@ -12,50 +12,76 @@
   <div class="alert alert-error">@error.message</div>
 }
     
-    <p class="lead">To celebrate the launch of Follow-Rugby we have created a competition to end the greatest rugby clubhouse and pub debates of the year. Which players will be chosen to tour with the 2013 British and Irish Lions? And who will Warren Gatland choose to captain the side?</p>
+    <p class="lead">To celebrate the launch of Follow-Rugby.com we have created a competition to end the greatest rugby clubhouse and pub debates of the year. Which players will be chosen to tour with the 2013 British and Irish Lions? And who will Warren Gatland choose to captain the side?</p>
 
-    <p>We compiled an extensive list of possible tourists for you to choose from. If you want to include a player not listed please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add the player as an option.</p>
+    <p>We have compiled an extensive list of possible tourists for you to choose from. If you want to include a player not listed please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add the player as an option.</p>
     
-    <p>We have teamed up with _ rugby to provide fitting prizes – 3 Official HSBC Lions shirts and some other Official Lions merchandise .</p>
-
-    <p>To enter:</p>
+     <p>To enter:</p>
     <ul>
       <li>Select the players and captain that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
-      <li>When you are 100% happy with your squad, enter your full name, contact number, Twitter handle (if you have one) and e-mail address - finally click SUBMIT .</li>
+      <li>When you are 100% happy with your squad, enter your full name, a password, contact number and e-mail address - finally click SUBMIT. Up to the competition deadline you can then change your team by entering your email and password into the login box.</li>
       <li>Maximum of one entry per person and e-mail address.</li>
       <li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces his squad (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to make the squad).</li>
-      <li>All entries must be in 7 days before the actual squad announcement (April 23rd). This is to avoid Lions press leak competition sabotage!</li>
+      <li>All entries must be in by April 25th 12pm BST. This is to avoid Lions press leak competition sabotage!</li> 
     </ul>
 
     <p>Scoring:</p>
     <ul>
       <li>1 point for each correct player.</li>
       <li>2 bonus points for guessing the official Lions captain. Leave the field blank if you believe that Gatland will not announce a test captain at the official Lions squad announcement launch - if this is correct you will also score 2 points.</li>
-      <li>2 bonus points for guessing correct number of players selected (if this is unconfirmed before the competition close).</li>
       <li>The winners will be the entrants with the most points. If more than 3 entrants are tied there will be a draw to decide who wins the official prizes.</li>
     </ul>
+
+    <p>Prizes:</p>
+
+    <p>The three entrants with the highest points totals will each receive an <stronger>Official Adidas British and Irish 2013 Lions shirt!</stronger></p>
 
     <p>We hope you enjoy www.follow-rugby.com. Take a looked through all the pages to view rugby Twitter updates that are grouped into competitions, teams, other rugby figures showing their recent Twitter updates and a database of rugby Twitter accounts. Please feel free to suggest new rugby Twitter accounts to <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add these to the relevant rugby sections.</p>
 
 
 
+ 
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Load a saved squad...</h3>
+  </div>
+@form(action = routes.Application.loadCompetition) {
+  <div class="modal-body">
+    <p>If you have already entered the competition, you can amend your picks by entering your details here.</p>
+    @helper.inputText(loadCompForm("email"))
+    
+    @helper.inputPassword(loadCompForm("password"))
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <input type="submit" value="Load Saved" class="btn primary"> 
+  </div>
+
+              } 
+
+
+</div>
 
 
 
 
 
 
-</br>
-</br>
-    </br>
+    <br/>
  @form(action = routes.Application.enterCompetition, 'onsubmit -> "selectAllOptions('props');selectAllOptions('hookers');selectAllOptions('locks');selectAllOptions('backRows');selectAllOptions('scrumHalfs');selectAllOptions('flyHalfs');selectAllOptions('centres');selectAllOptions('wings');selectAllOptions('fullBacks');") {
     
 	   <div class="row">
        <div class="span3"></div>
        <div class="span9">
+               <!-- Button to trigger modal -->
+               <a href="#myModal" role="button" class="btn" data-toggle="modal">Load Saved Squad</a>
+               <br></br>
                <fieldset>
                 @inputText(lionsCompForm("name"), '_label -> "Full Name")
                 @inputText(lionsCompForm("email"), '_label -> "Email")
+                @inputPassword(loadCompForm("password"), '_label -> "Password")
                 @inputText(lionsCompForm("phone"), '_label -> "Phone No")
                 </fieldset>
                 
@@ -94,7 +120,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="props" name="props[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Prop").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           
@@ -111,7 +139,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="hookers" name="hookers[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Hooker").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           </tr>
@@ -150,7 +180,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="locks" name="locks[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Lock").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           
@@ -167,7 +199,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="backRows" name="backRows[]" style="width:100">
-               
+                @lionsCompSelectedPlayers.filter(_.position == "Back Row").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           </tr>
@@ -175,8 +209,8 @@
         </table>
 
       <div class="row">
-       <div class="span6"><h3>Scrum Halfs</h3></div>
-       <div class="span6"><h3>Fly Halfs</h3></div>
+       <div class="span6"><h3>Scrum-Halves</h3></div>
+       <div class="span6"><h3>Fly-Halves</h3></div>
      </div>
 
   
@@ -206,7 +240,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="scrumHalfs" name="scrumHalfs[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Scrum Half").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
             <td>
@@ -222,7 +258,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="flyHalfs" name="flyHalfs[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Fly Half").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           </tr>
@@ -261,7 +299,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="centres" name="centres[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Centre").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
             <td>
@@ -277,7 +317,9 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="wings" name="wings[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Wing").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           </tr>
@@ -313,17 +355,30 @@
             </td>
             <td>
               <select multiple="multiple" size="8" id="fullBacks" name="fullBacks[]" style="width:100">
-               
+               @lionsCompSelectedPlayers.filter(_.position == "Full Back").sortWith((a,b) => a.name.compareTo(b.name) < 0).map { player =>
+                  <option value="@player.id">@player.name</option>
+                }
               </select>
             </td>
           </tr>
           </tbody>    
         </table></div><div class="span1"></div><div class="span5">
 </br></br>
-                <table><tr><td><h1 id="counter">0</h1></td><td><h1> players selected</h1></td></tr></table></div>
+                <table><tr><td><h1 id="counter">@lionsCompSelectedPlayers.size</h1></td><td></td></tr></table>
+                 <p>players selected</p></div>
   </div>
   <div class="row">
-    <div class="span5"></div><div class="span5"><div class="actions">
+    <div class="span3"></div>
+      <div class="span6">
+<p>If you are updating a squad you already saved, please remember to re-enter your password above (your email should be auto-filled) otherwise your new squad will not save and you will have to reload your old one again. If it is your first time entering make sure all fields are correctly filled.</p>
+    </div>
+      <div class="span3"></div>
+               
+   </div   
+     <br></br>
+      <div class="row"> 
+    <div class="span5"></div><div class="span5">
+               <div class="actions">
             <input type="submit" value="Enter Competition" class="btn primary"> 
         </div></div>
   </div>
@@ -340,5 +395,6 @@
   
  </div>   
 
-
+              
+              
 }

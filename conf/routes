@@ -5,6 +5,7 @@
 # Home page
 GET     /                                 controllers.Application.index
 GET     /competition                      controllers.Application.competition
+POST     /competition/edit                 controllers.Application.loadCompetition
 POST    /competition                      controllers.Application.enterCompetition
 GET     /category:id                      controllers.Application.selectCategory(id:Int)
 GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId:Int, teamId:Int)
