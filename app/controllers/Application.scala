@@ -49,7 +49,6 @@ object Application extends Controller {
         BadRequest(views.html.competition(LionsCompPlayer.all)(Nil)(formWithErrors.withGlobalError("You have made an error filling out the form. Please make sure you have supplied your name, a valid email and a telephone number."))(loadCompForm)),
       compEntry => {
       	import java.util.Date
-      	println(new Date)
         val players = (compEntry.props ++ compEntry.hookers ++ compEntry.locks ++ compEntry.backRows ++ compEntry.scrumHalfs ++ compEntry.flyHalfs ++ compEntry.centres ++ compEntry.wings ++ compEntry.fullBacks).mkString(",")
       	val entry = CompEntry(compEntry.name, compEntry.email, compEntry.password, compEntry.phone, players)
       	val compSelectedPlayers = LionsCompPlayer.findByIds(players).map(_.name)
@@ -74,11 +73,11 @@ object Application extends Controller {
     Ok(views.html.about())
   }
   
-  def matchCentre(id: Int) = Action {
+  def matchCentre(id: Int, categoryName: String) = Action {
     Ok(views.html.matchCentre(Game.findByCompetitionId(id))(Competition.findById(id)))
   }
   
-  def selectCategory(id: Int) = Action {
+  def selectCategory(id: Int, categoryName: String) = Action {
     val category = Category.findById(id).get
     val teams = Team.findByCategoryId(id)
     val widget = category.widgetId map (wId => Widget.findById(wId).get)
@@ -86,7 +85,7 @@ object Application extends Controller {
     Ok(views.html.categories(category)(teams)(None)(Nil)(widget))
   }
   
-  def selectTeam(categoryId: Int, teamId: Int) = Action {
+  def selectTeam(categoryId: Int, teamId: Int, categoryName: String, teamName: String) = Action {
     val category = Category.findById(categoryId).get
     val teams = Team.findByCategoryId(categoryId)
     val selectedTeam = Team.findById(teamId)

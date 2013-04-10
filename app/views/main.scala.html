@@ -1,6 +1,7 @@
 @(title: String)(content: Html)
 
 @import models._
+@import Linker._
 
 <!DOCTYPE html>
 
@@ -122,22 +123,22 @@
                       <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Match Centre<b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                         @Competition.all.sortBy(_.pos).map { comp =>
-                        	<li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.matchCentre(comp.id.get)">@comp.name</a></li>
+                        	<li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.matchCentre(comp.id.get, link(comp.name))">@comp.name</a></li>
                         }
                       </ul>
             </li>
-            <li><a href="@routes.Application.selectCategory(1)">International</a></li>
+            <li><a href="@routes.Application.selectCategory(1, "international")">International</a></li>
             <li class="dropdown">
                       <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Club Rugby<b class="caret"></b></a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(4)">Aviva Premiership</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(5)">RaboDirect PRO 12</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(2)">Super 15</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(3)">Top 14</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(6)">Japan</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(4, "avivapremiership")">Aviva Premiership</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(5, "rabodirectpro12")">RaboDirect PRO 12</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(2, "super15")">Super 15</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(3, "top14")">Top 14</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(6, "japan")">Japan</a></li>
                       </ul>
             </li>
-            <li><a href="@routes.Application.selectCategory(8)">More Rugby</a></li>
+            <li><a href="@routes.Application.selectCategory(8, "morerugby")">More Rugby</a></li>
             <li><a href="@routes.Application.competition">Competition</a></li>
       	    <li><a href="@routes.Application.about">About</a></li>
             <li><a href="@routes.Application.comingSoon">Coming Soon</a></li>

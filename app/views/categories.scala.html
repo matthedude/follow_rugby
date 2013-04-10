@@ -1,5 +1,7 @@
 @(category: Category)(teams: Seq[models.Team])(team: Option[models.Team])(players: Seq[models.Member])(widget: Option[models.Widget])
 
+@import models.Linker._
+
 @main("Follow Rugby"){
 	 <div class="row">
   <div class="span3">
@@ -8,7 +10,7 @@
       <li class="nav-header">@category.name</li>
       <li class="divider"></li>
       @teams.sortBy(_.name).map { team =>
-        <li><a href="@routes.Application.selectTeam(category.id.get, team.id.get)">@team.name</a></li>
+        <li><a href="@routes.Application.selectTeam(category.id.get, team.id.get, link(category.name), link(team.name))">@team.name</a></li>
         }
       </ul>
       <br></br>

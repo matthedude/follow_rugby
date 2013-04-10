@@ -5,12 +5,12 @@
 # Home page
 GET     /                                 controllers.Application.index
 GET     /competition                      controllers.Application.competition
-POST     /competition/edit                 controllers.Application.loadCompetition
+POST    /competition/edit                 controllers.Application.loadCompetition
 POST    /competition                      controllers.Application.enterCompetition
-GET     /category:id                      controllers.Application.selectCategory(id:Int)
-GET     /category:categoryId/team:teamId  controllers.Application.selectTeam(categoryId:Int, teamId:Int)
+GET     /db/:categoryName                 controllers.Application.selectCategory(id:Int, categoryName: String)
+GET     /db/:categoryName/:teamName       controllers.Application.selectTeam(categoryId:Int, teamId:Int, categoryName: String, teamName: String)
 GET     /comingsoon                       controllers.Application.comingSoon
-GET     /matchCentre:id                   controllers.Application.matchCentre(id:Int)
+GET     /matchCentre/:categoryName        controllers.Application.matchCentre(id:Int, categoryName: String)
 GET     /about                            controllers.Application.about
 GET     /admin                            controllers.Administrator.admin
 
