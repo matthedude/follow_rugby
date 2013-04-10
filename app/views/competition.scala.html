@@ -11,35 +11,33 @@
 @lionsCompForm.globalError.map { error =>
   <div class="alert alert-error">@error.message</div>
 }
-    
-    <p class="lead">To celebrate the launch of Follow-Rugby.com we have created a competition to end the greatest rugby clubhouse and pub debates of the year. Which players will be chosen to tour with the 2013 British and Irish Lions? And who will Warren Gatland choose to captain the side?</p>
+    <h2 class="text-center">British and Irish Lions 2013 Squad Competition</h2>
+    <br></br>
+    <p class="lead">To celebrate the launch of www.Follow-Rugby.com we have created a competition to end the greatest rugby debate of the year. Which players will be chosen to tour Australia with the 2013 British and Irish Lions?</p>
 
     <p>We have compiled an extensive list of possible tourists for you to choose from. If you want to include a player not listed please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add the player as an option.</p>
     
      <p>To enter:</p>
     <ul>
-      <li>Select the players and captain that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
-      <li>When you are 100% happy with your squad, enter your full name, a password, contact number and e-mail address - finally click SUBMIT. Up to the competition deadline you can then change your team by entering your email and password into the login box.</li>
+      <li>Select the players that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
+      <li>When you are 100% happy with your squad, enter your full name, a password, contact number and e-mail address - finally click "Enter Competition". Up to the competition deadline you can then change your team by clicking "Load Saved Squad" and entering your e-mail address and password into the login box.</li>
       <li>Maximum of one entry per person and e-mail address.</li>
-      <li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces his squad (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to make the squad).</li>
-      <li>All entries must be in by April 25th 12pm BST. This is to avoid Lions press leak competition sabotage!</li> 
+      <li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces the final touring party (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to be on the plane to Australia, via Hong Kong).</li>
+      <li>All entries must be in by April 25th 10pm BST, so 5 days before the squad announcement. This is to avoid Lions press leak competition sabotage!</li> 
     </ul>
 
     <p>Scoring:</p>
     <ul>
       <li>1 point for each correct player.</li>
-      <li>2 bonus points for guessing the official Lions captain. Leave the field blank if you believe that Gatland will not announce a test captain at the official Lions squad announcement launch - if this is correct you will also score 2 points.</li>
-      <li>The winners will be the entrants with the most points. If more than 3 entrants are tied there will be a draw to decide who wins the official prizes.</li>
+      <li>The two entrants with the most points will each win a prize. In the event of a tie on the winning score(s) there will be a draw to decide who wins the official prizes.</li>
     </ul>
 
     <p>Prizes:</p>
 
-    <p>The three entrants with the highest points totals will each receive an <stronger>Official Adidas British and Irish 2013 Lions shirt!</stronger></p>
-
-    <p>We hope you enjoy www.follow-rugby.com. Take a looked through all the pages to view rugby Twitter updates that are grouped into competitions, teams, other rugby figures showing their recent Twitter updates and a database of rugby Twitter accounts. Please feel free to suggest new rugby Twitter accounts to <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add these to the relevant rugby sections.</p>
-
-
-
+    <p>The two entrants with the highest points totals will each receive an <stronger>official Adidas British and Irish 2013 Lions shirt!</stronger></p>
+    <br></br>
+    <p class="text-center text-info">We hope you enjoy www.Follow-Rugby.com. Take a look through the site and please contact us with your comments and suggestions of other rugby Twitter accounts by following and tweeting our own official Twitter account <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a>.</p>
+    <br></br>
  
 <!-- Modal -->
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -50,13 +48,14 @@
 @form(action = routes.Application.loadCompetition) {
   <div class="modal-body">
     <p>If you have already entered the competition, you can amend your picks by entering your details here.</p>
-    @helper.inputText(loadCompForm("email"))
+    @helper.inputText(loadCompForm("email"), '_label -> "E-mail")
     
-    @helper.inputPassword(loadCompForm("password"))
+    @helper.inputPassword(loadCompForm("password"), '_label -> "Password")
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    
     <input type="submit" value="Load Saved" class="btn primary"> 
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
   </div>
 
               } 
@@ -73,19 +72,19 @@
  @form(action = routes.Application.enterCompetition, 'onsubmit -> "selectAllOptions('props');selectAllOptions('hookers');selectAllOptions('locks');selectAllOptions('backRows');selectAllOptions('scrumHalfs');selectAllOptions('flyHalfs');selectAllOptions('centres');selectAllOptions('wings');selectAllOptions('fullBacks');") {
     
 	   <div class="row">
-       <div class="span3"></div>
-       <div class="span9">
+       <div class="span5">
                <!-- Button to trigger modal -->
                <a href="#myModal" role="button" class="btn" data-toggle="modal">Load Saved Squad</a>
                <br></br>
                <fieldset>
                 @inputText(lionsCompForm("name"), '_label -> "Full Name")
-                @inputText(lionsCompForm("email"), '_label -> "Email")
+                @inputText(lionsCompForm("email"), '_label -> "E-mail")
                 @inputPassword(loadCompForm("password"), '_label -> "Password")
                 @inputText(lionsCompForm("phone"), '_label -> "Phone No")
                 </fieldset>
                 
        </div>
+       <div class="span5"><img src="@routes.Assets.at("images/LionsShirt295.jpg")"></img></div>
      </div>
 	 
       <div class="row">
@@ -219,10 +218,10 @@
        <tr>
       <th>Choose from...</th>
      <th></th>
-      <th>Final Team Scrum Halfs</th>
+      <th>Final Team Scrum-Halves</th>
      <th>Choose from...</th>
      <th></th>
-      <th>Final Team Fly Halfs</th>
+      <th>Final Team Fly-Halves</th>
     </tr>
   </thead>
   <tbody>
@@ -370,8 +369,8 @@
   <div class="row">
     <div class="span3"></div>
       <div class="span6">
-<p>If you are updating a squad you already saved, please remember to re-enter your password above (your email should be auto-filled) otherwise your new squad will not save and you will have to reload your old one again. If it is your first time entering make sure all fields are correctly filled.</p>
-    </div>
+<p class="text-warning text-center">IMPORTANT: When you are updating a squad that you have already saved, after you have clicked “Load Saved Squad”, you must re-enter your password in the contact form before you save the changes (by clicking “Enter Competition”). If you forget to do this your new squad will not save and you will have to reload your old one again. If it is your first time entering make sure all fields are correctly filled.</p>
+   </div>
       <div class="span3"></div>
                
    </div   
@@ -385,6 +384,9 @@
 
 
 
+
+
+
  
         
     }
@@ -395,6 +397,28 @@
   
  </div>   
 
-              
+<br></br>
+<div class="row"><div class="span12">
+<p><small>Terms and conditions:</small></p>
+<ul>
+<li><p><small>Competition start date and time: 10 April 2013, 12am UK (BST).</small></p></li>
+               <li><p><small>Competition close date and time: 25 April 2013 10pm UK (BST).</small></p></li>
+               <li><p><small>Maximum of one entry per person and e-mail address.</small></p></li>
+               <li><p><small>No purchase required – the competition is free to enter.</small></p></li>
+               <li><p><small>The two entrants with the highest points totals will each win a prize. However, in the event of a tie winners will be chosen at random from the relevant tied score(s).</small></p></li>
+               <li><p><small>Winners will be contacted via e-mail (or phone if they do not respond to our initial e-mail). If they do not respond within 5 days from when the initial e-mail is sent, the entrant(s) with the next highest score will win the prize(s) (or a draw will take place in the event of a tie).</small></p></li>
+               <li><p><small>Entrants agree for their names, but no contact information, to be included in an e-mail to all participants, and in a Tweet by <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to congratulate their competition win. These will be sent on 01 May 2013 after 12pm UK (BST) - the day after the official Lions squad announcement.</small></p></li>
+               <li><p><small>Entrants from any country are welcome to participate.</small></p></li>
+               <li><p><small>Prizes consist of two official Adidas British and Irish Lions 2013 shirts, only.</small></p></li>
+               <li><p><small>Shirt sizes to be confirmed by the two competition winners, when they are notified of their win.</small></p></li>
+               <li><p><small>Prizes will be sent to addresses confirmed by the two competition winners, when they are notified of their win.</small></p></li>
+               <li><p><small>Prizes are not exchangeable for a cash alternative.</small></p></li>
+               <li><p><small> www.Follow-Rugby.com is compliant with the data protection act. Our policy is such that we will not pass on your details to any third party without your prior consent.</small></p></li>
+</ul>
+<p><small>Please contact <a href="mailto:ap@@follow-rugby.com">ap@@follow-rugby.com</a> if you have any questions regarding the competition. We will respond as soon as possible. </small></p>
+             
+    
+
+</div></div>        
               
 }

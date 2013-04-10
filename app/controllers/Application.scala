@@ -40,29 +40,31 @@ object Application extends Controller {
   )
   
   def index = Action { implicit request =>
-  
-  	
     Ok(views.html.index())
   }
 	
 	def enterCompetition = Action { implicit request =>
-		println(request)
     lionsCompForm.bindFromRequest.fold(
       formWithErrors => 
         BadRequest(views.html.competition(LionsCompPlayer.all)(Nil)(formWithErrors.withGlobalError("You have made an error filling out the form. Please make sure you have supplied your name, a valid email and a telephone number."))(loadCompForm)),
       compEntry => {
+      	import java.util.Date
+      	println(new Date)
         val players = (compEntry.props ++ compEntry.hookers ++ compEntry.locks ++ compEntry.backRows ++ compEntry.scrumHalfs ++ compEntry.flyHalfs ++ compEntry.centres ++ compEntry.wings ++ compEntry.fullBacks).mkString(",")
       	val entry = CompEntry(compEntry.name, compEntry.email, compEntry.password, compEntry.phone, players)
+      	val compSelectedPlayers = LionsCompPlayer.findByIds(players).map(_.name)
         if(CompEntry.findByEmail(compEntry.email) == None) {
           CompEntry.create(entry)
+          Email.sendEnterConfirmationMail(compSelectedPlayers, compEntry)
       	} else {
       		val updated = CompEntry.update(entry)
       		if(!updated) {
-      			Home.flashing("error" -> "There was a problem entering the competition, please try again.")
+      			Home.flashing("error" -> "There was a problem entering the competition, please try again. If you have a saved squad then re-load it.")
+      		} else {
+      			Email.sendUpdateConfirmationMail(compSelectedPlayers, compEntry)
       		}
       	}
         Home.flashing("success" -> "You have successfully entered the Follow Rugby Lions competition. Please check your email shortly for a confirmation email.")
-//        Home
       }
     )
   }
@@ -104,7 +106,6 @@ object Application extends Controller {
   }
   
   def loadCompetition = Action { implicit request =>
-    println(request)
     loadCompForm.bindFromRequest.fold(
       formWithErrors => 
         BadRequest(views.html.competition(LionsCompPlayer.all)(Nil)(lionsCompForm)(formWithErrors)),
