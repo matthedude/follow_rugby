@@ -15,6 +15,7 @@
       </ul>
       <br></br>
       <p><small>Suggest further Twitter profiles by tweeting <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a></small></p>
+      
     </div>
   </div>
   <div class="span5">
@@ -52,6 +53,10 @@
   </div>
 
   <div class="span4">
+  <span class='st_twitter_large' displayText='Tweet'></span>
+<span class='st_facebook_large' displayText='Facebook'></span>
+<span class='st_linkedin_large' displayText='LinkedIn'></span>
+<span class='st_email_large' displayText='Email'></span>
   @widget.map { list =>
     <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{list.twitterAccount}/@{list.url}" data-widget-id="@list.id"></a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
