@@ -5,6 +5,41 @@
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
 
 @main("Follow Rugby"){
+	<!-- Modal -->
+<div id="modalRules" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalRulesLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="modalRulesLabel">Competition Rules</h3>
+  </div>
+
+  <div class="modal-body">
+<p>To enter:</p>
+<ul>
+    <li>Select the players that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
+<li>When you are 100% happy with your squad, enter your full name, a password, contact number and e-mail address - finally click "Enter Competition".</li> 
+<li>The squad is likely to consist of 37 names so we have capped the competition at this total. You will only be able to submit your squad by clicking "Enter Competition" if you have selected 37 players.</li> 
+<li>Up to the competition deadline you can change your entry by clicking "Load Saved Squad" and entering your e-mail address and password into the login box.</li>
+<li>Maximum of one entry per person and e-mail address.</li>
+<li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces the final touring party (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to be on the plane to Australia, via Hong Kong).</li>
+<li>All entries must be in by April 25th 10pm BST, so 5 days before the squad announcement. This is to avoid Lions press leak competition sabotage!</li>
+  </ul>  
+
+
+<p>Scoring:</p>
+
+
+<ul>
+<li>1 point for each correct player.</li>
+<li>The two entrants with the most points will each win an official Adidas British and Irish 2013 Lions shirt. In the event of a tie on the winning score(s) there will be a draw to decide who wins the official prizes.</li>
+</ul> 
+ </div>
+  <div class="modal-footer">
+    
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+	
+	
   <div class="row">
   <div class="span12">
 
@@ -22,27 +57,10 @@
 
     <p>We have compiled an extensive list of possible tourists for you to choose from. If you want to include a player not listed please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> and we will add the player as an option.</p>
     
-     <p>To enter:</p>
-    <ul>
-      <li>Select the players that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th.</li>
-      <li>When you are 100% happy with your squad, enter your full name, a password, contact number and e-mail address - finally click "Enter Competition". Up to the competition deadline you can then change your team by clicking "Load Saved Squad" and entering your e-mail address and password into the login box.</li>
-      <li>Maximum of one entry per person and e-mail address.</li>
-      <li>There are no limits on how many players can be selected from each position, as we will not know the squad configuration until Warren Gatland announces the final touring party (and it does not matter what position a player appears in as entrants are simply guessing if the player is going to be on the plane to Australia, via Hong Kong).</li>
-      <li>All entries must be in by April 25th 10pm BST, so 5 days before the squad announcement. This is to avoid Lions press leak competition sabotage!</li> 
-    </ul>
+    <p>Select the <strong>37</strong> players that you believe will be announced by Warren Gatland at the official tour party launch in London on April 30th. Make sure you've entered your contact details and then finally click "Enter Competition". <a href="#modalRules" data-toggle="modal">Detailed rules here</a></p>
 
-    <p>Scoring:</p>
-    <ul>
-      <li>1 point for each correct player.</li>
-      <li>The two entrants with the most points will each win a prize. In the event of a tie on the winning score(s) there will be a draw to decide who wins the official prizes.</li>
-    </ul>
-
-    <p>Prizes:</p>
-
-    <p>The two entrants with the highest points totals will each receive an <stronger>official Adidas British and Irish 2013 Lions shirt!</stronger></p>
-    <br></br>
-    <p class="text-center text-info">We hope you enjoy www.Follow-Rugby.com. Take a look through the site and please contact us with your comments and suggestions of other rugby Twitter accounts by following and tweeting our own official Twitter account <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a>.</p>
-
+    <p>The two entrants with the most correct picks will each receive an <strong>official Adidas British and Irish 2013 Lions shirt!</strong></p>
+    
   <br></br>
  
 <!-- Modal -->
@@ -68,6 +86,9 @@
 
 
 </div>
+	
+	
+
 
 
 
@@ -75,7 +96,7 @@
 
 
     <br/>
- @form(action = routes.Application.enterCompetition, 'onsubmit -> "selectAllOptions('props');selectAllOptions('hookers');selectAllOptions('locks');selectAllOptions('backRows');selectAllOptions('scrumHalfs');selectAllOptions('flyHalfs');selectAllOptions('centres');selectAllOptions('wings');selectAllOptions('fullBacks');") {
+ @form(action = routes.Application.enterCompetition, 'onsubmit -> "return validateForm();") {
     
 	   <div class="row">
        <div class="span5">
@@ -404,26 +425,46 @@
  </div>   
 
 <br></br>
-<div class="row"><div class="span12">
-<p><small>Terms and conditions:</small></p>
+
+
+<!-- Modal -->
+<div id="modalTerms" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalTermsLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="modalRulesLabel">Terms and Conditions</h3>
+  </div>
+
+  <div class="modal-body">
+    
 <ul>
-<li><p><small>Competition start date and time: 10 April 2013, 12am UK (BST).</small></p></li>
-               <li><p><small>Competition close date and time: 25 April 2013 10pm UK (BST).</small></p></li>
-               <li><p><small>Maximum of one entry per person and e-mail address.</small></p></li>
-               <li><p><small>No purchase required – the competition is free to enter.</small></p></li>
-               <li><p><small>The two entrants with the highest points totals will each win a prize. However, in the event of a tie winners will be chosen at random from the relevant tied score(s).</small></p></li>
-               <li><p><small>Winners will be contacted via e-mail (or phone if they do not respond to our initial e-mail). If they do not respond within 5 days from when the initial e-mail is sent, the entrant(s) with the next highest score will win the prize(s) (or a draw will take place in the event of a tie).</small></p></li>
-               <li><p><small>Entrants agree for their names, but no contact information, to be included in an e-mail to all participants, and in a Tweet by <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to congratulate their competition win. These will be sent on 01 May 2013 after 12pm UK (BST) - the day after the official Lions squad announcement.</small></p></li>
-               <li><p><small>Entrants from any country are welcome to participate.</small></p></li>
-               <li><p><small>Prizes consist of two official Adidas British and Irish Lions 2013 shirts, only.</small></p></li>
-               <li><p><small>Shirt sizes to be confirmed by the two competition winners, when they are notified of their win.</small></p></li>
-               <li><p><small>Prizes will be sent to addresses confirmed by the two competition winners, when they are notified of their win.</small></p></li>
-               <li><p><small>Prizes are not exchangeable for a cash alternative.</small></p></li>
-               <li><p><small> www.Follow-Rugby.com is compliant with the data protection act. Our policy is such that we will not pass on your details to any third party without your prior consent.</small></p></li>
+<li><p>Competition start date and time: 10 April 2013, 12am UK (BST).</p></li>
+               <li><p>Competition close date and time: 25 April 2013 10pm UK (BST).</p></li>
+               <li><p>Maximum of one entry per person and e-mail address.</p></li>
+               <li><p>No purchase required – the competition is free to enter.</p></li>
+               <li><p>The two entrants with the highest points totals will each win a prize. However, in the event of a tie winners will be chosen at random from the relevant tied score(s).</p></li>
+               <li><p>Winners will be contacted via e-mail (or phone if they do not respond to our initial e-mail). If they do not respond within 5 days from when the initial e-mail is sent, the entrant(s) with the next highest score will win the prize(s) (or a draw will take place in the event of a tie).</p></li>
+               <li><p>Entrants agree for their names, but no contact information, to be included in an e-mail to all participants, and in a Tweet by <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to congratulate their competition win. These will be sent on 01 May 2013 after 12pm UK (BST) - the day after the official Lions squad announcement.</p></li>
+               <li><p>Entrants from any country are welcome to participate.</p></li>
+               <li><p>Prizes consist of two official Adidas British and Irish Lions 2013 shirts, only.</p></li>
+               <li><p>Shirt sizes to be confirmed by the two competition winners, when they are notified of their win.</p></li>
+               <li><p>Prizes will be sent to addresses confirmed by the two competition winners, when they are notified of their win.</p></li>
+               <li><p>Prizes are not exchangeable for a cash alternative.</p></li>
+               <li><p> www.Follow-Rugby.com is compliant with the data protection act. Our policy is such that we will not pass on your details to any third party without your prior consent.</p></li>
+               <li><p>We reserve the right to amend the competition at any time.</p></li> 
+               <li><p>The judges’ decision will be final, and no correspondence will be entered into.</p></li>
 </ul>
 <p><small>Please contact <a href="mailto:ap@@follow-rugby.com">ap@@follow-rugby.com</a> if you have any questions regarding the competition. We will respond as soon as possible. </small></p>
-             
     
+  </div>
+  <div class="modal-footer">
+    
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+
+<div class="row"><p class="text-center"><small><a href="#modalTerms" data-toggle="modal">Terms and Conditions</a></p></small><div class="span12">
+
 
 </div></div>        
               

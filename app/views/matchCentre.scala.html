@@ -17,17 +17,31 @@
 </div>
 	}
 	
-	<ul>
-   @games.sortBy(_.game.gameDate).zipWithIndex.map { case (game, idx) =>
-  	<li><a href="#game@idx">@game.team1.name V @game.team2.name</a></li>
+	@if(games.isEmpty) {
+		<div class="alert alert-error">
+            <p>No matches are currently scheduled. Please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to suggest a match taking place this week for this competition</p>
+    </div>
+	}
+	
+	
+   @games.groupBy(_.game.gameDate).toList.sortBy(_._1).map { case (date, games) =>
+  	 
+  	 <ul class="nav nav-list">
+     <li class="nav-header">@strDate(date)</li>
+  	 @games.map { game =>
+  	   <li><a href="#game@game.game.team1Id">@game.team1.name v @game.team2.name</a></li>
+  	 }
+  	  </ul>
   }
-  </ul>
+   
+   <br></br>
+ 
   
-   @games.sortBy(_.game.gameDate).zipWithIndex.map { case (game, idx) =>
+   @games.sortBy(_.game.gameDate).map { case game =>
         <div class="row">
 
        <div class="span12">
-   <a name="game@idx"></a>
+   <a name="game@game.game.team1Id"></a>
 <div class="well">
            <p class="lead text-center">@strDate(game.game.gameDate) @@@game.game.time</p>
            <h3 class="text-center">@game.team1.name V @game.team2.name</h3>
