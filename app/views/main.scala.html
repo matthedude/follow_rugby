@@ -43,93 +43,7 @@
 
 </script>
 
-<script language="javascript"> 
-          function move(tbFrom, tbTo, added) 
-            {
-               var arrFrom = new Array(); var arrTo = new Array(); 
-               var arrLU = new Array();
-               var i;
-               for (i = 0; i < tbTo.options.length; i++) 
-               {
-                arrLU[tbTo.options[i].text] = tbTo.options[i].value;
-                arrTo[i] = tbTo.options[i].text;
-               }
-               var fLength = 0;
-               var tLength = arrTo.length;
-               for(i = 0; i < tbFrom.options.length; i++) 
-               {
-                arrLU[tbFrom.options[i].text] = tbFrom.options[i].value;
-                if (tbFrom.options[i].selected && tbFrom.options[i].value != "") 
-                {
-                 arrTo[tLength] = tbFrom.options[i].text;
-                 tLength++;
-                 if(added==true) {
-                   countUp();
-                 } else {
-                   countDown();
-                 }
-                }
-                else 
-                {
-                 arrFrom[fLength] = tbFrom.options[i].text;
-                 fLength++;
-                }
-              }
-              
-              tbFrom.length = 0;
-              tbTo.length = 0;
-              var ii;
-              
-              for(ii = 0; ii < arrFrom.length; ii++) 
-              {
-                var no = new Option();
-                no.value = arrLU[arrFrom[ii]];
-                no.text = arrFrom[ii];
-                tbFrom[ii] = no;
-              }
-              
-              for(ii = 0; ii < arrTo.length; ii++) 
-              {
-               var no = new Option();
-               no.value = arrLU[arrTo[ii]];
-               no.text = arrTo[ii];
-               tbTo[ii] = no;
-              }
-              
-          }
-            
-          function countUp() {
-          	  var counter = document.getElementById("counter").innerHTML;
-              counter++;
-              document.getElementById("counter").innerHTML=counter;
-          }
-          
-          function countDown() {
-              var counter = document.getElementById("counter").innerHTML;
-              counter--;
-              document.getElementById("counter").innerHTML=counter;
-          }
 
-          function selectAllOptions(selStr)
-          {
-            var selObj = document.getElementById(selStr);
-            for (var i=0; i<selObj.options.length; i++) {
-              selObj.options[i].selected = true;
-            }
-          }
-          
-          function validateForm() 
-          {
-          	var counter = document.getElementById("counter").innerHTML;
-          	if(counter != 37) {
-          		alert("You have not chosen 37 players.");
-          		return false;
-          	} else {
-          		selectAllOptions('props');selectAllOptions('hookers');selectAllOptions('locks');selectAllOptions('backRows');selectAllOptions('scrumHalfs');selectAllOptions('flyHalfs');selectAllOptions('centres');selectAllOptions('wings');selectAllOptions('fullBacks');
-          		return true;
-          	}
-          }
-      </script>
 </head>
 <body>
    <div class="container">
@@ -165,7 +79,7 @@
                       </ul>
             </li>
             <li><a href="@routes.Application.selectCategory(8, "morerugby")">More Rugby</a></li>
-            <li><a href="@routes.Application.competition">Competition</a></li>
+            <li><a href="@routes.Application.selectCategory(10, "rugbyunited")">#rugbyunited</a></li>
       	    <li><a href="@routes.Application.about">About</a></li>
             <li><a href="@routes.Application.comingSoon">Coming Soon</a></li>
         	</ul>
