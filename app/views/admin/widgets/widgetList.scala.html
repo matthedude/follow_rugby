@@ -1,10 +1,11 @@
 @(currentPage: Page[Widget], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@import views.html.admin.main
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.widgetList(newPage, newOrderBy.map { orderBy =>
+    routes.Widgets.widgetList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
     }.getOrElse(currentOrderBy), currentFilter)
     
@@ -31,12 +32,12 @@
 
     <div id="actions">
         
-        @helper.form(action=routes.Administrator.widgetList()) {
+        @helper.form(action=routes.Widgets.widgetList()) {
             <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by widget url...">
             <input type="submit" id="searchsubmit" value="Filter by url" class="btn primary">
         }
         
-        <a class="btn success" id="add" href="@routes.Administrator.createWidget()">Add a new widget</a>
+        <a class="btn success" id="add" href="@routes.Widgets.createWidget()">Add a new widget</a>
         
     </div>
     
@@ -54,7 +55,7 @@
 
                 @widgets.map { widget => 
                         <tr>
-                            <td><a href="@routes.Administrator.editWidget(widget.id)">@widget.id</a></td>
+                            <td><a href="@routes.Widgets.editWidget(widget.id)">@widget.id</a></td>
                             <td>
                                 @widget.twitterAccount
                             </td>

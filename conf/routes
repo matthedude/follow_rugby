@@ -34,12 +34,12 @@ POST    /admin/team/:id                controllers.Teams.updateTeam(id:Int)
 POST    /admin/team/:id/delete         controllers.Teams.deleteTeam(id:Int)
 
 # Widgets list (look at the default values for pagination parameters)
-GET     /admin/widget                    controllers.Administrator.widgetList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/widget/create             controllers.Administrator.createWidget
-POST    /admin/widget                    controllers.Administrator.saveWidget
-GET     /admin/widget/:id                controllers.Administrator.editWidget(id:Long)
-POST    /admin/widget/:id                controllers.Administrator.updateWidget(id:Long)
-POST    /admin/widget/:id/delete         controllers.Administrator.deleteWidget(id:Long)
+GET     /admin/widget                    controllers.Widgets.widgetList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/widget/create             controllers.Widgets.createWidget
+POST    /admin/widget                    controllers.Widgets.saveWidget
+GET     /admin/widget/:id                controllers.Widgets.editWidget(id:Long)
+POST    /admin/widget/:id                controllers.Widgets.updateWidget(id:Long)
+POST    /admin/widget/:id/delete         controllers.Widgets.deleteWidget(id:Long)
 
 # Games list (look at the default values for pagination parameters)
 GET     /admin/game                               controllers.Games.gameList(p:Int ?= 0, s:Int ?= 2)

@@ -1,13 +1,14 @@
 @(id: Long)(widgetForm: Form[Widget])
 
 @import helper._
+@import views.html.admin.main
 
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
 
 @main {
   <h1>Create Widget</h1>
     
-    @form(routes.Administrator.updateWidget(id)) {
+    @form(routes.Widgets.updateWidget(id)) {
         
         <fieldset>
             @inputText(widgetForm("id"), '_label -> "id")
@@ -20,12 +21,12 @@
         
         <div class="actions">
             <input type="submit" value="Save this widget" class="btn primary"> or 
-            <a href="@routes.Administrator.widgetList(0, 2, "")" class="btn">Cancel</a> 
+            <a href="@routes.Widgets.widgetList(0, 2, "")" class="btn">Cancel</a> 
         </div>
         
     }
 
-    @form(routes.Administrator.deleteWidget(id), 'class -> "topRight") {
+    @form(routes.Widgets.deleteWidget(id), 'class -> "topRight") {
         <input type="submit" value="Delete this widget" class="btn danger">
     }
 }
