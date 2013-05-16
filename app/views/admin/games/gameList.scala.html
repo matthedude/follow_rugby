@@ -1,10 +1,11 @@
 @(currentPage: Page[(Game, Option[Team], Option[Team])], currentOrderBy: Int)(implicit flash: play.api.mvc.Flash)
+@import views.html.admin.main
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.gameList(newPage, newOrderBy.map { orderBy =>
+    routes.Games.gameList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
     }.getOrElse(currentOrderBy))
     
@@ -31,7 +32,7 @@
 
     <div id="actions">
         
-        <a class="btn success" id="add" href="@routes.Administrator.createGame()">Add a new game</a>
+        <a class="btn success" id="add" href="@routes.Games.createGame()">Add a new game</a>
         
     </div>
     
@@ -51,11 +52,11 @@
                 @games.map { case (game, team1, team2) => 
                         <tr>
                             <td>@team1.map { t => 
-                            	<a href="@routes.Administrator.editGame(game.team1Id, game.team2Id)">@t.name</a>
+                            	<a href="@routes.Games.editGame(game.team1Id, game.team2Id)">@t.name</a>
                             }
                             </td>
                             <td>@team2.map { t => 
-                              <a href="@routes.Administrator.editGame(game.team1Id, game.team2Id)">@t.name</a>
+                              <a href="@routes.Games.editGame(game.team1Id, game.team2Id)">@t.name</a>
                             }
                             </td>
                             <td>

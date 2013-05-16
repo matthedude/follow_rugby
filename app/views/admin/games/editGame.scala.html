@@ -1,13 +1,14 @@
 @(gameForm: Form[Game])(team1: Team)(team2: Team)(teams: Seq[(String, String)])(competitions: Seq[(String, String)])
 
 @import helper._
+@import views.html.admin.main
 
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
 
 @main {
   <h1>Update Game</h1>
     
-    @form(routes.Administrator.updateGame(team1.id.get, team2.id.get)) {
+    @form(routes.Games.updateGame(team1.id.get, team2.id.get)) {
         
         <fieldset>
 
@@ -39,12 +40,12 @@
         
         <div class="actions">
             <input type="submit" value="Save this game" class="btn primary"> or 
-            <a href="@routes.Administrator.gameList(0, 2)" class="btn">Cancel</a> 
+            <a href="@routes.Games.gameList(0, 2)" class="btn">Cancel</a> 
         </div>
         
     }
 
-    @form(routes.Administrator.deleteGame(team1.id.get, team2.id.get), 'class -> "topRight") {
+    @form(routes.Games.deleteGame(team1.id.get, team2.id.get), 'class -> "topRight") {
         <input type="submit" value="Delete this game" class="btn danger">
     }
 }
