@@ -1,0 +1,33 @@
+@(id: Int)(memberForm: Form[Member])
+
+@import helper._
+@import views.html.admin.main
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main {
+  <h1>Edit Member</h1>
+    
+    @form(routes.Members.updateMember(id)) {
+        
+        <fieldset>
+        
+            @inputText(memberForm("name"), '_label -> "Member name")
+            @inputText(memberForm("twitterName"), '_label -> "Twitter name")
+            
+           
+        
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save this member" class="btn primary"> or 
+            <a href="@routes.Members.memberList(0, 2, "")" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    @form(routes.Members.deleteMember(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this member" class="btn danger">
+    }
+  
+}

@@ -1,0 +1,106 @@
+@(currentPage: Page[Member], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+
+@import views.html.admin.main
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.Members.memberList(newPage, newOrderBy.map { orderBy =>
+        if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+    }.getOrElse(currentOrderBy), currentFilter)
+    
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(orderBy: Int, title: String) = {
+    <th class="col@orderBy header @if(scala.math.abs(currentOrderBy) == orderBy) @{if(currentOrderBy < 0) "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, Some(orderBy))">@title</a>
+    </th>
+}
+
+@main {
+    
+    <h1>Members</h1>
+
+    @flash.get("success").map { message =>
+        <div class="alert-message warning">
+            <strong>Done!</strong> @message
+        </div>
+    }
+
+    <div id="actions">
+        
+        @helper.form(action=routes.Members.memberList()) {
+            <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by member name...">
+            <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
+        }
+        
+        <a class="btn success" id="add" href="@routes.Members.createMember()">Add a new member</a>
+        
+    </div>
+    
+    @Option(currentPage.items).filterNot(_.isEmpty).map { members =>
+        
+        <table class="members table-striped">
+            <thead>
+                <tr>
+                    @header(2, "Member name")
+                    @header(3, "Twitter Name")
+                </tr>
+            </thead>
+            <tbody>
+
+                @members.map { member => 
+                        <tr>
+                            <td><a href="@routes.Members.editMember(member.id.get)">@member.name</a></td>
+                            <td>
+                                @member.twitterName
+                            </td>
+                        </tr>
+                    
+                }
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                @currentPage.prev.map { page =>
+                    <li class="prev">
+                        <a href="@link(page)">&larr; Previous</a>
+                    </li> 
+                }.getOrElse {
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + members.size) of @currentPage.total</a>
+                </li>
+                @currentPage.next.map { page =>
+                    <li class="next">
+                        <a href="@link(page)">Next &rarr;</a>
+                    </li> 
+                }.getOrElse {
+                    <li class="next disabled">
+                        <a>Next &rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    }.getOrElse {
+        
+        <div class="well">
+            <em>Nothing to display</em>
+        </div>
+        
+    }
+
+        
+}
+
+            
