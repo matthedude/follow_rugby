@@ -1,10 +1,11 @@
 @(currentPage: Page[Team], currentOrderBy: Int, currentFilter: String)(implicit flash: play.api.mvc.Flash)
+@import views.html.admin.main
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int, newOrderBy: Option[Int] = None) = @{
-    routes.Administrator.teamList(newPage, newOrderBy.map { orderBy =>
+    routes.Teams.teamList(newPage, newOrderBy.map { orderBy =>
         if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
     }.getOrElse(currentOrderBy), currentFilter)
     
@@ -31,12 +32,12 @@
 
     <div id="actions">
         
-        @helper.form(action=routes.Administrator.teamList()) {
+        @helper.form(action=routes.Teams.teamList()) {
             <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Filter by member name...">
             <input type="submit" id="searchsubmit" value="Filter by name" class="btn primary">
         }
         
-        <a class="btn success" id="add" href="@routes.Administrator.createTeam">Add a new team</a>
+        <a class="btn success" id="add" href="@routes.Teams.createTeam">Add a new team</a>
         
     </div>
     
@@ -52,7 +53,7 @@
 
                 @teams.map { team => 
                         <tr>
-                            <td><a href="@routes.Administrator.editTeam(team.id.get)">@team.name</a></td>
+                            <td><a href="@routes.Teams.editTeam(team.id.get)">@team.name</a></td>
                         </tr>
                     
                 }

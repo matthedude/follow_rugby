@@ -26,12 +26,12 @@ POST    /admin/members/:id                controllers.Members.updateMember(id:In
 POST    /admin/members/:id/delete         controllers.Members.deleteMember(id:Int)
 
 # Teams list (look at the default values for pagination parameters)
-GET     /admin/team                    controllers.Administrator.teamList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/team/create             controllers.Administrator.createTeam
-POST    /admin/team                    controllers.Administrator.saveTeam
-GET     /admin/team/:id                controllers.Administrator.editTeam(id:Int)
-POST    /admin/team/:id                controllers.Administrator.updateTeam(id:Int)
-POST    /admin/team/:id/delete         controllers.Administrator.deleteTeam(id:Int)
+GET     /admin/team                    controllers.Teams.teamList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/team/create             controllers.Teams.createTeam
+POST    /admin/team                    controllers.Teams.saveTeam
+GET     /admin/team/:id                controllers.Teams.editTeam(id:Int)
+POST    /admin/team/:id                controllers.Teams.updateTeam(id:Int)
+POST    /admin/team/:id/delete         controllers.Teams.deleteTeam(id:Int)
 
 # Widgets list (look at the default values for pagination parameters)
 GET     /admin/widget                    controllers.Administrator.widgetList(p:Int ?= 0, s:Int ?= 2, f ?= "")

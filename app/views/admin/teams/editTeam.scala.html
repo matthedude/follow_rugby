@@ -1,14 +1,15 @@
-@(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(allOtherMembers: Seq[Member])
+@(id: Int)(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(teamMembers: Seq[Member])(allOtherMembers: Seq[Member])
 
 @import helper._
+@import views.html.admin.main
 
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
 
 @main {
-  <h1>Create Team</h1>
+  <h1>Edit Team</h1>
 
     
-    @form(action = routes.Administrator.saveTeam, 'onsubmit -> "selectAllOptions('members');") {
+    @form(action = routes.Teams.updateTeam(id), 'onsubmit -> "selectAllOptions('members');") {
         
         <fieldset>
         
@@ -41,7 +42,9 @@
             </td>
             <td>
               <select multiple="multiple" size="50" id="members" name="members[]" style="width:150">
-               
+                @teamMembers.sortWith((a,b) => a.name.compareTo(b.name) < 0).map { member =>
+                  <option value="@member.id">@member.name</option>
+                }
               </select>
             </td>
           </tr>
@@ -49,9 +52,13 @@
         
         <div class="actions">
             <input type="submit" value="Save this team" class="btn primary"> or 
-            <a href="@routes.Administrator.teamList(0, 2, "")" class="btn">Cancel</a> 
+            <a href="@routes.Teams.teamList(0, 2, "")" class="btn">Cancel</a> 
         </div>
         
     }
     
+    @form(routes.Teams.deleteTeam(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this team" class="btn danger">
+    }
+  
 }
