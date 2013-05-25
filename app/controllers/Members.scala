@@ -34,7 +34,7 @@ object Members extends Controller with Secured {
     _ =>
       Member.findById(id).map { member =>
         Ok(views.html.admin.members.editMember(id)(memberForm.fill(member)))
-      }.getOrElse(NotFound)
+      } getOrElse NotFound 
   }
 
   def saveMember = IsAuthenticated { _ =>

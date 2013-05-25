@@ -53,7 +53,6 @@ object Widgets extends Controller with Secured {
       widgetForm.bindFromRequest.fold(
         formWithErrors => BadRequest(views.html.admin.widgets.editWidget(id)(formWithErrors)),
         widget => {
-          println(widget)
           Widget.update(id, widget)
           WidgetHome.flashing("success" -> "Widget %s has been updated".format(widget.id))
         })
