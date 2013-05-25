@@ -27,22 +27,19 @@ object Application extends Controller {
   def selectCategory(id: Int, categoryName: String) = Action {
     val category = Category.findById(id)
     val teams = Team.findByCategoryId(id)
-    val widget = category map (_.widgetId map (wId => Widget.findById(wId)))
+    val widget = category flatMap (_.widgetId flatMap (wId => Widget.findById(wId)))
 
     //god-awful hack will fix when I have time, please don't judge me!!!
     val widgets = {
-      widget map { w => 
-      if (id == 10) (None, w) else (w, None)
-      }
+      if (id == 10) (None, widget) else (widget, None)
+     
     }
     
+    //this broken, 
     {for {
       c <- category
-      ws <- widgets
-      w1 <- ws._1
-      w2 <- ws._2
     } yield { 
-      Ok(views.html.categories(c)(teams)(None)(Nil)(w1)(w2))
+      Ok(views.html.categories(c)(teams)(None)(Nil)(widgets._1)(widgets._2))
     }} getOrElse NotFound
     
   }
