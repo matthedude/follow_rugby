@@ -19,7 +19,8 @@ object Teams extends Controller with Secured {
         "name" -> nonEmptyText,
         "twitterName" -> optional(text),
         "categoryId" -> number,
-        "widgetId" -> longNumber)(Team.apply)(Team.unapply),
+        "widgetId" -> longNumber,
+        "vidChannel" -> optional(text))(Team.apply)(Team.unapply),
       "members" -> list(number))(TeamMembers.apply)(TeamMembers.unapply))
 
   def createTeam = IsAuthenticated { _ =>

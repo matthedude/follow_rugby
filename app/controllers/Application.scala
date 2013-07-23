@@ -31,7 +31,7 @@ object Application extends Controller {
 
     //god-awful hack will fix when I have time, please don't judge me!!!
     val media = {
-      if (id == 10) Media(None, widget, Some("sarriesrugbytv")) else Media(widget, None, Some("sarriesrugbytv"))
+      if (id == 10) Media(None, widget) else Media(widget, None)
      
     }
     
@@ -54,7 +54,7 @@ object Application extends Controller {
       Widget.findById(t.widgetId)
     }
     category map { c =>
-      Ok(views.html.categories(c)(teams)(selectedTeam)(members)(Media(widget, None, Some("sarriesrugbytv"))))
+      Ok(views.html.categories(c)(teams)(selectedTeam)(members)(Media(widget, None)))
     } getOrElse NotFound
   }
 

@@ -7,18 +7,19 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long)
+case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String])
 
 object Team {
 
-  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L)
+  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None)
   val simple = {
     get[Pk[Int]]("team.id") ~
       get[String]("team.name") ~
       get[Option[String]]("team.twitter_name") ~
       get[Int]("team.category_id") ~
-      get[Long]("team.widget_id") map {
-        case id ~ name ~ twitterName ~ categoryId ~ widgetId => Team(id, name, twitterName, categoryId, widgetId)
+      get[Long]("team.widget_id") ~
+      get[Option[String]]("team.vid_channel") map {
+        case id ~ name ~ twitterName ~ categoryId ~ widgetId ~ vidChannel => Team(id, name, twitterName, categoryId, widgetId, vidChannel)
       }
   }
 
@@ -85,14 +86,15 @@ object Team {
       SQL(
         """
           update team
-          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}
+          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}, vid_channel = {vidChannel}
           where id = {id}
         """).on(
           'id -> id,
           'name -> team.name,
           'twitterName -> team.twitterName,
           'categoryId -> team.categoryId,
-          'widgetId -> team.widgetId).executeUpdate()
+          'widgetId -> team.widgetId,
+          'vidChannel -> team.vidChannel).executeUpdate()
     }
   }
 
@@ -146,7 +148,8 @@ object Team {
         'name -> team.name,
         'twitterName -> team.twitterName,
         'categoryId -> team.categoryId,
-        'widgetId -> team.widgetId).executeUpdate()
+        'widgetId -> team.widgetId,
+        'vidChannel -> team.vidChannel).executeUpdate()
 
       val newTeam = SQL("""
             select *

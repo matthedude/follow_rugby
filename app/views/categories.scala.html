@@ -5,7 +5,7 @@
 @main("Follow Rugby"){
   
   <script>
-@media.vidChannel.map { channel =>
+@team.map { t => @t.vidChannel.map { channel =>
 (function() {
     function createPlayer(jqe, video, options) {
         var ifr = $('iframe', jqe);
@@ -103,6 +103,7 @@ $(function() {
 });
 
 }
+}
 </script>
 
 	 <div class="row">
@@ -166,12 +167,15 @@ $(function() {
   }
   
 @media.searchWidget.map { w =>    
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
+        <div class="widget-frame"><a class="twitter-timeline" height="300" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
      }
+ 
+ @team.map { t => @t.vidChannel.map { channel =>    
      <div id="channelplayer">
         </div>
+        }}
   </div>
   </div>
 }
