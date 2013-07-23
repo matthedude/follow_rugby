@@ -9,7 +9,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long)
+case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long, pos: Int)
 case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget, matchWidget: Option[Widget])
 
 object Game {
@@ -20,8 +20,9 @@ object Game {
       get[Int]("game.competition_id") ~
       get[String]("game.time") ~
       get[Date]("game.game_date") ~
-      get[Long]("game.widget_id") map {
-        case team1Id ~ team2Id ~ competitionId ~ time ~ gameDate ~ widgetId => Game(team1Id, team2Id, competitionId, time, gameDate, widgetId)
+      get[Long]("game.widget_id") ~
+      get[Int]("game.pos") map {
+        case team1Id ~ team2Id ~ competitionId ~ time ~ gameDate ~ widgetId ~ pos => Game(team1Id, team2Id, competitionId, time, gameDate, widgetId, pos)
       }
   }
 
@@ -46,6 +47,7 @@ object Game {
   def allMatches(games: Seq[Game]): Seq[MatchCentreGame] = {
     DB.withConnection { implicit connection =>
       games map { game =>
+        println(game)
         val team1 = Team.findById(game.team1Id).get
         val team2 = Team.findById(game.team2Id).get
         MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get, Widget.findById(game.widgetId))
@@ -65,7 +67,7 @@ object Game {
         """).on(
           'team1Id -> team1Id,
           'team2Id -> team2Id).as(Game.simple singleOpt)
-
+          println(game)
       game
     }
 
@@ -90,8 +92,8 @@ object Game {
   def create(game: Game) = {
     DB.withConnection { implicit connection =>
       SQL("""
-            insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id) values (
-              {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}
+            insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id, pos) values (
+              {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}, {pos}
             )
             """).on(
         'team1Id -> game.team1Id,
@@ -99,7 +101,8 @@ object Game {
         'competitionId -> game.competitionId,
         'time -> game.time,
         'gameDate -> game.gameDate,
-        'widgetId -> game.widgetId).executeUpdate()
+        'widgetId -> game.widgetId,
+        'pos -> game.pos).executeUpdate()
     }
   }
 
@@ -108,7 +111,7 @@ object Game {
       SQL(
         """
           update game
-          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}, competition_id = {competitionId}
+          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}, competition_id = {competitionId}, pos = {pos}
           where team1_id = {team1Id}
           and team2_id = {team2Id}
         """).on(
@@ -117,7 +120,8 @@ object Game {
           'competitionId -> game.competitionId,
           'time -> game.time,
           'gameDate -> game.gameDate,
-          'widgetId -> game.widgetId).executeUpdate()
+          'widgetId -> game.widgetId,
+          'pos -> game.pos).executeUpdate()
     }
   }
 
