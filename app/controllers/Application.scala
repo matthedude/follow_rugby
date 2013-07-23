@@ -30,8 +30,8 @@ object Application extends Controller {
     val widget = category flatMap (_.widgetId flatMap (wId => Widget.findById(wId)))
 
     //god-awful hack will fix when I have time, please don't judge me!!!
-    val widgets = {
-      if (id == 10) (None, widget) else (widget, None)
+    val media = {
+      if (id == 10) Media(None, widget, Some("sarriesrugbytv")) else Media(widget, None, Some("sarriesrugbytv"))
      
     }
     
@@ -39,7 +39,7 @@ object Application extends Controller {
     {for {
       c <- category
     } yield { 
-      Ok(views.html.categories(c)(teams)(None)(Nil)(widgets._1)(widgets._2))
+      Ok(views.html.categories(c)(teams)(None)(Nil)(media))
     }} getOrElse NotFound
     
   }
@@ -54,7 +54,7 @@ object Application extends Controller {
       Widget.findById(t.widgetId)
     }
     category map { c =>
-      Ok(views.html.categories(c)(teams)(selectedTeam)(members)(widget)(None))
+      Ok(views.html.categories(c)(teams)(selectedTeam)(members)(Media(widget, None, Some("sarriesrugbytv"))))
     } getOrElse NotFound
   }
 
