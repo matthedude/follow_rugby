@@ -7,7 +7,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Media(listWidget: Option[Widget], searchWidget: Option[Widget])
+case class Media(listWidget: Option[Widget], searchWidget: Option[Widget], videoPlayerChannel: Option[VideoPlayerChannel])
 case class Widget(id: Long, twitterAccount: String, url: String)
 
 object Widget {

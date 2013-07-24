@@ -8,6 +8,7 @@ CREATE TABLE game (
 	time VARCHAR(20) NOT NULL,
 	game_date DATE,
 	widget_id BIGINT SIGNED NOT NULL,
+	pos INT NOT NULL,
 	PRIMARY KEY(team1_id, team2_id));
 
 

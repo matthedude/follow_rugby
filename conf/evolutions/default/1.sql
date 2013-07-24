@@ -19,7 +19,8 @@ CREATE TABLE team (
 	name VARCHAR(50) NOT NULL, 
 	widget_id BIGINT SIGNED NOT NULL, 
 	category_id INT NOT NULL, 
-	twitter_name VARCHAR(30), 
+	twitter_name VARCHAR(30),
+	vid_channel VARCHAR(60), 
 	PRIMARY KEY(id));
 
 CREATE TABLE member (

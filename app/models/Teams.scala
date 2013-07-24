@@ -7,19 +7,39 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String])
+case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int])
+
+
+
+object VideoPlayer {
+  sealed trait VideoPlayer
+  case class YouTube() extends VideoPlayer
+  case class DailyMotion() extends VideoPlayer
+
+  def apply(id: Int):VideoPlayer = id match {
+    case 1 => YouTube()
+    case _ => DailyMotion()
+  }
+}
+import VideoPlayer._
+
+case class VideoPlayerChannel(player: VideoPlayer, channel: String)
+
 
 object Team {
 
-  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None)
+  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None, videoPlayerId = None)
+
+  
   val simple = {
     get[Pk[Int]]("team.id") ~
       get[String]("team.name") ~
       get[Option[String]]("team.twitter_name") ~
       get[Int]("team.category_id") ~
       get[Long]("team.widget_id") ~
-      get[Option[String]]("team.vid_channel") map {
-        case id ~ name ~ twitterName ~ categoryId ~ widgetId ~ vidChannel => Team(id, name, twitterName, categoryId, widgetId, vidChannel)
+      get[Option[String]]("team.vid_channel") ~
+      get[Option[Int]]("team.video_player_id") map {
+        case id ~ name ~ twitterName ~ categoryId ~ widgetId ~ vidChannel ~ videoPlayerId => Team(id, name, twitterName, categoryId, widgetId, vidChannel, videoPlayerId)
       }
   }
 
@@ -38,6 +58,14 @@ object Team {
       teams
     }
   }
+  
+  def withVideo(team: Team): Option[VideoPlayerChannel] =
+    for {
+      vidId <- team.videoPlayerId
+      channel <- team.vidChannel
+    } yield VideoPlayerChannel(VideoPlayer(vidId), channel)
+   
+  
 
   def findByCategoryId(categoryId: Int): Seq[Team] = {
     DB.withConnection { implicit connection =>
@@ -86,7 +114,7 @@ object Team {
       SQL(
         """
           update team
-          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}, vid_channel = {vidChannel}
+          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}, vid_channel = {vidChannel}, video_player_id = {videoPlayerId}
           where id = {id}
         """).on(
           'id -> id,
@@ -94,7 +122,8 @@ object Team {
           'twitterName -> team.twitterName,
           'categoryId -> team.categoryId,
           'widgetId -> team.widgetId,
-          'vidChannel -> team.vidChannel).executeUpdate()
+          'vidChannel -> team.vidChannel,
+          'videoPlayerId -> team.videoPlayerId).executeUpdate()
     }
   }
 
@@ -141,15 +170,16 @@ object Team {
   def create(team: Team): Int = {
     DB.withConnection { implicit connection =>
       SQL("""
-            insert into team (name, twitter_name, category_id, widget_id) values (
-              {name}, {twitterName}, {categoryId}, {widgetId}
+            insert into team (name, twitter_name, category_id, widget_id, vid_Channel, video_player_id) values (
+              {name}, {twitterName}, {categoryId}, {widgetId}, {vidChannel}, {videoPlayerId}
             )
             """).on(
         'name -> team.name,
         'twitterName -> team.twitterName,
         'categoryId -> team.categoryId,
         'widgetId -> team.widgetId,
-        'vidChannel -> team.vidChannel).executeUpdate()
+        'vidChannel -> team.vidChannel,
+        'videoPlayerId -> team.videoPlayerId).executeUpdate()
 
       val newTeam = SQL("""
             select *
