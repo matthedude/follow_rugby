@@ -1,4 +1,8 @@
 # --- !Ups
+ create table video_player (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY(id));
 
 CREATE TABLE comp_entry ( 
 	name VARCHAR(50) NOT NULL,
@@ -11,3 +15,4 @@ CREATE TABLE comp_entry (
 # --- !Downs
  
 DROP TABLE if exists comp_entry;
+DROP TABLE if exists video_player;
