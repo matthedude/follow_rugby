@@ -82,6 +82,10 @@ a:active {
   outline: 0;
 }
 
+body {
+  
+}
+
 sub,
 sup {
   position: relative;
@@ -617,6 +621,7 @@ a:focus {
 .container {
   margin-right: auto;
   margin-left: auto;
+  background-color: white;
   *zoom: 1;
 }
 
@@ -2913,7 +2918,7 @@ table th[class*="span"],
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: #ffffff;
+  background-color: #fdcc1a;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;
