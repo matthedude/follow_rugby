@@ -1,4 +1,4 @@
-@(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(allOtherMembers: Seq[Member])
+@(teamForm: Form[TeamMembers])(categories: Seq[(String, String)])(allOtherMembers: Seq[Member])(videoPlayers: Seq[(String, String)])
 
 @import helper._
 @import views.html.admin.main
@@ -17,6 +17,12 @@
             @inputText(teamForm("team")("twitterName"), '_label -> "Twitter Name")
             @inputText(teamForm("team")("vidChannel"), '_label -> "Channel Name")
             @inputText(teamForm("team")("videoPlayer"), '_label -> "Video Player (1=YouTube, 2=DailyMotion)")
+            @select(
+                teamForm("team")("videoPlayer"), 
+                videoPlayers, 
+                '_label -> "Video Player", '_default -> "-- Choose a Video Player --",
+                '_showConstraints -> false
+            )
             @select(
                 teamForm("team")("categoryId"), 
                 categories, 

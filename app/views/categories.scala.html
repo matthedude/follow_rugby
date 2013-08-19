@@ -183,7 +183,7 @@ $(function() {
      }
  
 @media.videoPlayerChannel.map { v => 
-  @if(v.player.isInstanceOf[VideoPlayer.YouTube]) {   
+  @if(v.player.name.toLowerCase == "youtube") {   
      <div id="channelplayer">
         </div>
    } else {

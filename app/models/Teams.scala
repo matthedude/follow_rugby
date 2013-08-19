@@ -10,20 +10,7 @@ import play.api.Play
 case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int])
 
 
-
-object VideoPlayer {
-  sealed trait VideoPlayer
-  case class YouTube() extends VideoPlayer
-  case class DailyMotion() extends VideoPlayer
-
-  def apply(id: Int):VideoPlayer = id match {
-    case 1 => YouTube()
-    case _ => DailyMotion()
-  }
-}
 import VideoPlayer._
-
-case class VideoPlayerChannel(player: VideoPlayer, channel: String)
 
 
 object Team {
@@ -63,7 +50,8 @@ object Team {
     for {
       vidId <- team.videoPlayerId
       channel <- team.vidChannel
-    } yield VideoPlayerChannel(VideoPlayer(vidId), channel)
+      player <- VideoPlayer.findById(vidId)
+    } yield VideoPlayerChannel(player, channel)
    
   
 

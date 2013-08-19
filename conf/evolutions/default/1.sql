@@ -21,6 +21,7 @@ CREATE TABLE team (
 	category_id INT NOT NULL, 
 	twitter_name VARCHAR(30),
 	vid_channel VARCHAR(60), 
+	vid_player_id INT,
 	PRIMARY KEY(id));
 
 CREATE TABLE member (

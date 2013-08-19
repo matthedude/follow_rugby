@@ -26,7 +26,7 @@ object Teams extends Controller with Secured {
 
   def createTeam = IsAuthenticated { _ =>
     _ =>
-      Ok(views.html.admin.teams.createTeam(teamForm)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all))
+      Ok(views.html.admin.teams.createTeam(teamForm)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all)(VideoPlayer.all.map(v => (v.id.get.toString, v.name))))
   }
 
   def teamList(page: Int, orderBy: Int, filter: String) = IsAuthenticated { _ =>
@@ -42,7 +42,7 @@ object Teams extends Controller with Secured {
         val membersIds = Team.findMembersById(id)
         val members = membersIds.map(Member.findById).flatten
         val teamMembers = TeamMembers(team, membersIds.toList)
-        Ok(views.html.admin.teams.editTeam(id)(teamForm.fill(teamMembers))(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all))
+        Ok(views.html.admin.teams.editTeam(id)(teamForm.fill(teamMembers))(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all)(VideoPlayer.all.map(v => (v.id.get.toString, v.name))))
       }.getOrElse(NotFound)
   }
 
@@ -52,7 +52,7 @@ object Teams extends Controller with Secured {
       val members = membersIds.map(Member.findById).flatten
       teamForm.bindFromRequest.fold(
         formWithErrors =>
-          BadRequest(views.html.admin.teams.editTeam(id)(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all)),
+          BadRequest(views.html.admin.teams.editTeam(id)(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(members)(Member.all)(VideoPlayer.all.map(v => (v.id.get.toString, v.name)))),
         team => {
           Team.update(id, team.team)
           Team.updateTeamMembers(id, team.members.toSet)
@@ -64,7 +64,7 @@ object Teams extends Controller with Secured {
     implicit request =>
       teamForm.bindFromRequest.fold(
         formWithErrors =>
-          BadRequest(views.html.admin.teams.createTeam(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all)),
+          BadRequest(views.html.admin.teams.createTeam(formWithErrors)(Category.all.map(c => (c.id.get.toString, c.name)))(Member.all)(VideoPlayer.all.map(v => (v.id.get.toString, v.name)))),
         team => {
           val id = Team.create(team.team)
           Team.updateTeamMembers(id, team.members.toSet)
