@@ -10,6 +10,7 @@ GET     /comingsoon                       controllers.Application.comingSoon
 GET     /matchCentre/:categoryName        controllers.Application.matchCentre(id:Int, categoryName: String)
 GET     /about                            controllers.Application.about
 GET     /admin                            controllers.Administrator.admin
+GET     /fanzone                          controllers.Application.fanzone
 
 
 # Authentication

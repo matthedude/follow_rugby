@@ -131,12 +131,21 @@ $(function() {
     <p class="lead">Click on your favourite groups on the left to see who to follow. Also check out their tweets and videos.</p>
   } else {
   @team.map { t =>
-    <h2>@t.name</h2>
+    
   	
   	@t.twitterName.map { twitter =>
-  	<h3>
-  	  <a href="https://www.twitter.com/intent/user?screen_name=@{twitter}">@@@twitter</a> 
-  	</h3>
+  	  <h2>@t.name</h2>
+        <table>
+         <tr>
+          <td><img src="@routes.Assets.at("images/twitter-bird-blue-on-white.png")" height="40" width="40"></img></td>    
+          <td>
+            <h3>
+              <a href="https://www.twitter.com/intent/user?screen_name=@{twitter}">@@@twitter</a> 
+            </h3>
+          </td>   
+         </tr>
+        </table>
+  	
   	}
   }
   
@@ -184,6 +193,9 @@ $(function() {
  
 @media.videoPlayerChannel.map { v => 
   @if(v.player.name.toLowerCase == "youtube") {   
+
+  <h5>Latest Team Videos</h5>
+  
      <div id="channelplayer">
         </div>
    } else {

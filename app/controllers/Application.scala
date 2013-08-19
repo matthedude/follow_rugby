@@ -62,4 +62,8 @@ object Application extends Controller {
   def comingSoon = Action {
     Ok(views.html.comingSoon())
   }
+  
+  def fanzone = Action {
+    Ok(views.html.fanzone())
+  }
 }
