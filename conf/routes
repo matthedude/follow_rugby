@@ -46,8 +46,16 @@ GET     /admin/game                               controllers.Games.gameList(p:I
 GET     /admin/game/create                        controllers.Games.createGame
 POST    /admin/game                               controllers.Games.saveGame
 GET     /admin/game/team1Id/:team2Id              controllers.Games.editGame(team1Id:Int, team2Id:Int)
-POST    /admin/game/team1Id/:team2Id                           controllers.Games.updateGame(team1Id:Int, team2Id:Int)
-POST    /admin/game/team1Id/:team2Id/delete                    controllers.Games.deleteGame(team1Id:Int, team2Id:Int)
+POST    /admin/game/team1Id/:team2Id              controllers.Games.updateGame(team1Id:Int, team2Id:Int)
+POST    /admin/game/team1Id/:team2Id/delete       controllers.Games.deleteGame(team1Id:Int, team2Id:Int)
+
+# Videos list (look at the default values for pagination parameters)
+GET     /admin/video                    controllers.Videos.videoList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/video/create             controllers.Videos.createVideo
+POST    /admin/video                    controllers.Videos.saveVideo
+GET     /admin/video/:id                controllers.Videos.editVideo(id:Int)
+POST    /admin/video/:id                controllers.Videos.updateVideo(id:Int)
+POST    /admin/video/:id/delete         controllers.Videos.deleteVideo(id:Int)
 
 
 # Map static resources from the /public folder to the /assets URL path

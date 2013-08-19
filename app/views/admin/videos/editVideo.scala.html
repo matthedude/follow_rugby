@@ -1,0 +1,46 @@
+@(id: Int)(videoForm: Form[Video])(videoPlayers: Seq[(String, String)])(videoCategories: Seq[(String, String)])
+
+@import helper._
+@import views.html.admin.main
+
+//case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.f) }
+
+@main {
+  <h1>Create Video</h1>
+    
+    @form(action = routes.Videos.updateVideo(id)) {
+        
+        <fieldset>
+            @select(
+                videoForm("videoPlayerId"), 
+                videoPlayers, 
+                '_label -> "Video Player", '_default -> "-- Choose a Video Player --",
+                '_showConstraints -> false
+            )
+            @select(
+                videoForm("videoCategoryId"), 
+                videoCategories, 
+                '_label -> "Video Category", '_default -> "-- Choose a Video Category --",
+                '_showConstraints -> false
+            )
+            @inputText(videoForm("link"), '_label -> "Link")
+            @inputText(videoForm("description"), '_label -> "Description")
+            @inputText(videoForm("title"), '_label -> "Title")
+            
+           
+        
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save this video" class="btn primary"> or 
+            <a href="@routes.Videos.videoList(0, 2, "")" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+    @form(routes.Videos.deleteVideo(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this video" class="btn danger">
+    }
+}
