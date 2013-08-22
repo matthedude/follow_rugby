@@ -99,6 +99,22 @@ object Video {
     }
   }
   
+  def allWithVideoCategoryLatest: Seq[(Video, VideoCategory)] = {
+    DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video
+          left join video_category 
+          on video.video_category_id = video_category.id
+          order by video.id desc
+          limit 10
+        """).as(Video.withVideoCategory *)
+
+      videos
+    }
+  }
+  
   def findById(id: Int): Option[Video] = {
     DB.withConnection { implicit connection =>
 

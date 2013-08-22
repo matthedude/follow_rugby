@@ -4,6 +4,8 @@
 
 @main("Follow Rugby"){
   <div class="span12 pagination-centered">
+    <h2>@video.title</h2>
+    <p class="lead">@video.description</p>
     @if(videoPlayer.name.toLowerCase == "youtube") {  
       <iframe width="560" height="315" src="//www.youtube.com/embed/@video.link" frameborder="0" allowfullscreen></iframe>  
     }

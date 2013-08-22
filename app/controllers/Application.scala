@@ -13,7 +13,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index(Video.allWithVideoCategory))
+    Ok(views.html.index(Video.allWithVideoCategoryLatest))
   }
 
   def about = Action {
