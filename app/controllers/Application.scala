@@ -59,7 +59,7 @@ object Application extends Controller {
     } getOrElse NotFound
   }
   
-  def selectVideoCategory(id: Int, videoCategory: String) = Action {
+  def selectVideoCategory(id: Int, videoCategory: String, page: Int=0, filter: String="") = Action {
     Ok(views.html.comingSoon())
   }
   

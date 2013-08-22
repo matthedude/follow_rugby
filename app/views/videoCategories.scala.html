@@ -1,0 +1,27 @@
+@(currentPage: Page[Video], currentFilter: String, latestVideos: Seq[Video], videoCategory: VideoCategory)
+
+@import helper._
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage: Int) = @{
+    routes.Application.selectVideoCategory(videoCategory.id.get, videoCategory.name, newPage, currentFilter)
+    
+}
+@main("Follow Rugby"){
+   <div class="span3">
+    <table>
+    @latestVideos.map { vid =>
+      <tr>
+        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
+      </tr>
+      <tr>
+        <td align="center"><img src="http://img.youtube.com/vi/@{vid.link}/2.jpg"></img></td>
+      </tr>   
+    }
+    </table>
+  </div>
+
+
+}
