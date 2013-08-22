@@ -1,0 +1,13 @@
+@(video: Video)(videoCategory: String)(videoPlayer: VideoPlayer)
+
+@import helper._
+
+@main("Follow Rugby"){
+  <div class="span12 pagination-centered">
+    @if(videoPlayer.name.toLowerCase == "youtube") {  
+      <iframe width="560" height="315" src="//www.youtube.com/embed/@video.link" frameborder="0" allowfullscreen></iframe>  
+    }
+  </div>
+
+
+}

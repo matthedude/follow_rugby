@@ -68,6 +68,10 @@ object Video {
         case id ~ videoCategoryId ~ videoPlayerId ~ link ~ description ~ title ~ date  => Video(id, videoCategoryId, videoPlayerId, link, description, title, date)
       }
   }
+  
+  val withVideoCategory = Video.simple ~ VideoCategory.simple map {
+    case video ~ videoCategory => (video, videoCategory)
+  }
 
   def all: Seq[Video] = {
     DB.withConnection { implicit connection =>
@@ -76,6 +80,20 @@ object Video {
         """
           select * from video
         """).as(Video.simple *)
+
+      videos
+    }
+  }
+  
+  def allWithVideoCategory: Seq[(Video, VideoCategory)] = {
+    DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video
+          left join video_category 
+          on video.video_category_id = video_category.id
+        """).as(Video.withVideoCategory *)
 
       videos
     }
@@ -150,6 +168,8 @@ object Video {
 
   }
   
+  
+  
   def update(id: Int, video: Video) = {
     DB.withConnection { implicit connection =>
       SQL(
@@ -208,5 +228,7 @@ object VideoCategory {
     }
 
   }
+  
+  
   
 }

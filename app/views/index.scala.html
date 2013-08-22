@@ -1,12 +1,22 @@
-@()(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory)])(implicit flash: play.api.mvc.Flash)
 
 @import helper._
 
 @main("Follow Rugby"){
-  <div class="row">
+  <div class="span3">
+    <table>
+    @videos.map { case (vid, videoCategory) =>
+      <tr>
+        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
+      </tr>
+      <tr>
+        <td align="center"><img src="http://img.youtube.com/vi/@{vid.link}/2.jpg"></img></td>
+      </tr>   
+    }
+    </table>
+  </div>
  
     
- </div>   
 
 
 }

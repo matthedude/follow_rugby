@@ -3,6 +3,10 @@ package models
 object Linker {
 
   def link(str: String) = {
-    str.replaceAll(" ", "").toLowerCase
+    str.replace(" ", "").toLowerCase
+  }
+  
+  def linkVideo(str: String) = {
+    str.replace(" ", "-").replace(".", "")
   }
 }

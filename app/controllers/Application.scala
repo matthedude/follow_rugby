@@ -13,7 +13,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index())
+    Ok(views.html.index(Video.allWithVideoCategory))
   }
 
   def about = Action {
@@ -58,6 +58,20 @@ object Application extends Controller {
       Ok(views.html.categories(c)(teams)(selectedTeam)(members)(Media(widget, None, video)))
     } getOrElse NotFound
   }
+  
+  def selectVideoCategory(id: Int, videoCategory: String) = Action {
+    Ok(views.html.comingSoon())
+  }
+  
+  def selectVideo(id: Int, videoCategory: String, description: String) = Action {
+    {for {
+      video <- Video.findById(id)
+      videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
+    } yield {
+      Ok(views.html.videos(video)(videoCategory)(videoPlayer))
+    }} getOrElse NotFound
+  }
+  
 
   def comingSoon = Action {
     Ok(views.html.comingSoon())

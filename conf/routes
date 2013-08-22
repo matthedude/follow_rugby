@@ -3,14 +3,16 @@
 # ~~~~
 
 # Home page
-GET     /                                 controllers.Application.index
-GET     /db/:categoryName                 controllers.Application.selectCategory(id:Int, categoryName: String)
-GET     /db/:categoryName/:teamName       controllers.Application.selectTeam(categoryId:Int, teamId:Int, categoryName: String, teamName: String)
-GET     /comingsoon                       controllers.Application.comingSoon
-GET     /matchCentre/:categoryName        controllers.Application.matchCentre(id:Int, categoryName: String)
-GET     /about                            controllers.Application.about
-GET     /admin                            controllers.Administrator.admin
-GET     /fanzone                          controllers.Application.fanzone
+GET     /                                   controllers.Application.index
+GET     /db/:categoryName                   controllers.Application.selectCategory(id:Int, categoryName: String)
+GET     /db/:categoryName/:teamName         controllers.Application.selectTeam(categoryId:Int, teamId:Int, categoryName: String, teamName: String)
+GET     /comingsoon                         controllers.Application.comingSoon
+GET     /matchCentre/:categoryName          controllers.Application.matchCentre(id:Int, categoryName: String)
+GET     /about                              controllers.Application.about
+GET     /admin                              controllers.Administrator.admin
+GET     /fanzone                            controllers.Application.fanzone
+GET     /vidoes/:videoCategory              controllers.Application.selectVideoCategory(id:Int, videoCategory: String)
+GET     /vidoes/:videoCategory/:description controllers.Application.selectVideo(id:Int, videoCategory: String, description: String)
 
 
 # Authentication

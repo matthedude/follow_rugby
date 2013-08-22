@@ -7,6 +7,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
+
 case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int])
 
 
