@@ -5,8 +5,7 @@ import play.api.mvc._
 import models._
 import play.api.data._
 import play.api.data.Forms._
-
-import anorm._
+import anorm.Pk
 
 object Application extends Controller {
 
@@ -59,8 +58,9 @@ object Application extends Controller {
     } getOrElse NotFound
   }
   
-  def selectVideoCategory(id: Int, videoCategory: String, page: Int=0, filter: String="") = Action {
-    Ok(views.html.comingSoon())
+  def selectVideoCategory(id: Int, videoCategoryName: String, page: Int=0, filter: String="") = Action {
+    val videoCategory = VideoCategory(anorm.Id(id), videoCategoryName)
+    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.allForVideoCategory(id), videoCategory))
   }
   
   def selectVideo(id: Int, videoCategory: String, description: String) = Action {

@@ -1,17 +1,29 @@
 @(currentPage: Page[Video], currentFilter: String, latestVideos: Seq[Video], videoCategory: VideoCategory)
 
 @import helper._
+@import java.text.SimpleDateFormat
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int) = @{
     routes.Application.selectVideoCategory(videoCategory.id.get, videoCategory.name, newPage, currentFilter)
-    
 }
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(title: String) = {
+    <th>
+        <a href="@link(0)">@title</a>
+    </th>
+}
+
+
 @main("Follow Rugby"){
+  <div class="row">
    <div class="span3">
-    <table>
+    <div class="textpadding"><table>
     @latestVideos.map { vid =>
       <tr>
         <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
@@ -21,6 +33,68 @@
       </tr>   
     }
     </table>
+  </div>
+  </div>
+  
+  <div class="span8">
+    <h2>@videoCategory.name</h2>
+    @Option(currentPage.items).filterNot(_.isEmpty).map { videos =>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                  <th>Date added</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @videos.map { video => 
+                        <tr>
+                          <td>@video.date</td>
+                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.name, Linker.linkVideo(video.title))">@video.title</a></td>
+                          <td>@video.description</td>
+                        </tr>
+                }
+
+            </tbody>
+        </table>
+
+        <div id="pagination" class="pagination">
+            <ul>
+                @currentPage.prev.map { page =>
+                    <li class="prev">
+                        <a href="@link(page)">&larr; Previous</a>
+                    </li> 
+                }.getOrElse {
+                    <li class="prev disabled">
+                        <a>&larr; Previous</a>
+                    </li>
+                }
+                <li class="current">
+                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + videos.size) of @currentPage.total</a>
+                </li>
+                @currentPage.next.map { page =>
+                    <li class="next">
+                        <a href="@link(page)">Next &rarr;</a>
+                    </li> 
+                }.getOrElse {
+                    <li class="next disabled">
+                        <a>Next &rarr;</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        
+    }.getOrElse {
+        
+        <div class="well">
+            <em>Nothing to display</em>
+        </div>
+        
+    }
+  </div>
   </div>
 
 

@@ -99,6 +99,19 @@ object Video {
     }
   }
   
+  def allForVideoCategory(videoCategoryId: Int): Seq[Video] = {
+    DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video 
+          where video.video_category_id = {videoCategoryId}
+        """).on('videoCategoryId -> videoCategoryId).as(Video.simple *)
+
+      videos
+    }
+  }
+  
   def allWithVideoCategoryLatest: Seq[(Video, VideoCategory)] = {
     DB.withConnection { implicit connection =>
 
@@ -182,6 +195,38 @@ object Video {
 
     }
 
+  }
+  def listForVideoCategory(page: Int = 0, pageSize: Int = 20, filter: String = "%", videoCategoryId: Int): Page[Video] = {
+    
+    val offest = pageSize * page
+        
+        DB.withConnection { implicit connection =>
+        
+        val videos = SQL(
+            """
+            select * from video
+            where video.title like {filter}
+            and video.video_category_id = {videoCategoryId} 
+            limit {pageSize} offset {offset}
+            """).on(
+                'pageSize -> pageSize,
+                'offset -> offest,
+                'filter -> filter,
+                'videoCategoryId -> videoCategoryId).as(Video.simple *)
+                
+                val totalRows = SQL(
+                    """
+                    select count(*) from video
+                    where video.title like {filter}
+                    and video.video_category_id = {videoCategoryId} 
+                    """).on(
+                        'filter -> filter,
+                'videoCategoryId -> videoCategoryId).as(scalar[Long].single)
+                        
+                        Page(videos, page, offest, totalRows)
+                        
+    }
+    
   }
   
   
