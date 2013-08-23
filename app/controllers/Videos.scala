@@ -30,6 +30,7 @@ object Videos extends Controller with Secured {
         Video.list(page = page, orderBy = orderBy, filter = ("%" + filter + "%")),
         orderBy, filter))
   }
+  
 
   def createVideo = IsAuthenticated { _ =>
     _ =>
