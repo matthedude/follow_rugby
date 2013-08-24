@@ -12,7 +12,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index(Video.allWithVideoCategoryLatest))
+    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest))
   }
 
   def about = Action {
@@ -60,7 +60,7 @@ object Application extends Controller {
   
   def selectVideoCategory(id: Int, videoCategoryName: String, page: Int=0, filter: String="") = Action {
     val videoCategory = VideoCategory(anorm.Id(id), videoCategoryName)
-    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.allForVideoCategory(id), videoCategory))
+    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.allForVideoCategoryWithPlayer(id), videoCategory))
   }
   
   def selectVideo(id: Int, videoCategory: String, description: String) = Action {

@@ -69,8 +69,12 @@ object Video {
       }
   }
   
-  val withVideoCategory = Video.simple ~ VideoCategory.simple map {
-    case video ~ videoCategory => (video, videoCategory)
+  val withVideoCategoryPlayer = Video.simple ~ VideoCategory.simple ~ VideoPlayer.simple map {
+    case video ~ videoCategory ~ videoPlayer => (video, videoCategory, videoPlayer)
+  }
+  
+  val withVideoPlayer = Video.simple ~ VideoPlayer.simple map {
+    case video ~ videoPlayer => (video, videoPlayer)
   }
 
   def all: Seq[Video] = {
@@ -85,7 +89,7 @@ object Video {
     }
   }
   
-  def allWithVideoCategory: Seq[(Video, VideoCategory)] = {
+  def allWithVideoCategory: Seq[(Video, VideoCategory, VideoPlayer)] = {
     DB.withConnection { implicit connection =>
 
       val videos = SQL(
@@ -93,26 +97,34 @@ object Video {
           select * from video
           left join video_category 
           on video.video_category_id = video_category.id
-        """).as(Video.withVideoCategory *)
+          join video_player
+          on video.video_player_id = video_player.id
+          order by video.id desc
+          limit 5
+        """).as(Video.withVideoCategoryPlayer *)
 
       videos
     }
   }
   
-  def allForVideoCategory(videoCategoryId: Int): Seq[Video] = {
+  def allForVideoCategoryWithPlayer(videoCategoryId: Int): Seq[(Video, VideoPlayer)] = {
     DB.withConnection { implicit connection =>
 
       val videos = SQL(
         """
           select * from video 
+          left join video_player 
+          on video.video_player_id = video_player.id
           where video.video_category_id = {videoCategoryId}
-        """).on('videoCategoryId -> videoCategoryId).as(Video.simple *)
+          order by video.id desc
+          limit 5
+        """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
 
       videos
     }
   }
   
-  def allWithVideoCategoryLatest: Seq[(Video, VideoCategory)] = {
+  def allWithVideoCategoryPlayerLatest: Seq[(Video, VideoCategory, VideoPlayer)] = {
     DB.withConnection { implicit connection =>
 
       val videos = SQL(
@@ -120,9 +132,11 @@ object Video {
           select * from video
           left join video_category 
           on video.video_category_id = video_category.id
+          join video_player
+          on video.video_player_id = video_player.id
           order by video.id desc
-          limit 10
-        """).as(Video.withVideoCategory *)
+          limit 5
+        """).as(Video.withVideoCategoryPlayer *)
 
       videos
     }
@@ -207,6 +221,7 @@ object Video {
             select * from video
             where video.title like {filter}
             and video.video_category_id = {videoCategoryId} 
+            order by video.id desc
             limit {pageSize} offset {offset}
             """).on(
                 'pageSize -> pageSize,

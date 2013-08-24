@@ -8,6 +8,8 @@
     <p class="lead">@video.description</p>
     @if(videoPlayer.name.toLowerCase == "youtube") {  
       <iframe width="560" height="315" src="//www.youtube.com/embed/@video.link" frameborder="0" allowfullscreen></iframe>  
+    } else {
+      <iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/@video.link"></iframe>
     }
   </div>
 

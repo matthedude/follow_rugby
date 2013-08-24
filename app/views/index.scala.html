@@ -1,16 +1,27 @@
-@(videos: Seq[(Video, VideoCategory)])(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory, VideoPlayer)])(implicit flash: play.api.mvc.Flash)
 
 @import helper._
+
+@****************************************
+* Helper working out video link         *
+****************************************@
+@videoLink(videoPlayer: VideoPlayer, link: String) = @{
+    if(videoPlayer.name.toLowerCase == "youtube"){
+      "http://img.youtube.com/vi/"+link+"/2.jpg"
+    } else {
+      "http://www.dailymotion.com/thumbnail/video/"+link
+    }
+}
 
 @main("Follow Rugby"){
   <div class="span3">
     <table>
-    @videos.map { case (vid, videoCategory) =>
+    @videos.map { case (vid, videoCategory, videoPlayer) =>
       <tr>
         <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
       </tr>
       <tr>
-        <td align="center"><img src="http://img.youtube.com/vi/@{vid.link}/2.jpg"></img></td>
+        <td align="center"><img width="128" height="72" src="@videoLink(videoPlayer, vid.link)"></img></td>
       </tr>   
     }
     </table>

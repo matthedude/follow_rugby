@@ -1,7 +1,8 @@
-@(currentPage: Page[Video], currentFilter: String, latestVideos: Seq[Video], videoCategory: VideoCategory)
+@(currentPage: Page[Video], currentFilter: String, latestVideos: Seq[(Video, VideoPlayer)], videoCategory: VideoCategory)
 
 @import helper._
 @import java.text.SimpleDateFormat
+@import java.util.Date
 
 @****************************************
 * Helper generating navigation links    *
@@ -18,18 +19,33 @@
         <a href="@link(0)">@title</a>
     </th>
 }
+@****************************************
+* Helper working out video link         *
+****************************************@
+@videoLink(videoPlayer: VideoPlayer, link: String) = @{
+    if(videoPlayer.name.toLowerCase == "youtube"){
+      "http://img.youtube.com/vi/"+link+"/2.jpg"
+    } else {
+      "http://www.dailymotion.com/thumbnail/video/"+link
+    }
+}
+
+@formatDate(date: Date) = @{
+  val sdf = new SimpleDateFormat("EEE d MMM yyyy")
+  sdf.format(date)
+}
 
 
 @main("Follow Rugby"){
   <div class="row">
    <div class="span3">
     <div class="textpadding"><table>
-    @latestVideos.map { vid =>
+    @latestVideos.map { case (vid, videoPlayer) =>
       <tr>
         <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
       </tr>
       <tr>
-        <td align="center"><img src="http://img.youtube.com/vi/@{vid.link}/2.jpg"></img></td>
+        <td align="center"><img width="128" height="72" src="@videoLink(videoPlayer, vid.link)"></img></td>
       </tr>   
     }
     </table>
@@ -52,7 +68,7 @@
 
                 @videos.map { video => 
                         <tr>
-                          <td>@video.date</td>
+                          <td>@formatDate(video.date)</td>
                           <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.name, Linker.linkVideo(video.title))">@video.title</a></td>
                           <td>@video.description</td>
                         </tr>
