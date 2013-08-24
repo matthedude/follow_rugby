@@ -1,4 +1,4 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer)])(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory, VideoPlayer)], games: Seq[(Game, Competition)])(implicit flash: play.api.mvc.Flash)
 
 @import helper._
 
@@ -14,7 +14,9 @@
 }
 
 @main("Follow Rugby"){
+  <div class="row">
   <div class="span3">
+    <div class="textpadding">
     <table>
     @videos.map { case (vid, videoCategory, videoPlayer) =>
       <tr>
@@ -25,6 +27,21 @@
       </tr>   
     }
     </table>
+    </div>
+  </div>
+  <div class="span9">
+    <div class="row">
+      <h4>Latest Hashtags</h4>
+    </div>
+      @games.sliding(8,8).toList.map { gs =>
+        <div class="row">
+          @gs.map { case (g, comp) =>
+            <div class="span1"><h5 class="muted"><i><a href="@routes.Application.matchCentre(g.competitionId, comp.name)">@g.hashtag</a></i></h3></div> 
+          }   
+        </div>     
+        }
+    
+  </div>
   </div>
  
     

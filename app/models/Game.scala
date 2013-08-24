@@ -32,6 +32,12 @@ object Game {
       case game ~ team1 ~ team2 => (game, team1, team2)
     }
   }
+  
+  val withCompetitionName = {
+    Game.simple ~ Competition.simple map {
+      case game ~ comp => (game, comp)
+    }
+  }
 
   def all: Seq[Game] = {
     DB.withConnection { implicit connection =>
@@ -53,6 +59,20 @@ object Game {
         val team2 = Team.findById(game.team2Id).get
         MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get, Widget.findById(game.widgetId))
       }
+    }
+  }
+  
+  def allGamesWithComp = {
+    DB.withConnection { implicit connection =>
+
+      val games = SQL(
+        """
+          select * from game 
+          left join competition
+          on game.competition_id = competition.id
+        """).as(Game.withCompetitionName *)
+
+      games
     }
   }
 
