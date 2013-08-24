@@ -20,7 +20,8 @@ object Games extends Controller with Secured {
       "time" -> nonEmptyText,
       "gameDate" -> date("yyyy-MM-dd"),
       "widgetId" -> longNumber,
-      "pos" -> number)(Game.apply)(Game.unapply))
+      "pos" -> number,
+      "hashtag" -> nonEmptyText)(Game.apply)(Game.unapply))
 
   def gameList(page: Int, orderBy: Int) = IsAuthenticated { _ =>
     implicit request =>

@@ -9,7 +9,7 @@ import anorm._
 import anorm.SqlParser._
 import play.api.Play
 
-case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long, pos: Int)
+case class Game(team1Id: Int, team2Id: Int, competitionId: Int, time: String, gameDate: Date, widgetId: Long, pos: Int, hashtag: String)
 case class MatchCentreGame(team1: Team, team2: Team, game: Game, team1Widget: Widget, team2Widget: Widget, matchWidget: Option[Widget])
 
 object Game {
@@ -21,8 +21,9 @@ object Game {
       get[String]("game.time") ~
       get[Date]("game.game_date") ~
       get[Long]("game.widget_id") ~
-      get[Int]("game.pos") map {
-        case team1Id ~ team2Id ~ competitionId ~ time ~ gameDate ~ widgetId ~ pos => Game(team1Id, team2Id, competitionId, time, gameDate, widgetId, pos)
+      get[Int]("game.pos") ~
+      get[String]("game.hashtag") map {
+        case team1Id ~ team2Id ~ competitionId ~ time ~ gameDate ~ widgetId ~ pos ~ hashtag => Game(team1Id, team2Id, competitionId, time, gameDate, widgetId, pos, hashtag)
       }
   }
 
@@ -93,7 +94,7 @@ object Game {
     DB.withConnection { implicit connection =>
       SQL("""
             insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id, pos) values (
-              {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}, {pos}
+              {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}, {pos}, {hashtag}
             )
             """).on(
         'team1Id -> game.team1Id,
@@ -102,7 +103,8 @@ object Game {
         'time -> game.time,
         'gameDate -> game.gameDate,
         'widgetId -> game.widgetId,
-        'pos -> game.pos).executeUpdate()
+        'pos -> game.pos,
+        'hashtag -> game.hashtag).executeUpdate()
     }
   }
 
@@ -111,7 +113,7 @@ object Game {
       SQL(
         """
           update game
-          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}, competition_id = {competitionId}, pos = {pos}
+          set time = {time}, game_date = {gameDate}, widget_id = {widgetId}, competition_id = {competitionId}, pos = {pos}, hashtag = {hashtag}
           where team1_id = {team1Id}
           and team2_id = {team2Id}
         """).on(
@@ -121,7 +123,8 @@ object Game {
           'time -> game.time,
           'gameDate -> game.gameDate,
           'widgetId -> game.widgetId,
-          'pos -> game.pos).executeUpdate()
+          'pos -> game.pos,
+          'hashtag -> game.hashtag).executeUpdate()
     }
   }
 

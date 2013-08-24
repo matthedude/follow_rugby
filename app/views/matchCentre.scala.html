@@ -29,7 +29,7 @@
   	 <ul class="nav nav-list">
      <li class="nav-header">@strDate(date)</li>
   	 @games.sortBy(_.game.pos).map { game =>
-  	   <li><a href="#game@game.game.team1Id">@game.team1.name v @game.team2.name</a></li>
+  	   <li><p class="muted"><a href="#game@game.game.team1Id">@game.team1.name v @game.team2.name</a> <i>#@game.game.hashtag</i></p></li>
   	 }
   	  </ul>
   }
@@ -40,15 +40,19 @@
    @games.groupBy(_.game.gameDate).toList.sortBy(_._1).map { case (date, games) =>
      @games.sortBy(_.game.pos).map { game =>
         <div class="row">
-
-       <div class="span12">
-   <a name="game@game.game.team1Id"></a>
-<div class="well">
-           <p class="lead text-center">@strDate(game.game.gameDate) @@@game.game.time</p>
-           <h3 class="text-center">@game.team1.name v @game.team2.name</h3>
-         </div>
-  </div>
-</div>
+          <div class="span12">
+            <a name="game@game.game.team1Id"></a>
+              <div class="well">
+                  
+                      <h6 class="text-left">@strDate(game.game.gameDate) @@@game.game.time</h6>
+                      <h3 class="text-center">@game.team1.name v @game.team2.name</h3>
+                      <h3 class="muted text-center"><i>#@game.game.hashtag</i></h1>
+                   
+                       
+                   
+              </div>
+          </div>
+        </div>
   
   	 <div class="row"> 
        <div class="span4">
