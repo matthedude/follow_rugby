@@ -39,18 +39,8 @@
 @main("Follow Rugby"){
   <div class="row">
    <div class="span3">
-    <div class="textpadding"><table>
-    @latestVideos.map { case (vid, videoPlayer) =>
-      <tr>
-        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
-      </tr>
-      <tr>
-        <td align="center"><img width="128" height="72" src="@videoLink(videoPlayer, vid.link)"></img></td>
-      </tr>   
-    }
-    </table>
-  </div>
-  </div>
+     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp) }) 
+   </div>
   
   <div class="span8">
     <h2>@videoCategory.name</h2>
@@ -69,7 +59,7 @@
                 @videos.map { video => 
                         <tr>
                           <td>@formatDate(video.date)</td>
-                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.name, Linker.linkVideo(video.title))">@video.title</a></td>
+                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, videoCategory.name, Linker.linkVideo(video.title))">@video.title</a></td>
                           <td>@video.description</td>
                         </tr>
                 }

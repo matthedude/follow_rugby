@@ -1,45 +1,28 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer)], games: Seq[(Game, Competition)])(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory, VideoPlayer)], compGames: Map[Competition, Seq[Game]])(implicit flash: play.api.mvc.Flash)
 
 @import helper._
-
-@****************************************
-* Helper working out video link         *
-****************************************@
-@videoLink(videoPlayer: VideoPlayer, link: String) = @{
-    if(videoPlayer.name.toLowerCase == "youtube"){
-      "http://img.youtube.com/vi/"+link+"/2.jpg"
-    } else {
-      "http://www.dailymotion.com/thumbnail/video/"+link
-    }
-}
 
 @main("Follow Rugby"){
   <div class="row">
   <div class="span3">
-    <div class="textpadding">
-    <table>
-    @videos.map { case (vid, videoCategory, videoPlayer) =>
-      <tr>
-        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.name, Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
-      </tr>
-      <tr>
-        <td align="center"><img width="128" height="72" src="@videoLink(videoPlayer, vid.link)"></img></td>
-      </tr>   
-    }
-    </table>
-    </div>
+   @videoReel(videos)
   </div>
   <div class="span9">
     <div class="row">
-      <h4>Latest Hashtags</h4>
+      <h4>This week's games:</h4>
     </div>
-      @games.sliding(8,8).toList.map { gs =>
-        <div class="row">
-          @gs.map { case (g, comp) =>
-            <div class="span1"><h5 class="muted"><i><a href="@routes.Application.matchCentre(g.competitionId, comp.name)">@g.hashtag</a></i></h3></div> 
-          }   
-        </div>     
-        }
+      @compGames.toList.map { case (comp, games) =>
+        <div class="row"> 
+          <h5>@comp.name</h5>
+        </div>
+          @games.sliding(8,8).map { gs =>
+        <div class="row">     
+              @gs.map { g =>
+            <div class="span1"><h5 class="muted"><i><a href="@routes.Application.matchCentre(g.competitionId, comp.name)">#@g.hashtag</a></i></h3></div> 
+          }  
+        </div>
+        }     
+      }
     
   </div>
   </div>

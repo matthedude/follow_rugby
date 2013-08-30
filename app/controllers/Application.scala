@@ -12,7 +12,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest, Game.allGamesWithComp))
+    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest, Game.allGamesWithComp.groupBy(_._2).map{case(c,v) => (c, v.map(_._1))}))
   }
 
   def about = Action {
@@ -60,15 +60,15 @@ object Application extends Controller {
   
   def selectVideoCategory(id: Int, videoCategoryName: String, page: Int=0, filter: String="") = Action {
     val videoCategory = VideoCategory(anorm.Id(id), videoCategoryName)
-    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.allForVideoCategoryWithPlayer(id), videoCategory))
+    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.latestForVideoCategoryWithPlayer(id), videoCategory))
   }
   
-  def selectVideo(id: Int, videoCategory: String, description: String) = Action {
+  def selectVideo(id: Int, videoCategoryId: Int, videoCategory: String, description: String) = Action {
     {for {
       video <- Video.findById(id)
       videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
     } yield {
-      Ok(views.html.videos(video)(videoCategory)(videoPlayer))
+      Ok(views.html.videos(video, VideoCategory(anorm.Id(videoCategoryId),videoCategory), videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId)))
     }} getOrElse NotFound
   }
   

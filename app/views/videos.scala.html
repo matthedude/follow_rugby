@@ -1,9 +1,13 @@
-@(video: Video)(videoCategory: String)(videoPlayer: VideoPlayer)
+@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)])
 
 @import helper._
 
 @main("Follow Rugby"){
-  <div class="span12 pagination-centered">
+<div class="row">
+  <div class="span3">
+    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp) }) 
+  </div>  
+  <div class="span6 pagination-centered">
     <h2>@video.title</h2>
     <p class="lead">@video.description</p>
     @if(videoPlayer.name.toLowerCase == "youtube") {  
@@ -12,6 +16,7 @@
       <iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/@video.link"></iframe>
     }
   </div>
+</div>
 
 
 }

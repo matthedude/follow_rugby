@@ -11,8 +11,8 @@ GET     /matchCentre/:categoryName          controllers.Application.matchCentre(
 GET     /about                              controllers.Application.about
 GET     /admin                              controllers.Administrator.admin
 GET     /fanzone                            controllers.Application.fanzone
-GET     /vidoes/:videoCategory              controllers.Application.selectVideoCategory(id:Int, videoCategory: String, p:Int ?= 0, f ?= "")
-GET     /vidoes/:videoCategory/:title       controllers.Application.selectVideo(id:Int, videoCategory: String, title: String)
+GET     /videos/:videoCategory              controllers.Application.selectVideoCategory(id:Int, videoCategory: String, p:Int ?= 0, f ?= "")
+GET     /videos/:videoCategory/:title       controllers.Application.selectVideo(id:Int, videoCategoryId: Int, videoCategory: String, title: String)
 
 
 # Authentication

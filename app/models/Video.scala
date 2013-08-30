@@ -107,7 +107,7 @@ object Video {
     }
   }
   
-  def allForVideoCategoryWithPlayer(videoCategoryId: Int): Seq[(Video, VideoPlayer)] = {
+  def latestForVideoCategoryWithPlayer(videoCategoryId: Int): Seq[(Video, VideoPlayer)] = {
     DB.withConnection { implicit connection =>
 
       val videos = SQL(
@@ -117,6 +117,23 @@ object Video {
           on video.video_player_id = video_player.id
           where video.video_category_id = {videoCategoryId}
           order by video.id desc
+          limit 5
+        """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
+
+      videos
+    }
+  }
+  
+  def randomForVideoCategoryWithPlayer(videoCategoryId: Int): Seq[(Video, VideoPlayer)] = {
+    DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video 
+          left join video_player 
+          on video.video_player_id = video_player.id
+          where video.video_category_id = {videoCategoryId}
+          order by RAND()
           limit 5
         """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
 
@@ -160,6 +177,23 @@ object Video {
   def delete(id: Int) = {
     DB.withConnection { implicit connection =>
       SQL("delete from video where id = {id}").on('id -> id).executeUpdate()
+    }
+  }
+  
+  def update(id: Int, video: Video) = {
+    DB.withConnection { implicit connection =>
+      SQL(
+        """
+          update video
+          set video_category_id = {name}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
+          where id = {id}
+        """).on(
+        'id -> id,
+        'videoCategoryId -> video.videoCategoryId,
+        'videoPlayerId -> video.videoPlayerId,
+        'link -> video.link,
+        'description -> video.description,
+        'title -> video.title).executeUpdate()
     }
   }
 //case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
@@ -244,24 +278,6 @@ object Video {
     
   }
   
-  
-  
-  def update(id: Int, video: Video) = {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          update video
-          set video_category_id = {name}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
-          where id = {id}
-        """).on(
-        'id -> id,
-        'videoCategoryId -> video.videoCategoryId,
-        'videoPlayerId -> video.videoPlayerId,
-        'link -> video.link,
-        'description -> video.description,
-        'title -> video.title).executeUpdate()
-    }
-  }
 }
 
 case class VideoCategory(id: Pk[Int] = NotAssigned, name: String)
