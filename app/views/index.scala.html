@@ -1,4 +1,4 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer)], compGames: Map[Competition, Seq[Game]])(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory, VideoPlayer)], compGames: Map[Competition, Seq[Game]], latestMembers: Seq[(Member, Team, Category)])(implicit flash: play.api.mvc.Flash)
 
 @import helper._
 
@@ -7,7 +7,7 @@
   <div class="span3">
    @videoReel(videos)
   </div>
-  <div class="span9">
+  <div class="span5">
     <div class="row">
       <h4>This week's games:</h4>
     </div>
@@ -15,15 +15,28 @@
         <div class="row"> 
           <h5>@comp.name</h5>
         </div>
-          @games.sliding(8,8).map { gs =>
+          @games.sliding(4,4).map { gs =>
         <div class="row">     
               @gs.map { g =>
-            <div class="span1"><h5 class="muted"><i><a href="@routes.Application.matchCentre(g.competitionId, comp.name)">#@g.hashtag</a></i></h3></div> 
+            <div class="span1"><h5 class="muted"><i><a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a></i></h3></div> 
           }  
         </div>
         }     
       }
-    
+    <div class="row"> 
+      <h4>Latest Twitter profiles added:</h4>
+      <p>
+      /@latestMembers.map { case (member, team, category) =>
+        /<a href="@routes.Application.selectTeam(category.id.get, team.id.get, category.name, team.name)">@member.name</a>/
+      }/
+      </p>
+    </div>
+  </div>
+  <div class="span4"> 
+  
+    <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/FollowRugbySite" data-widget-id="320940036453449730"></a></div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
   </div>
   </div>
  

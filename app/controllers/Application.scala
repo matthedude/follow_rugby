@@ -12,7 +12,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest, Game.allGamesWithComp.groupBy(_._2).map{case(c,v) => (c, v.map(_._1))}))
+    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest, Game.allGamesWithComp.groupBy(_._2).map{case(c,v) => (c, v.map(_._1))}, Member.latestMembersWithTeamCategory))
   }
 
   def about = Action {
