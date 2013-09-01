@@ -4,15 +4,15 @@
 
 # Home page
 GET     /                                   controllers.Application.index
-GET     /db/:categoryName                   controllers.Application.selectCategory(id:Int, categoryName: String)
-GET     /db/:categoryName/:teamName         controllers.Application.selectTeam(categoryId:Int, teamId:Int, categoryName: String, teamName: String)
+GET     /db/:cn                             controllers.Application.selectCategory(i:Int, cn: String)
+GET     /db/:cn/:tn                         controllers.Application.selectTeam(ci:Int, ti:Int, cn: String, tn: String)
 GET     /comingsoon                         controllers.Application.comingSoon
-GET     /matchCentre/:categoryName          controllers.Application.matchCentre(id:Int, categoryName: String)
+GET     /matchCentre/:cn                    controllers.Application.matchCentre(i:Int, cn: String)
 GET     /about                              controllers.Application.about
 GET     /admin                              controllers.Administrator.admin
 GET     /fanzone                            controllers.Application.fanzone
-GET     /videos/:videoCategory              controllers.Application.selectVideoCategory(id:Int, videoCategory: String, p:Int ?= 0, f ?= "")
-GET     /videos/:videoCategory/:title       controllers.Application.selectVideo(id:Int, videoCategoryId: Int, videoCategory: String, title: String)
+GET     /videos/:vc                         controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
+GET     /videos/:vc/:t                      controllers.Application.selectVideo(i:Int, vci: Int, vc: String, t: String)
 
 
 # Authentication
