@@ -59,16 +59,20 @@ object Application extends Controller {
   }
   
   def selectVideoCategory(id: Int, videoCategoryName: String, page: Int=0, filter: String="") = Action {
-    val videoCategory = VideoCategory(anorm.Id(id), videoCategoryName)
-    Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.latestForVideoCategoryWithPlayer(id), videoCategory))
+     {for {
+      videoCategory <- VideoCategory.findById(id)
+    } yield {
+      Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.latestForVideoCategoryWithPlayer(id), videoCategory))
+    }} getOrElse NotFound
   }
   
-  def selectVideo(id: Int, videoCategoryId: Int, videoCategory: String, description: String) = Action {
+  def selectVideo(id: Int, videoCategoryId: Int, videoCategoryName: String, description: String) = Action {
     {for {
       video <- Video.findById(id)
       videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
+      videoCategory <- VideoCategory.findById(videoCategoryId)
     } yield {
-      Ok(views.html.videos(video, VideoCategory(anorm.Id(videoCategoryId),videoCategory), videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId)))
+      Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId)))
     }} getOrElse NotFound
   }
   

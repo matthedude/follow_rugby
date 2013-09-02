@@ -9,4 +9,8 @@ object Linker {
   def linkVideo(str: String) = {
     str.replace(" ", "-").replace(".", "")
   }
+  
+  def strip(str: String) = {
+    str.replace(" ", "").replace(",", "")
+  }
 }

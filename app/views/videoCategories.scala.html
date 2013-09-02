@@ -8,7 +8,7 @@
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int) = @{
-    routes.Application.selectVideoCategory(videoCategory.id.get, videoCategory.name, newPage, currentFilter)
+    routes.Application.selectVideoCategory(videoCategory.id.get, Linker.strip(videoCategory.name), newPage, currentFilter)
 }
 
 @**********************************
@@ -59,7 +59,7 @@
                 @videos.map { video => 
                         <tr>
                           <td>@formatDate(video.date)</td>
-                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, videoCategory.name, Linker.linkVideo(video.title))">@video.title</a></td>
+                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))">@video.title</a></td>
                           <td>@video.description</td>
                         </tr>
                 }

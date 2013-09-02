@@ -38,7 +38,7 @@ object Member {
       members
     }
   }
- // case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int])
+
   def latestMembersWithTeamCategory: Seq[(Member, Team, Category)] = {
     DB.withConnection { implicit connection =>
 
