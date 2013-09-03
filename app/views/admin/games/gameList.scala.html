@@ -34,8 +34,9 @@
         
         <a class="btn success" id="add" href="@routes.Games.createGame()">Add a new game</a>
         
+    <a class="btn danger" id="del" href="@routes.Games.deleteAll()">Delete all</a>
+        
     </div>
-    
     @Option(currentPage.items).filterNot(_.isEmpty).map { games =>
         
         <table class="games table-striped">

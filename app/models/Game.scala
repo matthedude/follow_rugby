@@ -155,6 +155,16 @@ object Game {
         'team2Id -> team2Id).executeUpdate()
     }
   }
+  
+  def deleteAll = {
+    DB.withConnection { implicit connection =>
+      val games = all
+      games foreach { game =>
+        SQL("delete from widget where id={id}").on('id -> game.widgetId).executeUpdate()
+      }
+      SQL("delete from game").executeUpdate()
+    }
+  }
 
   /**
    * Return a page of (Computer,Company).

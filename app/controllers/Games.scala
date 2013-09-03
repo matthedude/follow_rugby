@@ -90,4 +90,12 @@ object Games extends Controller with Secured {
       Game.delete(team1Id, team2Id)
       GameHome.flashing("success" -> "Game has been deleted")
   }
+  
+  def deleteAll() = IsAuthenticated { _ =>
+  _ =>
+    Game.deleteAll
+    Ok(views.html.admin.games.deleteAll())
+  }
+  
+  
 }
