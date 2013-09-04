@@ -56,7 +56,7 @@ object Member {
           limit 10
         """).as(Member.withTeamCategory *)
 
-      members
+      members.map{case (m, t, c) => (m, (m, t, c))}.toMap.values.toList
     }
   }
 
