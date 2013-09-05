@@ -9,17 +9,21 @@
   </div>
   <div class="span5">
     <div class="row">
+    <br></br>
+    <p class="lead">Follow Rugby is your one-stop shop for live Twitter <em><strong>match updates</strong></em>, the best <em><strong>rugby videos</strong></em> from around the web and the most <em><strong>comprehensive database</strong></em> of Twitter accounts for anyone involved in rugby worldwide.</p>
+    </div>
+    <div class="row">
       <h4>This week's games:</h4>
     </div>
-      @compGames.toList.map { case (comp, games) =>
+      @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
         <div class="row"> 
           <h5>@comp.name</h5>
         </div>
           @games.sliding(4,4).map { gs =>
         <div class="row">     
-              @gs.map { g =>
-            <div class="span1"><h5 class="muted"><i><a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a></i></h3></div> 
-          }  
+             <h5 class="muted"><i>@gs.map { g =>
+            <a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a>
+          }  </i></h5>
         </div>
         }     
       }

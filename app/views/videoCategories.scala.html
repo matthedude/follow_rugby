@@ -43,7 +43,9 @@
    </div>
   
   <div class="span8">
+  
     <h2>@videoCategory.name</h2>
+    <p><small>Tweet <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> or email <a href="mailto:ap@@follow-rugby.com">ap@@follow-rugby.com</a> any rugby videos you want on the site, especially any great amateur footage!</small></p>
     @Option(currentPage.items).filterNot(_.isEmpty).map { videos =>
         
         <table class="table table-striped table-bordered table-condensed">
@@ -58,7 +60,7 @@
 
                 @videos.map { video => 
                         <tr>
-                          <td>@formatDate(video.date)</td>
+                          <td  width="130">@formatDate(video.date)</td>
                           <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))">@video.title</a></td>
                           <td>@video.description</td>
                         </tr>

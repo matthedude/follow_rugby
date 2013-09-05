@@ -113,7 +113,7 @@ object Game {
   def create(game: Game) = {
     DB.withConnection { implicit connection =>
       SQL("""
-            insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id, pos) values (
+            insert into game (team1_id, team2_id, competition_id, time, game_date, widget_id, pos, hashtag) values (
               {team1Id}, {team2Id}, {competitionId}, {time}, {gameDate}, {widgetId}, {pos}, {hashtag}
             )
             """).on(

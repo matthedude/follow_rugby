@@ -185,7 +185,7 @@ object Video {
       SQL(
         """
           update video
-          set video_category_id = {name}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
+          set video_category_id = {videoCategoryId}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
           where id = {id}
         """).on(
         'id -> id,
@@ -244,7 +244,7 @@ object Video {
     }
 
   }
-  def listForVideoCategory(page: Int = 0, pageSize: Int = 20, filter: String = "%", videoCategoryId: Int): Page[Video] = {
+  def listForVideoCategory(page: Int = 0, pageSize: Int = 15, filter: String = "%", videoCategoryId: Int): Page[Video] = {
     
     val offest = pageSize * page
         

@@ -12,7 +12,7 @@ GET     /about                              controllers.Application.about
 GET     /admin                              controllers.Administrator.admin
 GET     /fanzone                            controllers.Application.fanzone
 GET     /videos/:vc                         controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
-GET     /videos/:vc/:t                      controllers.Application.selectVideo(i:Int, vci: Int, vc: String, t: String)
+GET     /videos/:vc/:i/:t                   controllers.Application.selectVideo(i:Int, vci: Int, vc: String, t: String)
 
 
 # Authentication
