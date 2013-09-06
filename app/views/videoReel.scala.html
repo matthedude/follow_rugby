@@ -10,8 +10,9 @@
       "http://www.dailymotion.com/thumbnail/video/"+link
     }
 }
-
-<div class="textpadding"><table>
+<div class="row-yellow">
+<div class="textpadding">
+    <table>
     @videos.map { case (vid, videoCategory, videoPlayer) =>
       <tr>
         <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
@@ -21,4 +22,5 @@
       </tr>   
     }
     </table>
-  </div>
+</div>
+</div>

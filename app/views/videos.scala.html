@@ -5,9 +5,9 @@
 @main("Follow Rugby"){
 <div class="row">
   <div class="span3">
-    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp) }) 
+    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp) })
   </div>  
-  <div class="span6 pagination-centered">
+  <div class="span8 pagination-centered">
     <h2>@video.title</h2>
     <p class="lead">@video.description</p>
     <span class='st_twitter_large' displayText='Tweet'></span>
@@ -41,6 +41,5 @@
     
   </div>
 </div>
-
 
 }

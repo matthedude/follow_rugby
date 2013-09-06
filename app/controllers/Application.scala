@@ -18,6 +18,10 @@ object Application extends Controller {
   def about = Action {
     Ok(views.html.about())
   }
+  
+  def joinIn = Action {
+    Ok(views.html.joinIn())
+  }
 
   def matchCentre(id: Int, categoryName: String) = Action {
     Ok(views.html.matchCentre(Game.findByCompetitionId(id))(Competition.findById(id)))

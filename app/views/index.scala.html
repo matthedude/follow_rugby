@@ -7,50 +7,44 @@
   <div class="span3">
    @videoReel(videos)
   </div>
-  <div class="span5">
+  <div class="span8">
     <div class="row">
-    <br></br>
-    <p class="lead">Follow Rugby is your one-stop shop for live Twitter <em><strong>match updates</strong></em>, the best <em><strong>rugby videos</strong></em> from around the web and the most <em><strong>comprehensive database</strong></em> of Twitter accounts for anyone involved in rugby worldwide.</p>
-    </div>
-    <div class="row">
-      <h4>This week's games:</h4>
-    </div>
+    <div class="textpadding">
+    <div class="topmargin"></div> 
+    
+    <p class="lead">Follow Rugby is your one-stop shop for live Twitter <em><strong>match updates</strong></em>, great <em><strong>rugby videos</strong></em> from around the web and we've organised all the best rugby <em><strong>Twitter accounts</strong></em> for you to follow.</p>
+    
+      <div class="linebreak"></div> 
+      <h4>This week's games</h4>
+      <div class="linebreak"></div> 
       @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
-        <div class="row"> 
           <h5>@comp.name</h5>
-        </div>
-          @games.sliding(4,4).map { gs =>
-        <div class="row">     
+      
+          @games.sliding(8,8).map { gs =>
+          
              <h5 class="muted"><i>@gs.map { g =>
-            <a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a>
+            <a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a> 
           }  </i></h5>
-        </div>
+       
         }     
       }
       @if(compGames.isEmpty) {
         <p class="muted"><i>No games scheduled this week.</i></p>  
       }
-    <div class="row"> 
-      <h4>Latest Twitter profiles added:</h4>
+      <div class="linebreak"></div>
+      <h4>Latest Twitter profiles added</h4>
+      <div class="linebreak"></div>
       <p>
       /@latestMembers.map { case (member, team, category) =>
         /<a href="@routes.Application.selectTeam(category.id.get, team.id.get, category.name, team.name)">@member.name</a>/
       }/
       </p>
-    </div>
-  </div>
-  <div class="span4"> 
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_linkedin_large' displayText='LinkedIn'></span>
-    <span class='st_email_large' displayText='Email'></span>
-    <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/FollowRugbySite" data-widget-id="320940036453449730"></a></div>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</div>
   </div>
   </div>
- 
-    
+  
+  </div>
+  
+  <div class="row"></div>
 
 
 }

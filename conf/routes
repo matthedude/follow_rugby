@@ -9,6 +9,7 @@ GET     /db/:cn/:tn                         controllers.Application.selectTeam(c
 GET     /comingsoon                         controllers.Application.comingSoon
 GET     /matchCentre/:cn                    controllers.Application.matchCentre(i:Int, cn: String)
 GET     /about                              controllers.Application.about
+GET     /joinIn                             controllers.Application.joinIn
 GET     /admin                              controllers.Administrator.admin
 GET     /fanzone                            controllers.Application.fanzone
 GET     /videos/:vc                         controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
