@@ -149,7 +149,7 @@ object Video {
           on video.video_player_id = video_player.id
           where video.video_category_id = {videoCategoryId}
           order by video.id desc
-          limit 5
+          limit 10
         """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
 
       videos
@@ -166,7 +166,7 @@ object Video {
           on video.video_player_id = video_player.id
           where video.video_category_id = {videoCategoryId}
           order by RAND()
-          limit 5
+          limit 10
         """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
 
       videos
@@ -184,7 +184,7 @@ object Video {
           join video_player
           on video.video_player_id = video_player.id
           order by video.id desc
-          limit 5
+          limit 10
         """).as(Video.withVideoCategoryPlayer *)
 
       videos
