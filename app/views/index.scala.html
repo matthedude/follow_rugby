@@ -5,7 +5,7 @@
 @main("Follow Rugby"){
   <div class="row">
   <div class="span3">
-   @videoReel(videos)
+   @videoReel(videos.map{case(v, vc, vp) => (v, vc, vp, VideoHtml(v, vp))})
   </div>
   <div class="span8">
     <div class="row">

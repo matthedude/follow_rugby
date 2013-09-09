@@ -19,16 +19,6 @@
         <a href="@link(0)">@title</a>
     </th>
 }
-@****************************************
-* Helper working out video link         *
-****************************************@
-@videoLink(videoPlayer: VideoPlayer, link: String) = @{
-    if(videoPlayer.name.toLowerCase == "youtube"){
-      "http://img.youtube.com/vi/"+link+"/2.jpg"
-    } else {
-      "http://www.dailymotion.com/thumbnail/video/"+link
-    }
-}
 
 @formatDate(date: Date) = @{
   val sdf = new SimpleDateFormat("EEE d MMM yyyy")
@@ -39,7 +29,7 @@
 @main("Follow Rugby"){
   <div class="row">
    <div class="span3">
-     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp) }) 
+     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }) 
    </div>
   
   <div class="span8">

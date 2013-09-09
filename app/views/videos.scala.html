@@ -1,11 +1,11 @@
-@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)])
+@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)], videoHtml: VideoHtml)
 
 @import helper._
 
 @main("Follow Rugby"){
 <div class="row">
   <div class="span3">
-    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp) })
+    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) })
   </div>  
   <div class="span8 pagination-centered">
     <h2>@video.title</h2>
@@ -14,11 +14,7 @@
 <span class='st_facebook_large' displayText='Facebook'></span>
 <span class='st_linkedin_large' displayText='LinkedIn'></span>
 <span class='st_email_large' displayText='Email'></span>
-    @if(videoPlayer.name.toLowerCase == "youtube") {  
-      <iframe width="560" height="315" src="//www.youtube.com/embed/@video.link" frameborder="0" allowfullscreen></iframe>  
-    } else {
-      <iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/@video.link"></iframe>
-    }
+    @videoHtml.fullVideo
     <br></br>
     <br></br>
       <div id="disqus_thread"></div>

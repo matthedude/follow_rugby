@@ -9,7 +9,8 @@ object ApplicationBuild extends Build {
 
     val appDependencies = Seq(
         "mysql" % "mysql-connector-java" % "5.1.20", anorm, jdbc,
-        "com.typesafe" %% "play-plugins-mailer" % "2.1.0" 
+        "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
+        "com.embedly" % "embedly-api" % "0.1.3"
     )
 
     val main = play.Project(appName, appVersion, appDependencies).settings(

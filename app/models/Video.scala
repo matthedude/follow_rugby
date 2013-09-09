@@ -1,11 +1,21 @@
 package models
 
 import play.api.Play.current
+
 import play.api.db._
 import anorm._
 import anorm.SqlParser._
 import play.api.Play
 import java.util.Date
+import play.api.templates.Html
+
+import java.util.HashMap;
+import org.json.JSONArray;
+import org.apache.commons.logging.LogFactory;
+import com.embedly.api.Api;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 case class VideoPlayer(id: Pk[Int] = NotAssigned, name: String)
 
@@ -55,6 +65,28 @@ object VideoPlayer {
 case class VideoPlayerChannel(player: VideoPlayer, channel: String)
 
 case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
+case class VideoHtml(video: Video, videoPlayer: VideoPlayer) {
+  val (fullVideo:Html, thumbnail:String) = {
+    videoPlayer.name.toLowerCase match {
+      case "youtube" => {
+        val l = """<iframe width="560" height="315" src="http://www.youtube.com/embed/""" + video.link + """" frameborder="0" allowfullscreen></iframe>"""
+        val t = "http://img.youtube.com/vi/"+video.link+"/2.jpg"
+        (Html(l), t) 
+      }
+      case "dailymotion" => {
+        val l = """<iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/""" + video.link + """"></iframe>"""
+        val t = "http://www.dailymotion.com/thumbnail/video/"+video.link
+        (Html(l), t) 
+      }
+      case "other" => {
+        val l = "<iframe src=\"https://media.embed.ly/1/frame?url=http%3A%2F%2Fwww.viddy.com%2Fvideo%2Fa46d893a-e82f-4998-8a15-424dbd3f40c5&width=748&secure=true&key=0202f0ddb5a3458aabf520e5ab790ab9&height=421\" width=\"748\" height=\"421\" border=\"0\" scrolling=\"no\" frameborder=\"0\"></iframe>"
+        val t = "https://i.embed.ly/1/image?url=http%3A%2F%2Fcdn.viddy.com%2Fimages%2Fvideo%2Fa46d893a-e82f-4998-8a15-424dbd3f40c5.jpg&key=944875f32bd24eeab10c25f6636af91d"
+        (Html(l), t) 
+      }
+    }
+  }
+  
+}
 
 object Video {
   val simple = {
@@ -198,6 +230,11 @@ object Video {
   }
 //case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
   def create(video: Video) = {
+    val newLink = if(video.videoPlayerId == 3) {
+      fetchEmbedlyLink(video.link)
+    } else {
+      video.link
+    }
     DB.withConnection { implicit connection =>
       SQL("""
             insert into video (video_category_id, video_player_id, link, description, title) values (
@@ -212,6 +249,21 @@ object Video {
 
       
     }
+  }
+  
+  private def fetchEmbedlyLink(link: String) = {
+      val api = new Api("Mozilla/5.0 (compatible; followrugby/1.0; matthedude@hotmail.com)",
+                    "3e6fbcd051d94fdcbecfd916d765aabb"); // <-- put key here
+      val params = new HashMap[String, Object]()
+      params.put("url", link);
+      params.put("maxwidth", "560");
+
+      val json = api.oembed(params);
+      
+      1 to json.
+        
+      
+    ""
   }
   
   def list(page: Int = 0, pageSize: Int = 20, orderBy: Int = 1, filter: String = "%"): Page[Video] = {
@@ -320,7 +372,5 @@ object VideoCategory {
     }
 
   }
-  
-  
-  
 }
+

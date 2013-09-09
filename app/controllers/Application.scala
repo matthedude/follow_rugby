@@ -76,7 +76,7 @@ object Application extends Controller {
       videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
       videoCategory <- VideoCategory.findById(videoCategoryId)
     } yield {
-      Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId)))
+      Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId), VideoHtml(video, videoPlayer)))
     }} getOrElse NotFound
   }
   

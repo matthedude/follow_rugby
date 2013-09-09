@@ -1,24 +1,14 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer)])
+@(videos: Seq[(Video, VideoCategory, VideoPlayer, VideoHtml)])
 
-@****************************************
-* Helper working out video link         *
-****************************************@
-@videoLink(videoPlayer: VideoPlayer, link: String) = @{
-    if(videoPlayer.name.toLowerCase == "youtube"){
-      "http://img.youtube.com/vi/"+link+"/2.jpg"
-    } else {
-      "http://www.dailymotion.com/thumbnail/video/"+link
-    }
-}
 <div class="row-yellow">
 <div class="textpadding">
     <table>
-    @videos.map { case (vid, videoCategory, videoPlayer) =>
+    @videos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
       <tr>
         <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h6>@vid.title</h6></a></td>
       </tr>
       <tr>
-        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img width="128" height="72" src="@videoLink(videoPlayer, vid.link)"></img></a></td>
+        <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img width="128" height="72" src="@videoHtml.thumbnail"></img></a></td>
       </tr>   
     }
     </table>
