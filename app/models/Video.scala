@@ -218,7 +218,7 @@ object Video {
       SQL(
         """
           update video
-          set video_category_id = {videoCategoryId}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}, thumbnail_url = {thumb}
+          set video_category_id = {videoCategoryId}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
           where id = {id}
         """).on(
         'id -> id,
@@ -226,8 +226,7 @@ object Video {
         'videoPlayerId -> video.videoPlayerId,
         'link -> video.link,
         'description -> video.description,
-        'title -> video.title,
-        'thumb -> video.thumbnailLink).executeUpdate()
+        'title -> video.title).executeUpdate()
     }
   }
 //case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
@@ -263,7 +262,6 @@ object Video {
       params.put("maxwidth", "560");
 
       val json = api.oembed(params);
-      println(json + "GGGG " + json.length)
       var html = ""
       var thumbnailUrl:Option[String] = None
       val jObj = json.getJSONObject(0)
