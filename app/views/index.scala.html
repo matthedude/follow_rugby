@@ -23,7 +23,7 @@
           @games.sliding(8,8).map { gs =>
           
              <h5 class="muted"><i>@gs.map { g =>
-            <a href="@{routes.Application.matchCentre(g.competitionId, comp.name)+"#game"+g.team1Id}">#@g.hashtag</a> 
+            <a href="@routes.Application.matchCentre(g.competitionId, comp.name, g.team1Id, g.team2Id)">#@g.hashtag</a> 
           }  </i></h5>
        
         }     

@@ -54,12 +54,15 @@ object Game {
   def allMatches(games: Seq[Game]): Seq[MatchCentreGame] = {
     DB.withConnection { implicit connection =>
       games map { game =>
-        println(game)
         val team1 = Team.findById(game.team1Id).get
         val team2 = Team.findById(game.team2Id).get
-        MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get, Widget.findById(game.widgetId))
+        matchCentreGame(team1, team2, game)
       }
     }
+  }
+  
+  def matchCentreGame(team1: Team, team2: Team, game: Game) = {
+    MatchCentreGame(team1, team2, game, Widget.findById(team1.widgetId).get, Widget.findById(team2.widgetId).get, Widget.findById(game.widgetId))
   }
   
   def allGamesWithComp = {
@@ -76,7 +79,7 @@ object Game {
     }
   }
 
-  def findById(team1Id: Long, team2Id: Long): Option[Game] = {
+  def findById(team1Id: Int, team2Id: Int): Option[Game] = {
     DB.withConnection { implicit connection =>
 
       val game = SQL(

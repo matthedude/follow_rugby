@@ -1,6 +1,7 @@
-@(games: Seq[models.MatchCentreGame])(competition: Option[Competition])
+@(games: Seq[models.MatchCentreGame], competition: Option[Competition], matchGame: Option[MatchCentreGame])
 @import java.text.SimpleDateFormat
 @import java.util.Date
+@import Linker._
 
 @strDate(date: Date) = @{
     val sd = new SimpleDateFormat("dd MMMM yyyy")
@@ -11,10 +12,10 @@
 @main("Follow Rugby"){
 	@competition.map { comp =>
   <div class="row">
- <div class="span12">
-           <div class="textpadding"><h1>@comp.name</h1></div>
-         </div>
-</div>
+    <div class="span12">
+      <div class="textpadding"><h1>@comp.name</h1></div>
+    </div>
+  </div>
 	}
 	
 	@if(games.isEmpty) {
@@ -29,41 +30,44 @@
   	 <ul class="nav nav-list">
      <li class="nav-header">@strDate(date)</li>
   	 @games.sortBy(_.game.pos).map { game =>
-  	   <li><p class="muted"><a href="#game@game.game.team1Id">@game.team1.name v @game.team2.name</a> <i>#@game.game.hashtag</i></p></li>
+  	   <li><p class="muted"><a href="@routes.Application.matchCentre(competition.get.id.get, link(competition.get.name), game.team1.id.get, game.team2.id.get)">@game.team1.name v @game.team2.name</a> <i>#@game.game.hashtag</i></p></li>
   	 }
   	  </ul>
   }
    
    <br></br>
  
-  
-   @games.groupBy(_.game.gameDate).toList.sortBy(_._1).map { case (date, games) =>
-     @games.sortBy(_.game.pos).map { game =>
+   @if(!matchGame.isDefined) {
+   <div class="span12 pagination-centered">  
+     <p class="lead">Please select a match from the list above to see build up and LIVE in-game Twitter updates.</p>
+   </div>
+   }
+   @matchGame.map { g =>
         <div class="row">
           <div class="span12">
-            <a name="game@game.game.team1Id"></a>
+            <a name="game@g.game.team1Id"></a>
               <div class="well">
-                <h6 class="text-left">@strDate(game.game.gameDate) @@@game.game.time</h6>
-                <h3 class="text-center">@game.team1.name v @game.team2.name</h3>
-                <h3 class="muted text-center"><i>#@game.game.hashtag</i></h1>
+                <h6 class="text-left">@strDate(g.game.gameDate) @@@g.game.time</h6>
+                <h3 class="text-center">@g.team1.name v @g.team2.name</h3>
+                <h3 class="muted text-center"><i>#@g.game.hashtag</i></h1>
               </div>
           </div>
         </div>
   
   	 <div class="row"> 
        <div class="span4">
-         <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team1Widget.twitterAccount}/@{game.team1Widget.url}" data-widget-id="@game.team1Widget.id"></a>
+         <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team1Widget.twitterAccount}/@{g.team1Widget.url}" data-widget-id="@g.team1Widget.id"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
          </div>
        </div>
           
    
      <div class="span4">
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{game.team2Widget.twitterAccount}/@{game.team2Widget.url}" data-widget-id="@game.team2Widget.id"></a>
+        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team2Widget.twitterAccount}/@{g.team2Widget.url}" data-widget-id="@g.team2Widget.id"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
      </div>
-     @game.matchWidget.map { w =>    
+     @g.matchWidget.map { w =>    
      <div class="span4">
         <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -74,7 +78,7 @@
      
      </br>
 
-     }
+    
     
   } 
   

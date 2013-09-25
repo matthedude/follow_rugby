@@ -23,8 +23,18 @@ object Application extends Controller {
     Ok(views.html.joinIn())
   }
 
-  def matchCentre(id: Int, categoryName: String) = Action {
-    Ok(views.html.matchCentre(Game.findByCompetitionId(id))(Competition.findById(id)))
+  def matchCentre(id: Int, categoryName: String, t1Id: Int, t2Id: Int) = Action {
+    val game = if(t1Id == 0 || t2Id == 0) {
+      None
+    } else {
+      for {
+        team1 <- Team.findById(t1Id)
+        team2 <- Team.findById(t2Id)
+        game <- Game.findById(t1Id, t2Id)
+      } yield Game.matchCentreGame(team1, team2, game)
+    }
+    
+    Ok(views.html.matchCentre(Game.findByCompetitionId(id), Competition.findById(id), game))
   }
 
   def selectCategory(id: Int, categoryName: String) = Action {
