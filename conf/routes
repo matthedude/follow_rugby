@@ -7,7 +7,7 @@ GET     /                                   controllers.Application.index
 GET     /db/:cn                             controllers.Application.selectCategory(i:Int, cn: String)
 GET     /db/:cn/:tn                         controllers.Application.selectTeam(ci:Int, ti:Int, cn: String, tn: String)
 GET     /comingsoon                         controllers.Application.comingSoon
-GET     /matchCentre/:cn                    controllers.Application.matchCentre(i:Int, cn: String)
+GET     /matchCentre/:cn                    controllers.Application.matchCentre(i:Int, cn: String, t1: Int ?= 0, t2: Int ?= 0)
 GET     /about                              controllers.Application.about
 GET     /joinIn                             controllers.Application.joinIn
 GET     /admin                              controllers.Administrator.admin
