@@ -3,12 +3,12 @@
 @import helper._
 
 @main("Follow Rugby"){
+  
   <div class="row">
-  <div class="span3">
- @videoReel(videos.map{case(v, vc, vp) => (v, vc, vp, VideoHtml(v, vp))})
-  </div>
+    <div class="span3">
+      @videoReel(videos.take(2).map{case(v, vc, vp) => (v, vc, vp, VideoHtml(v, vp))})
+    </div>
   <div class="span8">
-    <div class="row">
     <div class="textpadding">
     <div class="topmargin"></div> 
     
@@ -39,11 +39,28 @@
         /<a href="@routes.Application.selectTeam(category.id.get, team.id.get, category.name, team.name)">@member.name</a>/
       }/
       </p>
+      
   </div>
   </div>
   
   </div>
-  
+  <div class="row">
+  <div class="span12">
+  <div class="textpadding">
+  <h4>What do global #rugby fans think of the Canterbury (<a href="https://www.twitter.com/intent/user?screen_name=canterburyNZ">@@canterburyNZ</a>) all time Dream Team, chosen by their own social media fans? Post your thoughts on the Twitter widget below or Tweet comments using #CCCDreamTeam!</h4>
+  </div>
+  </div>
+  </div>
+  <div class="row">
+  <div class="span3">
+        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?q=%23CCCDreamTeam" data-widget-id="384367766519554048"></a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+     </div>
+  <div class="span9">
+  <img src="@routes.Assets.at("images/Canterbury Dream Team_FINAL2.JPG")"></img>
+  </div>
+  </div>
   <div class="row"></div>
 
 
