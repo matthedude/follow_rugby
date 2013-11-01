@@ -7,7 +7,7 @@ object Linker {
   }
   
   def linkVideo(str: String) = {
-    str.replace(" ", "-").replace(".", "")
+    str.trim.replaceAll("(\\s)\\1","").replaceAll("[^a-zA-Z0-9\\s]", "").replace(" ", "-")
   }
   
   def strip(str: String) = {

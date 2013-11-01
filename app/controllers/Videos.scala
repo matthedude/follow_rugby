@@ -23,7 +23,8 @@ object Videos extends Controller with Secured {
       "description" -> nonEmptyText,
       "title" -> nonEmptyText,
       "date" -> ignored(new Date),
-      "thumbnailLink" -> optional(text))(Video.apply)(Video.unapply))
+      "thumbnailLink" -> optional(text),
+      "thanks" -> optional(text))(Video.apply)(Video.unapply))
 
   def videoList(page: Int, orderBy: Int, filter: String) = IsAuthenticated { _ =>
     implicit request =>

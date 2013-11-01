@@ -64,7 +64,7 @@ object VideoPlayer {
 
 case class VideoPlayerChannel(player: VideoPlayer, channel: String)
 
-case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date, thumbnailLink: Option[String])
+case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date, thumbnailLink: Option[String], thanks: Option[String])
 case class VideoHtml(video: Video, videoPlayer: VideoPlayer) {
   val (fullVideo:Html, thumbnail:String) = {
     videoPlayer.name.toLowerCase match {
@@ -97,8 +97,9 @@ object Video {
     get[String]("video.description") ~
     get[String]("video.title") ~
     get[Date]("video.date") ~
-    get[Option[String]]("video.thumbnail_url") map {
-        case id ~ videoCategoryId ~ videoPlayerId ~ link ~ description ~ title ~ date ~ thumb  => Video(id, videoCategoryId, videoPlayerId, link, description, title, date, thumb)
+    get[Option[String]]("video.thumbnail_url") ~
+    get[Option[String]]("video.thanks") map {
+        case id ~ videoCategoryId ~ videoPlayerId ~ link ~ description ~ title ~ date ~ thumb ~ thanks => Video(id, videoCategoryId, videoPlayerId, link, description, title, date, thumb, thanks)
       }
   }
   
@@ -218,7 +219,7 @@ object Video {
       SQL(
         """
           update video
-          set video_category_id = {videoCategoryId}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}
+          set video_category_id = {videoCategoryId}, video_player_id = {videoPlayerId}, link = {link}, description = {description}, title = {title}, thanks = {thanks}
           where id = {id}
         """).on(
         'id -> id,
@@ -226,12 +227,12 @@ object Video {
         'videoPlayerId -> video.videoPlayerId,
         'link -> video.link,
         'description -> video.description,
-        'title -> video.title).executeUpdate()
+        'title -> video.title,
+        'thanks -> video.thanks).executeUpdate()
     }
   }
 //case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
   def create(video: Video) = {
-    println(video)
     val (newLink, thumbnail) = if(video.videoPlayerId == 3) {
       fetchEmbedlyLinkAndThumbnail(video.link)
     } else {
@@ -239,8 +240,8 @@ object Video {
     }
     DB.withConnection { implicit connection =>
       SQL("""
-            insert into video (video_category_id, video_player_id, link, description, title, thumbnail_url) values (
-              {videoCategoryId}, {videoPlayerId}, {link}, {description}, {title}, {thumb}
+            insert into video (video_category_id, video_player_id, link, description, title, thumbnail_url, thanks) values (
+              {videoCategoryId}, {videoPlayerId}, {link}, {description}, {title}, {thumb}, {thanks}
             )
             """).on(
         'videoCategoryId -> video.videoCategoryId,
@@ -248,7 +249,8 @@ object Video {
         'link -> newLink,
         'description -> video.description,
         'title -> video.title,
-        'thumb -> thumbnail).executeUpdate()
+        'thumb -> thumbnail,
+        'thanks -> video.thanks).executeUpdate()
 
       
     }

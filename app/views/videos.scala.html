@@ -5,7 +5,7 @@
 @main("Follow Rugby"){
 <div class="row">
   <div class="span3">
-    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) })
+    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name))
   </div>
   <div class="span9">
   <h5>@videoCategory.name</h5>  
@@ -18,7 +18,8 @@
 <span class='st_linkedin_large' displayText='LinkedIn'></span>
 <span class='st_email_large' displayText='Email'></span>
     @videoHtml.fullVideo
-    
+    <div class="linebreak"></div> 
+    @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
   </div>
   </div>
 

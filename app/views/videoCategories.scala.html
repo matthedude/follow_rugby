@@ -29,7 +29,7 @@
 @main("Follow Rugby"){
   <div class="row">
    <div class="span3">
-     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }) 
+     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name)) 
    </div>
   
   <div class="span8">

@@ -1,4 +1,4 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer, VideoHtml)])
+@(videos: Seq[(Video, VideoCategory, VideoPlayer, VideoHtml)], title: Option[String])
  <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -12,6 +12,9 @@
 <div class="fb-like-box" data-href="http://www.facebook.com/FollowRugby" data-width="220" data-height="The pixel height of the plugin" data-colorscheme="dark" data-show-faces="true" data-header="true" data-stream="false" data-show-border="false"></div>  
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 <div class="textpadding">
+  @title.map{ t => 
+    <h4 class="text-center">@t</h4>
+  }
     <table>
     @videos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
       <tr>

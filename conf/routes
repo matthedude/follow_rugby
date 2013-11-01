@@ -3,17 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.Application.index
-GET     /db/:cn                             controllers.Application.selectCategory(i:Int, cn: String)
-GET     /db/:cn/:tn                         controllers.Application.selectTeam(ci:Int, ti:Int, cn: String, tn: String)
-GET     /comingsoon                         controllers.Application.comingSoon
-GET     /matchCentre/:cn                    controllers.Application.matchCentre(i:Int, cn: String, t1: Int ?= 0, t2: Int ?= 0)
-GET     /about                              controllers.Application.about
-GET     /joinIn                             controllers.Application.joinIn
-GET     /admin                              controllers.Administrator.admin
-GET     /fanzone                            controllers.Application.fanzone
-GET     /videos/:vc                         controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
-GET     /videos/:vc/:i/:t                   controllers.Application.selectVideo(i:Int, vci: Int, vc: String, t: String)
+GET     /                                                                   controllers.Application.index
+GET     /db/category/:i/:cn                                                 controllers.Application.selectCategory(i:Int, cn: String)
+GET     /db/category/:ci/:cn/team/:ti/:tn                                   controllers.Application.selectTeam(ci:Int, ti:Int, cn: String, tn: String)
+GET     /comingsoon                                                         controllers.Application.comingSoon
+GET     /matchCentre/competition/:i/:cn/teams/:t1/:t2                       controllers.Application.matchCentre(i:Int, cn: String, t1: Int, t2: Int)
+GET     /about                                                              controllers.Application.about
+GET     /joinIn                                                             controllers.Application.joinIn
+GET     /promotions                                                         controllers.Application.promotions
+GET     /admin                                                              controllers.Administrator.admin
+GET     /videos/category/:vc/:i                                             controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
+GET     /videos/:i/category/:vc/:vci/:d                                     controllers.Application.selectVideo(i:Int, vci: Int, vc: String, d: String)
 
 
 # Authentication

@@ -22,6 +22,10 @@ object Application extends Controller {
   def joinIn = Action {
     Ok(views.html.joinIn())
   }
+  
+  def promotions = Action {
+    Ok(views.html.promotions())
+  }
 
   def matchCentre(id: Int, categoryName: String, t1Id: Int, t2Id: Int) = Action {
     val game = if(t1Id == 0 || t2Id == 0) {
@@ -94,8 +98,5 @@ object Application extends Controller {
   def comingSoon = Action {
     Ok(views.html.comingSoon())
   }
-  
-  def fanzone = Action {
-    Ok(views.html.fanzone())
-  }
+
 }
