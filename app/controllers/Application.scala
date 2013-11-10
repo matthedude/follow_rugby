@@ -52,7 +52,6 @@ object Application extends Controller {
      
     }
     
-    //this broken, 
     {for {
       c <- category
     } yield { 
@@ -89,8 +88,10 @@ object Application extends Controller {
       video <- Video.findById(id)
       videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
       videoCategory <- VideoCategory.findById(videoCategoryId)
+      videoHtml = VideoHtml(video, videoPlayer)
+      openGraph = OpenGraph(video.description, videoHtml.largeThumbnail, video.title)
     } yield {
-      Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId), VideoHtml(video, videoPlayer)))
+      Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId), videoHtml, openGraph))
     }} getOrElse NotFound
   }
   

@@ -64,24 +64,29 @@ object VideoPlayer {
 
 case class VideoPlayerChannel(player: VideoPlayer, channel: String)
 
-case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date, thumbnailLink: Option[String], thanks: Option[String])
+case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date, thumbnailLink: Option[String], thanks: Option[String]) {
+  val openGraph = OpenGraph(description, thumbnailLink.getOrElse(OpenGraph.defaultImage), title)
+}
 case class VideoHtml(video: Video, videoPlayer: VideoPlayer) {
-  val (fullVideo:Html, thumbnail:String) = {
+  val (fullVideo:Html, thumbnail:String, largeThumbnail: String) = {
     videoPlayer.name.toLowerCase match {
       case "youtube" => {
         val l = """<iframe width="560" height="315" src="http://www.youtube.com/embed/""" + video.link + """" frameborder="0" allowfullscreen></iframe>"""
         val t = "http://img.youtube.com/vi/"+video.link+"/2.jpg"
-        (Html(l), t) 
+        val lt = "http://img.youtube.com/vi/"+video.link+"/0.jpg"
+        (Html(l), t, lt) 
       }
       case "dailymotion" => {
         val l = """<iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/""" + video.link + """"></iframe>"""
         val t = "http://www.dailymotion.com/thumbnail/video/"+video.link
-        (Html(l), t) 
+        val lt = t
+        (Html(l), t, lt) 
       }
       case "other" => {
         val l = video.link
         val t = video.thumbnailLink.getOrElse("")
-        (Html(l), t) 
+        val lt = t
+        (Html(l), t, lt) 
       }
     }
   }

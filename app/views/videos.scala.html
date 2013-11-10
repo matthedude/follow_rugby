@@ -1,8 +1,8 @@
-@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)], videoHtml: VideoHtml)
+@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)], videoHtml: VideoHtml, openGraph: OpenGraph)
 
 @import helper._
 
-@main("Follow Rugby"){
+@main("Follow Rugby", openGraph){
 <div class="row">
   <div class="span3">
     @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name))
