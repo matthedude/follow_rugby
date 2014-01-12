@@ -38,7 +38,7 @@ case class OpenGraph(description: String, image: String, title: String) {
 } 
 
 object OpenGraph {
-  val defaultImage = "http://www.follow-rugby.com/assets/fbpic.jpg"
+  val defaultImage = "http://www.follow-rugby.com/assets/images/fbpic.jpg"
   val default: OpenGraph = OpenGraph(
       "Follow Rugby is your one-stop shop for live Twitter match updates, great rugby videos from around the web and we've organised all the best rugby Twitter accounts for you to follow.",
       defaultImage,

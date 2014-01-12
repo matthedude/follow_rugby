@@ -20,7 +20,7 @@
       @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
           <h5>@comp.name</h5>
       
-          @games.sliding(8,8).map { gs =>
+          @games.sortBy(g => (g.gameDate, g.pos)).toList.sliding(8,8).map { gs =>
           
              <h5 class="muted"><i>@gs.map { g =>
             <a href="@routes.Application.matchCentre(g.competitionId, link(comp.name), g.team1Id, g.team2Id)">#@g.hashtag</a> 
