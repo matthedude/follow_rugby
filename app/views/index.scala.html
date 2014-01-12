@@ -1,7 +1,13 @@
 @(videos: Seq[(Video, VideoCategory, VideoPlayer)], compGames: Map[Competition, Seq[Game]], latestMembers: Seq[(Member, Team, Category)])(implicit flash: play.api.mvc.Flash)
-
+@import java.text.SimpleDateFormat
+@import java.util.Date
 @import helper._
 @import Linker._
+
+@strDate(date: Date) = @{
+    val sd = new SimpleDateFormat("dd MMMM yyyy")
+    sd.format(date)
+  }
 
 @main("Follow Rugby", OpenGraph.default){
   
@@ -20,11 +26,15 @@
       @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
           <h5>@comp.name</h5>
       
-          @games.sortBy(g => (g.gameDate, g.pos)).toList.sliding(8,8).map { gs =>
+          @games.groupBy(_.gameDate).toList.sortBy(_._1).map { case (date, gs) =>
           
-             <h5 class="muted"><i>@gs.map { g =>
+             <ul class="nav nav-list">
+             <li class="nav-header">@strDate(date)</li>
+             <h5 class="muted"><i>@gs.sortBy(_.pos).map { g =>
             <a href="@routes.Application.matchCentre(g.competitionId, link(comp.name), g.team1Id, g.team2Id)">#@g.hashtag</a> 
           }  </i></h5>
+            </ul>
+             
        
         }     
       }

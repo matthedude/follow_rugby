@@ -30,7 +30,7 @@
   	 <ul class="nav nav-list">
      <li class="nav-header">@strDate(date)</li>
   	 @games.sortBy(_.game.pos).map { game =>
-  	   <li><p class="muted"><a href="@routes.Application.matchCentre(competition.get.id.get, link(competition.get.name), game.team1.id.get, game.team2.id.get)">@game.team1.name v @game.team2.name</a> <i>#@game.game.hashtag</i></p></li>
+  	   <li><p><i>@game.game.time</i> @game.team1.name v @game.team2.name <i><a href="@routes.Application.matchCentre(competition.get.id.get, link(competition.get.name), game.team1.id.get, game.team2.id.get)">#@game.game.hashtag</a></i></p></li>
   	 }
   	  </ul>
   }
