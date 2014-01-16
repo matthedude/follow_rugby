@@ -8,7 +8,7 @@ import anorm.SqlParser._
 import play.api.Play
 
 
-case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int])
+case class Team(id: Pk[Int] = NotAssigned, name: String, twitterName: Option[String], categoryId: Int, widgetId: Long, vidChannel: Option[String], videoPlayerId: Option[Int], hashtag: Option[String])
 
 
 import VideoPlayer._
@@ -16,7 +16,7 @@ import VideoPlayer._
 
 object Team {
 
-  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None, videoPlayerId = None)
+  val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None, videoPlayerId = None, hashtag = None)
 
   
   val simple = {
@@ -26,8 +26,9 @@ object Team {
       get[Int]("team.category_id") ~
       get[Long]("team.widget_id") ~
       get[Option[String]]("team.vid_channel") ~
-      get[Option[Int]]("team.video_player_id") map {
-        case id ~ name ~ twitterName ~ categoryId ~ widgetId ~ vidChannel ~ videoPlayerId => Team(id, name, twitterName, categoryId, widgetId, vidChannel, videoPlayerId)
+      get[Option[Int]]("team.video_player_id") ~
+      get[Option[String]]("team.hashtag") map {
+        case id ~ name ~ twitterName ~ categoryId ~ widgetId ~ vidChannel ~ videoPlayerId ~ hashtag => Team(id, name, twitterName, categoryId, widgetId, vidChannel, videoPlayerId, hashtag)
       }
   }
 
@@ -103,7 +104,7 @@ object Team {
       SQL(
         """
           update team
-          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}, vid_channel = {vidChannel}, video_player_id = {videoPlayerId}
+          set name = {name}, twitter_name = {twitterName}, category_id = {categoryId}, widget_id = {widgetId}, vid_channel = {vidChannel}, video_player_id = {videoPlayerId}, hashtag = {hashtag}
           where id = {id}
         """).on(
           'id -> id,
@@ -112,7 +113,8 @@ object Team {
           'categoryId -> team.categoryId,
           'widgetId -> team.widgetId,
           'vidChannel -> team.vidChannel,
-          'videoPlayerId -> team.videoPlayerId).executeUpdate()
+          'videoPlayerId -> team.videoPlayerId,
+          'hashtag -> team.hashtag).executeUpdate()
     }
   }
 
@@ -159,8 +161,8 @@ object Team {
   def create(team: Team): Int = {
     DB.withConnection { implicit connection =>
       SQL("""
-            insert into team (name, twitter_name, category_id, widget_id, vid_Channel, video_player_id) values (
-              {name}, {twitterName}, {categoryId}, {widgetId}, {vidChannel}, {videoPlayerId}
+            insert into team (name, twitter_name, category_id, widget_id, vid_Channel, video_player_id, hashtag) values (
+              {name}, {twitterName}, {categoryId}, {widgetId}, {vidChannel}, {videoPlayerId}, {hashtag}
             )
             """).on(
         'name -> team.name,
@@ -168,7 +170,8 @@ object Team {
         'categoryId -> team.categoryId,
         'widgetId -> team.widgetId,
         'vidChannel -> team.vidChannel,
-        'videoPlayerId -> team.videoPlayerId).executeUpdate()
+        'videoPlayerId -> team.videoPlayerId,
+          'hashtag -> team.hashtag).executeUpdate()
 
       val newTeam = SQL("""
             select *

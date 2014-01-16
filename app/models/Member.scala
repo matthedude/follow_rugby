@@ -44,7 +44,7 @@ object Member {
 
       val members = SQL(
         """
-          select member.id, member.name, member.twitter_name, team.id, team.id, team.name, team.twitter_name, team.category_id, team.widget_id, team.vid_channel, team.video_player_id, category.id, category.name, category.widget_id
+          select member.id, member.name, member.twitter_name, team.id, team.id, team.name, team.twitter_name, team.category_id, team.widget_id, team.vid_channel, team.video_player_id, team.hashtag, category.id, category.name, category.widget_id
           from member 
           left join team_member 
           on member.id = team_member.member_id
