@@ -22,7 +22,7 @@ object Member {
   val withTeam = Member.simple ~ str("name") map {
     case member ~ team => (member, team)
   }
-  
+
   val withTeamCategory = Member.simple ~ Team.simple ~ Category.simple map {
     case member ~ team ~ category => (member, team, category)
   }
@@ -56,7 +56,7 @@ object Member {
           limit 10
         """).as(Member.withTeamCategory *)
 
-      members.map{case (m, t, c) => (m, (m, t, c))}.toMap.values.toList
+      members.map { case (m, t, c) => (m, (m, t, c)) }.toMap.values.toList
     }
   }
 
@@ -160,5 +160,30 @@ object Member {
     }
 
   }
+  def search(filter: String = "%"):SearchResults  = {
+
+    DB.withConnection { implicit connection =>
+
+      val members = SQL(
+        """
+            select * from member
+            where member.name like {filter}
+            or member.twitter_name like {filter}
+            """).on(
+          'filter -> filter).as(Member.simple *)
+      val teams = SQL(
+         """
+            select * from team
+            where team.name like {filter}
+            or team.twitter_name like {filter}
+            """).on(
+          'filter -> filter).as(Team.simple *)
+          
+      SearchResults(members, teams.filter(_.twitterName.isDefined))
+    }
+
+  }
 
 }
+
+case class SearchResults(members: Seq[Member] = Nil, teams: Seq[Team] = Nil)

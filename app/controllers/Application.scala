@@ -23,10 +23,6 @@ object Application extends Controller {
     Ok(views.html.joinIn())
   }
   
-  def promotions = Action {
-    Ok(views.html.promotions())
-  }
-
   def matchCentre(id: Int, categoryName: String, t1Id: Int, t2Id: Int) = Action {
     val game = if(t1Id == 0 || t2Id == 0) {
       None
@@ -93,6 +89,11 @@ object Application extends Controller {
     } yield {
       Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId), videoHtml, openGraph))
     }} getOrElse NotFound
+  }
+  
+  def search(filter: String, startMember: Int, startTeam: Int) = Action {
+    val results = if(filter.isEmpty) SearchResults() else Member.search("%" + filter + "%")
+    Ok(views.html.search(results, filter, startMember, startTeam))
   }
   
 

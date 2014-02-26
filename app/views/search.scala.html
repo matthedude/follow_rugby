@@ -1,0 +1,134 @@
+@(searchResults: SearchResults, currentFilter: String, startResultMember: Int, startResultTeam: Int)
+
+@import models.Linker._
+@import models.VideoPlayer
+
+@memberSize() = {
+     @{if(searchResults.members.size < startResultMember + 20) {searchResults.members.size} else {startResultMember + 20}}
+}
+
+@teamSize() = {
+     @{if(searchResults.teams.size < startResultTeam + 20) {searchResults.teams.size} else {startResultTeam + 20}}
+}
+@main("Follow Rugby", OpenGraph.default){
+  <div class="textpadding">
+    <div class="topmargin"></div> 
+  
+  
+  <div class="row">
+  <div class="span5"><h3>Search for people or teams...</h3></div>
+  </div>
+  <div class="row">
+  <div id="actions">
+        @helper.form(action=routes.Application.search()) {
+          <div class="span3">
+            <input type="search" id="searchbox" name="s" value="@currentFilter" placeholder="Search...">
+          </div>
+          <div class="span3">
+            <input type="submit" id="searchsubmit" value="Search..." class="btn primary">
+          </div>
+          
+        }
+        
+  </div>
+ </div>
+ <div class="row">
+ <div class="span11">
+@Option(searchResults.members).filterNot(_.isEmpty).map { members =>
+ <h4>People who matched your search...</h4>
+
+
+                @members.sortBy(_.name).drop(startResultMember).take(20).map { member => 
+                
+                        <p><a href="https://www.twitter.com/intent/user?screen_name=@{member.twitterName}">@member.name</a></p>
+                    
+                }
+            <div id="pagination" class="pagination">
+            <ul>
+            @if(startResultMember-20 >= 0) {
+              <li class="previous">
+                <a href="@routes.Application.search(currentFilter, startResultMember-20, startResultTeam)">&larr; Previous</a>
+              </li>
+            
+            } else {
+               <li class="previous disabled">
+                 <a>&larr; Previous</a>
+               </li>
+            }
+            <li class="current">
+              <a>Displaying @(startResultMember + 1) to @memberSize() of @members.size</a>
+            </li>
+            
+            @if(startResultMember+20 < members.size) {
+              <li class="next">
+                <a href="@routes.Application.search(currentFilter, startResultMember+20, startResultTeam)">Next &rarr;</a>
+              </li>
+            
+            } else {
+               <li class="next disabled">
+                 <a>Next &rarr;</a>
+               </li>
+            }
+            </ul>
+            </div> 
+            
+ }.getOrElse {
+ @if(!currentFilter.isEmpty) {
+ <h4>No people matched your search.</h4>
+ }
+ }
+</div>
+</div>
+<div class="row">
+<div class="span11">
+@Option(searchResults.teams).filterNot(_.isEmpty).map { teams =>
+ <h4>Teams who matched your search...</h4>
+        
+       
+                @teams.sortBy(_.name).drop(startResultTeam).take(20).map { team => 
+                        <p><a href="https://www.twitter.com/intent/user?screen_name=@{team.twitterName}">@team.name</a></p>
+                    
+                }
+                
+                <div id="pagination" class="pagination">
+            <ul>
+            @if(startResultTeam-20 >= 0) {
+              <li class="previous">
+                <a href="@routes.Application.search(currentFilter, startResultMember, startResultTeam-20)">&larr; Previous</a>
+              </li>
+            
+            } else {
+               <li class="previous disabled">
+                 <a>&larr; Previous</a>
+               </li>
+            }
+            <li class="current">
+              <a>Displaying @(startResultTeam + 1) to @teamSize() of @teams.size</a>
+            </li>
+            
+            @if(startResultTeam+20 < teams.size) {
+              <li class="next">
+                <a href="@routes.Application.search(currentFilter, startResultMember, startResultTeam+20)">Next &rarr;</a>
+              </li>
+            
+            } else {
+               <li class="next disabled">
+                 <a>Next &rarr;</a>
+               </li>
+            }
+            </ul>
+            </div> 
+
+        }.getOrElse {
+ @if(!currentFilter.isEmpty) {
+ <h4>No teams matched your search.</h4>
+ }
+ }
+</div>
+</div> 
+
+}
+  
+      
+
+
