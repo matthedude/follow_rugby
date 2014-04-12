@@ -12,7 +12,7 @@ GET     /about                                                              cont
 GET     /search                                                             controllers.Application.search(s: String ?= "", a:Int ?= 0, b:Int ?= 0)
 GET     /joinIn                                                             controllers.Application.joinIn
 GET     /admin                                                              controllers.Administrator.admin
-GET     /videos/category/:vc/:i                                             controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "")
+GET     /videos/category/:vc/:i                                             controllers.Application.selectVideoCategory(i:Int, vc: String, p:Int ?= 0, f ?= "", c:Int ?= 0)
 GET     /videos/:i/category/:vc/:vci/:d                                     controllers.Application.selectVideo(i:Int, vci: Int, vc: String, d: String)
 
 

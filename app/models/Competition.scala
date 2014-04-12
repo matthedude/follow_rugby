@@ -30,6 +30,10 @@ object Competition {
       competitions
     }
   }
+  
+  def allForForm:Seq[(String, String)] = {
+    all.map(c => (c.id.get.toString, c.name))
+  }
 
   def findById(id: Int): Option[Competition] = {
     DB.withConnection { implicit connection =>
