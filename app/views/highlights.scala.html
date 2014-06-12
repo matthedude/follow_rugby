@@ -25,97 +25,87 @@
   sdf.format(date)
 }
 
-
 @main("Follow Rugby", OpenGraph.default){
   <div class="row">
-   <div class="span3">
-   
-     @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name)) 
-   </div>
-  
-  <div class="span8">
-  
-  <div class="row">
-  <div class="textpadding">
-    <div class="topmargin"></div>
-  <div class="span8 pagination-centered">
-  @form(action = routes.Application.selectVideoCategory(2, Linker.strip("Highlights")), '_onchange -> "this.form.submit()") {
-   <table><tr><td>
-        <select id="compId" name="compId" >
-            
-                <option class="blank" value="">-- Choose a competition --</option>
-            
-            @competitions.map { case(cId, cName) =>
-                <option value="@cId" @{if(competitionId == cId.toInt) "selected"}>@cName</option>
-            }
-        </select>
-   
-     </td><td><p><input type="submit" value="Go"  class="btn primary"></input></p></td></tr></table>
-       
-    }
+    <div class="span3">
+      @videoReel(latestVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name)) 
     </div>
-    </div>
-    </div>
-    <h2>@videoCategory.name</h2>
-    <p><small>Tweet <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> or email <a href="mailto:ap@@follow-rugby.com">ap@@follow-rugby.com</a> any rugby videos you want on the site, especially any great amateur footage!</small></p>
-    @Option(currentPage.items).filterNot(_.isEmpty).map { videos =>
-        
-        <table class="table table-striped table-bordered table-condensed">
-            <thead>
-                <tr>
-                  <th>Date added</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @videos.map { video => 
-                        <tr>
-                          <td  width="130">@formatDate(video.date)</td>
-                          <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))">@video.title</a></td>
-                          <td>@video.description</td>
-                        </tr>
-                }
-
-            </tbody>
-        </table>
-
-        <div id="pagination" class="pagination">
-            <ul>
-                @currentPage.prev.map { page =>
-                    <li class="prev">
-                        <a href="@link(page)">&larr; Previous</a>
-                    </li> 
-                }.getOrElse {
-                    <li class="prev disabled">
-                        <a>&larr; Previous</a>
-                    </li>
-                }
-                <li class="current">
-                    <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + videos.size) of @currentPage.total</a>
-                </li>
-                @currentPage.next.map { page =>
-                    <li class="next">
-                        <a href="@link(page)">Next &rarr;</a>
-                    </li> 
-                }.getOrElse {
-                    <li class="next disabled">
-                        <a>Next &rarr;</a>
-                    </li>
-                }
-            </ul>
+    <div class="span8">
+      <div class="row">
+        <div class="textpadding">
+          <div class="topmargin"></div>
+          <div class="span8 pagination-centered">
+          @form(action = routes.Application.selectVideoCategory(2, Linker.strip("Highlights")), '_onchange -> "this.form.submit()") {
+            <table>
+              <tr>
+                <td>
+                  <select id="compId" name="compId" >
+                    <option class="blank" value="">-- Choose a competition --</option>
+                    @competitions.map { case(cId, cName) =>
+                    <option value="@cId" @{if(competitionId == cId.toInt) "selected"}>@cName</option>
+                    }
+                  </select>
+                </td>
+                <td>
+                  <p><input type="submit" value="Go"  class="btn primary"></input></p>
+                </td>
+              </tr>
+            </table>
+          }
+          </div>
         </div>
-        
+      </div>
+      <h2>@videoCategory.name</h2>
+      <p><small>Tweet <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> or email <a href="mailto:ap@@follow-rugby.com">ap@@follow-rugby.com</a> any rugby videos you want on the site, especially any great amateur footage!</small></p>
+      @Option(currentPage.items).filterNot(_.isEmpty).map { videos =>
+      <table class="table table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>Date added</th>
+            <th>Title</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+        @videos.map { video => 
+          <tr>
+            <td  width="130">@formatDate(video.date)</td>
+            <td><a href="@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))">@video.title</a></td>
+            <td>@video.description</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+      <div id="pagination" class="pagination">
+        <ul>
+        @currentPage.prev.map { page =>
+          <li class="prev">
+              <a href="@link(page)">&larr; Previous</a>
+          </li> 
+        }.getOrElse {
+          <li class="prev disabled">
+              <a>&larr; Previous</a>
+          </li>
+        }
+          <li class="current">
+              <a>Displaying @(currentPage.offset + 1) to @(currentPage.offset + videos.size) of @currentPage.total</a>
+          </li>
+        @currentPage.next.map { page =>
+          <li class="next">
+              <a href="@link(page)">Next &rarr;</a>
+          </li> 
+        }.getOrElse {
+          <li class="next disabled">
+              <a>Next &rarr;</a>
+          </li>
+        }
+        </ul>
+      </div>
     }.getOrElse {
-        
-        <div class="well">
-            <em>Nothing to display</em>
-        </div>
-        
+      <div class="well">
+          <em>Nothing to display</em>
+      </div>
     }
+    </div>
   </div>
-  </div>
-
-
 }

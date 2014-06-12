@@ -8,19 +8,18 @@
     @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name))
   </div>
   <div class="span9">
-  <h5>@videoCategory.name</h5>  
+    <h5>@videoCategory.name</h5>  
     <h2>@video.title</h2>
     <p class="lead">@video.description</p>
-      <div class="span8 pagination-centered">
-    
-    <span class='st_twitter_large' displayText='Tweet'></span>
-<span class='st_facebook_large' displayText='Facebook'></span>
-<span class='st_linkedin_large' displayText='LinkedIn'></span>
-<span class='st_email_large' displayText='Email'></span>
-    @videoHtml.fullVideo
-    <div class="linebreak"></div> 
-    @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
+    <div class="span8 pagination-centered">
+      <span class='st_twitter_large' displayText='Tweet'></span>
+      <span class='st_facebook_large' displayText='Facebook'></span>
+      <span class='st_linkedin_large' displayText='LinkedIn'></span>
+      <span class='st_email_large' displayText='Email'></span>
+      @videoHtml.fullVideo
+      <div class="linebreak"></div> 
+      @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
+    </div>
   </div>
-  </div>
-
+</div>
 }

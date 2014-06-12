@@ -6,85 +6,65 @@
 @strDate(date: Date) = @{
     val sd = new SimpleDateFormat("dd MMMM yyyy")
     sd.format(date)
-  }
-
+}
 
 @main("Follow Rugby", OpenGraph.defaultMatchGame){
-	@competition.map { comp =>
+  @competition.map { comp =>
   <div class="row">
     <div class="span12">
       <div class="textpadding"><h1>@comp.name</h1></div>
     </div>
   </div>
 	}
-	
 	@if(games.isEmpty) {
-		<div class="alert alert-error">
-            <p>No matches are currently scheduled. Please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to suggest a match taking place this week for this competition</p>
-    </div>
+	<div class="alert alert-error">
+    <p>No matches are currently scheduled. Please contact <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a> to suggest a match taking place this week for this competition</p>
+  </div>
 	}
-	
-	
-   @games.groupBy(_.game.gameDate).toList.sortBy(_._1).map { case (date, games) =>
-  	 
-  	 <ul class="nav nav-list">
-     <li class="nav-header">@strDate(date)</li>
-  	 @games.sortBy(_.game.pos).map { game =>
-  	   <li><p><i>@game.game.time</i> @game.team1.name v @game.team2.name <i><a href="@routes.Application.matchCentre(competition.get.id.get, link(competition.get.name), game.team1.id.get, game.team2.id.get)">#@game.game.hashtag</a></i></p></li>
-  	 }
-  	  </ul>
+  @games.groupBy(_.game.gameDate).toList.sortBy(_._1).map { case (date, games) =>
+  <ul class="nav nav-list">
+    <li class="nav-header">@strDate(date)</li>
+	  @games.sortBy(_.game.pos).map { game =>
+	  <li><p><i>@game.game.time</i> @game.team1.name v @game.team2.name <i><a href="@routes.Application.matchCentre(competition.get.id.get, link(competition.get.name), game.team1.id.get, game.team2.id.get)">#@game.game.hashtag</a></i></p></li>
+	  }
+	</ul>
   }
-   
-   <br></br>
- 
-   @if(!matchGame.isDefined) {
-   <div class="span12 pagination-centered">  
-     <p class="lead">Please select a match from the list above to see build up and LIVE in-game Twitter updates.</p>
-   </div>
-   }
-   @matchGame.map { g =>
-        <div class="row">
-          <div class="span12">
-            <a name="game@g.game.team1Id"></a>
-              <div class="well">
-                <h6 class="text-left">@strDate(g.game.gameDate) @@@g.game.time</h6>
-                <h3 class="text-center">@g.team1.name v @g.team2.name</h3>
-                <h3 class="muted text-center"><i>#@g.game.hashtag</i></h1>
-              </div>
-          </div>
+  <br></br>
+  @if(!matchGame.isDefined) {
+  <div class="span12 pagination-centered">  
+    <p class="lead">Please select a match from the list above to see build up and LIVE in-game Twitter updates.</p>
+  </div>
+  }
+  @matchGame.map { g =>
+  <div class="row">
+    <div class="span12">
+      <a name="game@g.game.team1Id"></a>
+        <div class="well">
+          <h6 class="text-left">@strDate(g.game.gameDate) @@@g.game.time</h6>
+          <h3 class="text-center">@g.team1.name v @g.team2.name</h3>
+          <h3 class="muted text-center"><i>#@g.game.hashtag</i></h1>
         </div>
-  
-  	 <div class="row"> 
-       <div class="span4">
-         <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team1Widget.twitterAccount}/@{g.team1Widget.url}" data-widget-id="@g.team1Widget.id"></a>
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-         </div>
-       </div>
-          
-   
-     <div class="span4">
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team2Widget.twitterAccount}/@{g.team2Widget.url}" data-widget-id="@g.team2Widget.id"></a>
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-     </div>
-     @g.matchWidget.map { w =>    
-     <div class="span4">
-        <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-     </div>
-     }
-     </div>
-     
-     </br>
-
-    
-    
+    </div>
+  </div>
+  <div class="row"> 
+    <div class="span4">
+      <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team1Widget.twitterAccount}/@{g.team1Widget.url}" data-widget-id="@g.team1Widget.id"></a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
+    </div>
+    <div class="span4">
+      <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/@{g.team2Widget.twitterAccount}/@{g.team2Widget.url}" data-widget-id="@g.team2Widget.id"></a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
+    </div>
+    @g.matchWidget.map { w =>    
+    <div class="span4">
+      <div class="widget-frame"><a class="twitter-timeline" href="https://twitter.com/search?@{w.url}" data-widget-id="@w.id"></a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
+    </div>
+    }
+  </div>
+  <br></br>
   } 
-  
-  
 }
-    
-      
-
-
