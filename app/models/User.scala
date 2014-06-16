@@ -10,11 +10,6 @@ case class User(email: String, name: String, password: String)
 
 object User {
 
-  // -- Parsers
-
-  /**
-   * Parse a User from a ResultSet
-   */
   val simple = {
     get[String]("user.email") ~
       get[String]("user.name") ~
@@ -23,30 +18,19 @@ object User {
       }
   }
 
-  // -- Queries
-
-  /**
-   * Retrieve a User from email.
-   */
   def findByEmail(email: String): Option[User] = {
     DB.withConnection { implicit connection =>
       SQL("select * from user where email = {email}").on(
         'email -> email).as(User.simple.singleOpt)
     }
   }
-
-  /**
-   * Retrieve all users.
-   */
+  
   def findAll: Seq[User] = {
     DB.withConnection { implicit connection =>
       SQL("select * from user").as(User.simple *)
     }
   }
 
-  /**
-   * Authenticate a User.
-   */
   def authenticate(email: String, password: String): Option[User] = {
     DB.withConnection { implicit connection =>
       SQL(
@@ -59,9 +43,6 @@ object User {
     }
   }
 
-  /**
-   * Create a User.
-   */
   def create(user: User): User = {
     DB.withConnection { implicit connection =>
       SQL(
@@ -75,8 +56,6 @@ object User {
           'password -> user.password).executeUpdate()
 
       user
-
     }
   }
-
 }

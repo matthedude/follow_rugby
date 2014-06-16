@@ -169,14 +169,6 @@ object Game {
     }
   }
 
-  /**
-   * Return a page of (Computer,Company).
-   *
-   * @param page Page to display
-   * @param pageSize Number of computers per page
-   * @param orderBy Computer property used for sorting
-   * @param filter Filter applied on the name column
-   */
   def list(page: Int = 0, pageSize: Int = 20, orderBy: Int = 1): Page[(Game, Option[Team], Option[Team])] = {
 
     val offest = pageSize * page

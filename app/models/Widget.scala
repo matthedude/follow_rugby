@@ -80,14 +80,6 @@ object Widget {
     }
   }
 
-  /**
-   * Return a page of (Computer,Company).
-   *
-   * @param page Page to display
-   * @param pageSize Number of computers per page
-   * @param orderBy Computer property used for sorting
-   * @param filter Filter applied on the name column
-   */
   def list(page: Int = 0, pageSize: Int = 20, orderBy: Int = 1, filter: String = "%"): Page[Widget] = {
 
     val offest = pageSize * page
@@ -116,7 +108,5 @@ object Widget {
       Page(widgets, page, offest, totalRows)
 
     }
-
   }
-
 }

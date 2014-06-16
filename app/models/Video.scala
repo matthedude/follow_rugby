@@ -58,8 +58,6 @@ object VideoPlayer {
   def allFormTuple = {
     all.map(v => (v.id.get.toString, v.name))
   }
-  
- 
 }
 
 case class VideoPlayerChannel(player: VideoPlayer, channel: String)
@@ -67,6 +65,7 @@ case class VideoPlayerChannel(player: VideoPlayer, channel: String)
 case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date, thumbnailLink: Option[String], thanks: Option[String]) {
   val openGraph = OpenGraph(description, thumbnailLink.getOrElse(OpenGraph.defaultImage), title)
 }
+
 case class VideoHtml(video: Video, videoPlayer: VideoPlayer) {
   val (fullVideo:Html, thumbnail:String, largeThumbnail: String) = {
     videoPlayer.name.toLowerCase match {
@@ -90,7 +89,6 @@ case class VideoHtml(video: Video, videoPlayer: VideoPlayer) {
       }
     }
   }
-  
 }
 
 object Video {
@@ -236,7 +234,7 @@ object Video {
         'thanks -> video.thanks).executeUpdate()
     }
   }
-//case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
+
   def create(video: Video) = {
     val (newLink, thumbnail) = if(video.videoPlayerId == 3) {
       fetchEmbedlyLinkAndThumbnail(video.link)
@@ -365,10 +363,10 @@ object VideoCategory {
       videoCategories
     }
   }
+  
   def allFormTuple = {
     all.map(v => (v.id.get.toString, v.name))
   }
-  
   
   def findById(id: Int): Option[VideoCategory] = {
     DB.withConnection { implicit connection =>

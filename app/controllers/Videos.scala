@@ -12,7 +12,6 @@ import anorm._
 object Videos extends Controller with Secured {
 
   val VideoHome = Redirect(routes.Videos.videoList(0, 2, ""))
-//case class Video(id: Pk[Int] = NotAssigned, videoCategoryId: Int, videoPlayerId: Int, link: String, description: String, title: String, date: Date)
 
   val videoForm = Form(
     mapping(
@@ -32,7 +31,6 @@ object Videos extends Controller with Secured {
         Video.list(page = page, orderBy = orderBy, filter = ("%" + filter + "%")),
         orderBy, filter))
   }
-  
 
   def createVideo = IsAuthenticated { _ =>
     _ =>

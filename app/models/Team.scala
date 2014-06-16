@@ -17,7 +17,6 @@ import VideoPlayer._
 object Team {
 
   val blank = Team(name = "", twitterName = None, categoryId = 0, widgetId = 0L, vidChannel = None, videoPlayerId = None, hashtag = None)
-
   
   val simple = {
     get[Pk[Int]]("team.id") ~
