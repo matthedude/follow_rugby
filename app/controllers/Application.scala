@@ -16,7 +16,7 @@ object Application extends Controller {
   val Home = Redirect(routes.Application.index)
 
   def index = Action { implicit request =>
-    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest, Game.allGamesWithComp.groupBy(_._2).map { case (c, v) => (c, v.map(_._1)) }, Member.latestMembersWithTeamCategory))
+    Ok(views.html.index(Video.allWithVideoCategoryPlayerLatest.map{case(v, vc, vp) => (v, vc, vp, VideoHtml(v, vp))}, Game.allGamesWithComp.groupBy(_._2).map { case (c, v) => (c, v.map(_._1)) }, Member.latestMembersWithTeamCategory))
   }
 
   def about = Action {
@@ -108,7 +108,7 @@ object Application extends Controller {
         videoHtml = VideoHtml(video, videoPlayer)
         openGraph = OpenGraph(video.description, videoHtml.largeThumbnail, video.title)
       } yield {
-        Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId), videoHtml, openGraph))
+        Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId).map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, videoHtml, openGraph))
       }
     } getOrElse NotFound
   }

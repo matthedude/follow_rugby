@@ -1,4 +1,4 @@
-@(videos: Seq[(Video, VideoCategory, VideoPlayer)], compGames: Map[Competition, Seq[Game]], latestMembers: Seq[(Member, Team, Category)])(implicit flash: play.api.mvc.Flash)
+@(videos: Seq[(Video, VideoCategory, VideoPlayer, VideoHtml)], compGames: Map[Competition, Seq[Game]], latestMembers: Seq[(Member, Team, Category)])(implicit flash: play.api.mvc.Flash)
 @import java.text.SimpleDateFormat
 @import java.util.Date
 @import helper._
@@ -11,32 +11,50 @@
 
 @main("Follow Rugby", OpenGraph.default){
   <div class="row">
-    <div class="span3">
-      @videoReel(videos.map{case(v, vc, vp) => (v, vc, vp, VideoHtml(v, vp))}, Some("Latest Videos"))
+    <div class="col-md-12">
+      <h1>THE SITE for the latest great Global Rugby Tweets and Videos!</h1>
+      <div class="linebreak"></div>
     </div>
-    <div class="span8">
-      <div class="textpadding">
-        <div class="topmargin"></div> 
-        <p class="lead">www.follow-rugby.com THE SITE for the latest great Global Rugby Tweets and Videos!<em></p>
-        <h4>This week's games, click on the match hashtags!</h4>
-        <div class="linebreak"></div> 
-        @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
-          <h5>@comp.name</h5>
-          @games.groupBy(_.gameDate).toList.sortBy(_._1).map { case (date, gs) =>
-             <ul class="nav nav-list">
-               <li class="nav-header">@strDate(date)</li>
-               <h5 class="muted"><i>@gs.sortBy(_.pos).map { g =>
-               <a href="@routes.Application.matchCentre(g.competitionId, link(comp.name), g.team1Id, g.team2Id)">#@g.hashtag</a> 
-                                    }</i></h5>
-             </ul>
-          }     
+  </div>
+  <div class="row">
+    @videos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
+      <div class="col-md-4">
+      <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img height="240" src="@videoHtml.largeThumbnail"></img></a>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h4>@vid.title</h4></a>
+      </div>
+    }
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="linebreak"></div> 
+      <h4>This week's games, click on the match hashtags!</h4>
+      <div class="linebreak"></div> 
+    </div>
+  </div>
+  <div class="row">
+      @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
+      <div class="col-md-3"> 
+        <h5>@comp.name</h5>
+        @games.groupBy(_.gameDate).toList.sortBy(_._1).map { case (date, gs) =>
+           <ul class="nav nav-list">
+             <li class="nav-header">@strDate(date)</li>
+             <h5 class="muted"><i>@gs.sortBy(_.pos).map { g =>
+             <a href="@routes.Application.matchCentre(g.competitionId, link(comp.name), g.team1Id, g.team2Id)">#@g.hashtag</a> 
+                                  }</i></h5>
+           </ul>
         }
+      </div>     
+      }
+   </div>
+   <div class="row">
+     <div class="col-md-12">
       @if(compGames.isEmpty) {
         <p class="muted"><i>No games scheduled this week.</i></p>  
       }
       <div class="linebreak"></div>
       <h4>Latest Twitter profiles added</h4>
       <div class="linebreak"></div>
+    
       <p>
       /@latestMembers.map { case (member, team, category) =>
         /<a href="@routes.Application.selectTeam(category.id.get, team.id.get, link(category.name), link(team.name))">@member.name</a>/
@@ -45,6 +63,5 @@
       <div class="linebreak"></div>
     </div>
   </div>
-</div>
-<div class="row"></div>
+
 }

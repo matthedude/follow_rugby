@@ -1,18 +1,18 @@
 /*body {
   padding-top: 50px;
 }*/
-.starter-template {
+.video-bar {
   padding: 0px 15px;
   text-align: center;
 }
 
-.videoWrapper {
+.video-wrapper {
     position: relative;
     padding-bottom: 56.25%; /* 16:9 */
     padding-top: 25px;
     height: 0;
 }
-.videoWrapper iframe {
+.video-wrapper iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -21,7 +21,7 @@
 }
 img {
     max-width: 100%;
-    height: auto;
+    
     width: auto\9; /* ie8 */
 }
 
@@ -32,6 +32,10 @@ h1, h2, h3, h4, h5, h6 {
 p, div {
     font-family: 'Oswald', sans-serif;
     font-weight: 300;
+}
+
+.dropdown-menu {
+	background-color: #fdcc1a;
 }
 
 /* Sticky footer styles

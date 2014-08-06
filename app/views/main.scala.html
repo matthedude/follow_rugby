@@ -31,9 +31,7 @@
     <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
     <script type="text/javascript">stLight.options({publisher: "085bb082-039f-4f04-9248-316d1eb48f12", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
     <style type="text/css">
-    body {
-      background-color: #e1e1df;
-    }
+    
     
       
     #channelplayer {
@@ -95,55 +93,59 @@
     </script>
   </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <div class="span12">
-          <div class="titleimage">
-            <a href="@routes.Application.index"><img src="@routes.Assets.at("images/logo2.png")" padding-bottom></img></a>
-          </div>
+    <div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" rel="home" href="/" title="Follow Rugby">
+        <img style="max-width:100px; margin-top: -7px;" src="@routes.Assets.at("images/titlelogo.jpg")"/>   </a>
+          <!-- <a class="navbar-brand" href="#"><img src="fbpic.jpg"></img></a> -->
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Match Centre<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              @Competition.all.sortBy(_.pos).map { comp =>
+                <li><a href="@routes.Application.matchCentre(comp.id.get, link(comp.name),0,0)">@comp.name</a></li>
+              }  
+              </ul>
+            </li>
+            <li><a href="@routes.Application.selectCategory(1, "international")">International</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Club Rugby<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="@routes.Application.selectCategory(4, "avivapremiership")">Aviva Premiership</a></li>
+                <li><a href="@routes.Application.selectCategory(5, "rabodirectpro12")">RaboDirect PRO 12</a></li>
+                <li><a href="@routes.Application.selectCategory(2, "super15")">Super 15</a></li>
+                <li><a href="@routes.Application.selectCategory(3, "top14")">Top 14</a></li>
+                <li><a href="@routes.Application.selectCategory(6, "japantopleague")">Japan Top League</a></li>
+              </ul>
+            </li>
+            <li><a href="@routes.Application.selectCategory(8, "morerugby")">More Rugby</a></li>
+            <li><a href="@routes.Application.selectCategory(10, "rugbyunited")">#rugbyunited</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Videos<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                @VideoCategory.all.map { cat =>
+                  <li><a href="@routes.Application.selectVideoCategory(cat.id.get, Linker.strip(cat.name))">@cat.name</a></li>
+                }
+              </ul>
+            </li>
+            <li><a href="@routes.Application.search()">Search</a></li>
+            <li><a href="@routes.Application.joinIn">Join In</a></li>
+            <li><a href="@routes.Application.about">About</a></li>
+          </ul>
         </div>
       </div>
-      <div class="navbar">
-        <div class="navbar-inverse">
-          <div class="navbar-inner">
-            <ul class="nav nav-pills">
-              <li class="dropdown">
-                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Match Centre<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                  @Competition.all.sortBy(_.pos).map { comp =>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.matchCentre(comp.id.get, link(comp.name),0,0)">@comp.name</a></li>
-                  }
-                </ul>
-              </li>
-              <li><a href="@routes.Application.selectCategory(1, "international")">International</a></li>
-              <li class="dropdown">
-                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Club Rugby<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(4, "avivapremiership")">Aviva Premiership</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(5, "rabodirectpro12")">RaboDirect PRO 12</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(2, "super15")">Super 15</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(3, "top14")">Top 14</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectCategory(6, "japantopleague")">Japan Top League</a></li>
-                </ul>
-              </li>
-              <li><a href="@routes.Application.selectCategory(8, "morerugby")">More Rugby</a></li>
-              <li><a href="@routes.Application.selectCategory(10, "rugbyunited")">#rugbyunited</a></li>
-              <li class="dropdown">
-                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Videos<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                  @VideoCategory.all.map { cat =>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="@routes.Application.selectVideoCategory(cat.id.get, Linker.strip(cat.name))">@cat.name</a></li>
-                  }
-                </ul>
-              </li>
-        	    <li><a href="@routes.Application.search()">Search</a></li>
-        	    <li><a href="@routes.Application.joinIn">Join In</a></li>
-        	    <li><a href="@routes.Application.about">About</a></li>
-        	  </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    </div>  
+            
+    
     <div class="container"> 
     @content
     </div>

@@ -1,25 +1,32 @@
-@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)], videoHtml: VideoHtml, openGraph: OpenGraph)
+@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoCategory, VideoPlayer, VideoHtml)], videoHtml: VideoHtml, openGraph: OpenGraph)
 
 @import helper._
 
 @main("Follow Rugby", openGraph){
 <div class="row">
-  <div class="span3">
-    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name))
-  </div>
-  <div class="span9">
+ 
+  <div class="col-md-8">
     <h5>@videoCategory.name</h5>  
     <h2>@video.title</h2>
     <p class="lead">@video.description</p>
     <div class="span8 pagination-centered">
-      <span class='st_twitter_large' displayText='Tweet'></span>
-      <span class='st_facebook_large' displayText='Facebook'></span>
-      <span class='st_linkedin_large' displayText='LinkedIn'></span>
-      <span class='st_email_large' displayText='Email'></span>
+      <div class="video-wrapper">
       @videoHtml.fullVideo
+      </div>
       <div class="linebreak"></div> 
       @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
     </div>
   </div>
+  <div class="col-md-4">
+      @randomVideos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h4>@vid.title</h4></a>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img src="@videoHtml.largeThumbnail"></img></a>
+    }
+  </div>
 </div>
+
+<div id="share-row-sticky" class="visible-xs">
+  <p><a class="facebook button" href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=http://follow-rugby.com/videos/1671/category/HitsTriesSkills/1/Julian-Savea-Bumps-Off-Marland-Yarde&amp;p[images][0]=http://img.youtube.com/vi/1FFbXL5R6Sc/1.jpg&amp;p[title]=Julian+Savea+Bumps+Off+Marland+Yarde&amp;p[summary]=Revive+and+Restore+is+working+to+bring+extinct+species+back+to+life." target="_blank">Share on facebook</a></p>
+</div>
+
 }
