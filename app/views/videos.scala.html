@@ -18,15 +18,15 @@
     </div>
   </div>
   <div class="col-md-4">
-      @randomVideos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
+      @randomVideos.map { case (vid, videoCategory, _, randVideoHtml) =>
       <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h4>@vid.title</h4></a>
-      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img src="@videoHtml.largeThumbnail"></img></a>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img src="@randVideoHtml.largeThumbnail"></img></a>
     }
   </div>
 </div>
 
 <div id="share-row-sticky" class="visible-xs">
-  <p><a class="facebook button" href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=http://follow-rugby.com/videos/1671/category/HitsTriesSkills/1/Julian-Savea-Bumps-Off-Marland-Yarde&amp;p[images][0]=http://img.youtube.com/vi/1FFbXL5R6Sc/1.jpg&amp;p[title]=Julian+Savea+Bumps+Off+Marland+Yarde&amp;p[summary]=Revive+and+Restore+is+working+to+bring+extinct+species+back+to+life." target="_blank">Share on facebook</a></p>
+  <p><a class="facebook button" href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))&amp;p[images][0]=@{videoHtml.thumbnail}&amp;p[title]=@Linker.facebookShareTitle(video.title)" target="_blank">Share on facebook</a></p>
 </div>
 
 }

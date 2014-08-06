@@ -13,4 +13,8 @@ object Linker {
   def strip(str: String) = {
     str.replace(" ", "").replace(",", "")
   }
+  
+  def facebookShareTitle(title: String) = {
+    title.replace(" ", "+")
+  }
 }
