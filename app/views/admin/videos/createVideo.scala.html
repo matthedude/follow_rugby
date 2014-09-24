@@ -23,10 +23,10 @@
                 '_label -> "Video Category", '_default -> "-- Choose a Video Category --",
                 '_showConstraints -> false
             )
-            @inputText(videoForm("link"), '_label -> "Link")
-            @inputText(videoForm("description"), '_label -> "Description")
-            @inputText(videoForm("title"), '_label -> "Title")
-            @inputText(videoForm("thanks"), '_label -> "Thanks to")
+            @inputText(videoForm("link"), '_label -> "Link", 'size -> 100)
+            @textarea(videoForm("description"), '_label -> "Description", 'rows -> 30, 'cols -> 100)
+            @inputText(videoForm("title"), '_label -> "Title", 'size -> 100)
+            @inputText(videoForm("thanks"), '_label -> "Thanks to", 'size -> 100)
             
            
         

@@ -10,22 +10,45 @@
 }
 
 @main("Follow Rugby", OpenGraph.default){
-  <div class="row">
-    <div class="col-md-12">
-      <h1>THE SITE for the latest great Global Rugby Tweets and Videos!</h1>
-      <div class="linebreak"></div>
+  
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0&status=0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+  <div class="text-center">
+    <div class="center-block fb-like-box">
+      <p>Please follow us on Facebook and Twitter</p> <div class="fb-follow" data-href="https://www.facebook.com/FollowRugby" data-colorscheme="light" data-layout="button" data-show-faces="false"></div>
+      <a href="https://twitter.com/FollowRugbySite" class="twitter-follow-button" data-show-count="true" data-size="large" data-show-screen-name="false">Follow @@FollowRugbySite</a>
     </div>
   </div>
   <div class="row">
-    @videos.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
-      <div class="col-md-4">
+    <div class="col-sm-12">
+      <h1 class="text-center">THE SITE for the latest Global Rugby Tweets and Videos!</h1>
+      <div class="linebreak"></div>
+      
+    </div>
+  </div>
+  
+  <div class="row">
+  
+  </div>
+   @videos.sliding(3,3).map { vids => 
+  <div class="row">
+    @vids.map { case (vid, videoCategory, videoPlayer, videoHtml) =>
+      <div class="col-sm-4">
       <td align="center"><a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img height="240" src="@videoHtml.largeThumbnail"></img></a>
       <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h4>@vid.title</h4></a>
       </div>
     }
   </div>
+    }
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
       <div class="linebreak"></div> 
       <h4>This week's games, click on the match hashtags!</h4>
       <div class="linebreak"></div> 
@@ -33,7 +56,7 @@
   </div>
   <div class="row">
       @compGames.toList.sortBy(_._1.pos).map { case (comp, games) =>
-      <div class="col-md-3"> 
+      <div class="col-sm-3"> 
         <h5>@comp.name</h5>
         @games.groupBy(_.gameDate).toList.sortBy(_._1).map { case (date, gs) =>
            <ul class="nav nav-list">
@@ -47,7 +70,7 @@
       }
    </div>
    <div class="row">
-     <div class="col-md-12">
+     <div class="col-sm-12">
       @if(compGames.isEmpty) {
         <p class="muted"><i>No games scheduled this week.</i></p>  
       }

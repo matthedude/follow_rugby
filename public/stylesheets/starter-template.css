@@ -1,9 +1,19 @@
-/*body {
-  padding-top: 50px;
-}*/
+
 .video-bar {
   padding: 0px 15px;
   text-align: center;
+}
+.fb-like-box {
+background:#f4f4f4;
+width:200px;
+padding:0px;
+margin:10px 0px;
+border:solid 6px #e9e8e8;
+}
+.fb-like-page {border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:10px 0;margin-top:5px;margin-bottom:15px;font-size:16px}
+.fb-like-page>div{padding-left:10px;line-height:1em}
+.fb-follow {
+    margin-bottom: 5px;
 }
 
 .video-wrapper {
@@ -19,6 +29,18 @@
     width: 100%;
     height: 100%;
 }
+
+.center-block {
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+    font-size:18px
+}
+
+.fb-like {
+    margin-right: 5px;
+}
+
 img {
     max-width: 100%;
     
@@ -34,6 +56,10 @@ p, div {
     font-weight: 300;
 }
 
+a, a:visited, a:hover {
+  color: #2E27B3;
+}
+
 .dropdown-menu {
 	background-color: #fdcc1a;
 }
@@ -47,6 +73,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background-color: #fdcc1a;
 }
 #footer {
   position: absolute;
@@ -117,3 +144,55 @@ code {
 .navbar-inverse {
   background-color: #000;
 }
+
+.navbar {
+  margin-bottom: 0;
+}
+
+#channelplayer {
+      width:450px;
+      height: 370px;
+      overflow: hidden;
+      background: #454141;
+      position: absolute;
+      border: solid 2px gray;
+     }
+
+    .youtube .carousel {
+        width: 20%;
+        height: 100%;
+        overflow: auto;
+        position: absolute;
+        right: 0px;
+        z-index: 3;
+    }
+    
+    .youtube .thumbnail {
+        margin: 0px;
+        width: 80%;
+        border: 0px solid black;  
+    }
+    
+    .youtube iframe.player {
+        width: 80%;
+        height: 240px;  
+        overflow: auto;
+        border: 0;
+    }
+    
+    .textpadding {
+      padding: 15px;
+    }
+    
+    .topmargin {
+      padding: 8px;
+    }
+    
+    .linebreak {
+      padding: 5px;
+    }
+    .row-yellow {
+      background-color: #1b1b1b;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    }

@@ -85,16 +85,16 @@ object Application extends Controller {
 
         competitionForm.bindFromRequest.fold(
           formWithErrors => {
-            Ok(views.html.highlights(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.latestForVideoCategoryWithPlayer(id), videoCategory, Competition.allForForm, competitionForm.fill(competitionId), competitionId))
+            Ok(views.html.highlights(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, videoCategory, Competition.allForForm, competitionForm.fill(competitionId), competitionId))
           },
           compId => {
             Competition.findById(compId) map { competition =>
-            Ok(views.html.highlights(Video.listForVideoCategory(page = page, filter = ("%" + competition.name + "%"), videoCategoryId = id), competition.name, Video.latestForVideoCategoryWithPlayer(id), videoCategory, Competition.allForForm, competitionForm.fill(compId), compId))
+            Ok(views.html.highlights(Video.listForVideoCategory(page = page, filter = ("%" + competition.name + "%"), videoCategoryId = id), competition.name, videoCategory, Competition.allForForm, competitionForm.fill(compId), compId))
             } getOrElse NotFound
            })
 
       } else {
-        Ok(views.html.videoCategories(Video.listForVideoCategory(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, Video.latestForVideoCategoryWithPlayer(id), videoCategory))
+        Ok(views.html.videoCategories(Video.listWithVideoPlayer(page = page, filter = ("%" + filter + "%"), videoCategoryId = id), filter, videoCategory))
       }
     } getOrElse NotFound
   }
@@ -108,7 +108,7 @@ object Application extends Controller {
         videoHtml = VideoHtml(video, videoPlayer)
         openGraph = OpenGraph(video.description, videoHtml.largeThumbnail, video.title)
       } yield {
-        Ok(views.html.videos(video, videoCategory, videoPlayer, Video.randomForVideoCategoryWithPlayer(videoCategoryId).map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, videoHtml, openGraph))
+        Ok(views.html.videos(video, videoCategory, videoPlayer, Video.previousForVideoCategoryWithPlayer(id, videoCategoryId), videoHtml, openGraph))
       }
     } getOrElse NotFound
   }
