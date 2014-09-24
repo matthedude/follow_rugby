@@ -20,12 +20,7 @@
     @video.description.split("\\n").map { line =>
       <p class="lead">@line</p>
     }
-    <div class="text-center">
-    <div class="center-block fb-like-box">
-      <p>Please follow us on Facebook and Twitter</p> <div class="fb-follow" data-href="https://www.facebook.com/FollowRugby" data-colorscheme="light" data-layout="button" data-show-faces="false"></div>
-      <a href="https://twitter.com/FollowRugbySite" class="twitter-follow-button" data-show-count="true" data-size="large" data-show-screen-name="false">Follow @@FollowRugbySite</a>
-    </div>
-  </div>
+    
     <div class="linebreak"></div>
       <div class="video-wrapper">
       @videoHtml.fullVideo
@@ -33,7 +28,7 @@
       <div class="linebreak"></div> 
       @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
       <div class="linebreak"></div> 
-      <div class="fb-like" data-href="http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><a href="https://twitter.com/share" class="twitter-share-button" data-via="FollowRugbySite">Tweet</a>
+      <div class="fb-like" data-href="http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><a href="https://twitter.com/share" class="twitter-share-button" data-text="@video.title"  data-via="FollowRugbySite">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
     <br></br>
     </div>
@@ -45,9 +40,7 @@
     }
   </div>
 </div>
-
 <div id="share-row-sticky" class="visible-xs">
-  <p><a class="facebook button" href="https://www.facebook.com/sharer/sharer.php?s=100&amp;p[url]=http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))&amp;p[images][0]=@{videoHtml.thumbnail}&amp;p[title]=@Linker.facebookShareTitle(video.title)" target="_blank">Share on facebook</a></p>
-</div>
-
+  <p><a class="facebook button" href="https://m.facebook.com/sharer.php?u=http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title)) target="_blank">Share on facebook</a></p>
+</div
 }
