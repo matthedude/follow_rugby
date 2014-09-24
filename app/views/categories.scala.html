@@ -108,21 +108,19 @@
     }
   </script>
 	<div class="row">
-    <div class="span3">
-      <div class="well sidebar-nav">
-        <ul class="nav nav-list">
-          <li class="nav-header">@category.name</li>
-          <li class="divider"></li>
+    <div class="col-xs-4 col-sm-4">
+      <div class="well">
+        
+          <p>@category.name</p>
             @teams.sortBy(_.name).map { team =>
-          <li><a href="@routes.Application.selectTeam(category.id.get, team.id.get, link(category.name), link(team.name))">@team.name</a></li>
+          <p><a href="@routes.Application.selectTeam(category.id.get, team.id.get, link(category.name), link(team.name))">@team.name</a></p>
             }
-        </ul>
+       
         <br></br>
         <p><small>Suggest further Twitter profiles by tweeting <a href="https://www.twitter.com/intent/user?screen_name=FollowRugbySite">@@FollowRugbySite</a></small></p>
       </div>
     </div>
-    <div class="span5">
-      <div class="topmargin"></div> 
+    <div class="col-xs-8 col-sm-4">
       @if(players.isEmpty) {
       <p class="lead">Click on your favourite groups on the left to see who to follow. Also check out their tweets and videos.</p>
       } else {
@@ -156,12 +154,7 @@
       </table>
       }
     </div>
-    <div class="span4">
-      <div class="topmargin"></div> 
-      <span class='st_twitter_large' displayText='Tweet'></span>
-      <span class='st_facebook_large' displayText='Facebook'></span>
-      <span class='st_linkedin_large' displayText='LinkedIn'></span>
-      <span class='st_email_large' displayText='Email'></span>
+    <div class="col-sm-4 hidden-sm hidden-xs">
   
       @media.listWidget.map { list =>
         <div class="widget-frame"><a class="twitter-timeline" height="@height(team)" href="https://twitter.com/@{list.twitterAccount}/@{list.url}" data-widget-id="@list.id"></a>

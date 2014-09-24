@@ -1,25 +1,46 @@
-@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, randomVideos: Seq[(Video, VideoPlayer)], videoHtml: VideoHtml, openGraph: OpenGraph)
+@(video: Video, videoCategory: VideoCategory, videoPlayer: VideoPlayer, previousVideos: Seq[(Video, VideoPlayer, VideoHtml)], videoHtml: VideoHtml, openGraph: OpenGraph)
 
 @import helper._
 
 @main("Follow Rugby", openGraph){
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="row">
-  <div class="span3">
-    @videoReel(randomVideos.map{case (v, vp) => (v, videoCategory, vp, VideoHtml(v, vp)) }, Some("More "+videoCategory.name))
-  </div>
-  <div class="span9">
-    <h5>@videoCategory.name</h5>  
-    <h2>@video.title</h2>
-    <p class="lead">@video.description</p>
-    <div class="span8 pagination-centered">
-      <span class='st_twitter_large' displayText='Tweet'></span>
-      <span class='st_facebook_large' displayText='Facebook'></span>
-      <span class='st_linkedin_large' displayText='LinkedIn'></span>
-      <span class='st_email_large' displayText='Email'></span>
+ 
+  <div class="col-sm-8 col-md-8">
+    <h4><a href="@routes.Application.selectVideoCategory(videoCategory.id.get, Linker.strip(videoCategory.name))">@videoCategory.name</a></h4>  
+    <h1>@video.title</h1>
+    @video.description.split("\\n").map { line =>
+      <p class="lead">@line</p>
+    }
+    
+    <div class="linebreak"></div>
+      <div class="video-wrapper">
       @videoHtml.fullVideo
+      </div>
       <div class="linebreak"></div> 
       @video.thanks.map { thank => <p><em>(Credit @thank)</em></p> }
+      <div class="linebreak"></div> 
+      <div class="fb-like" data-href="http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title))" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div><a href="https://twitter.com/share" class="twitter-share-button" data-text="@video.title"  data-via="FollowRugbySite">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    <br></br>
     </div>
+  
+  <div class="col-sm-4">
+      @previousVideos.map { case (vid, _, previousVideoHtml) =>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><h4>@vid.title</h4></a>
+      <a href="@routes.Application.selectVideo(vid.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(vid.title))"><img src="@previousVideoHtml.largeThumbnail"></img></a>
+    }
   </div>
 </div>
+<div id="share-row-sticky" class="visible-xs">
+  <p><a class="facebook button" href="https://m.facebook.com/sharer.php?u=http://www.follow-rugby.com@routes.Application.selectVideo(video.id.get, videoCategory.id.get, Linker.strip(videoCategory.name), Linker.linkVideo(video.title)) target="_blank">Share on facebook</a></p>
+</div
 }

@@ -161,6 +161,25 @@ object Video {
     }
   }
   
+  def previousForVideoCategoryWithPlayer(id: Int, videoCategoryId: Int): Seq[(Video, VideoPlayer, VideoHtml)] = {
+    DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video 
+          left join video_player 
+          on video.video_player_id = video_player.id
+          where video.video_category_id = {videoCategoryId}
+          and video.id < {id}
+          order by video.id desc
+          limit 3
+        """).on('videoCategoryId -> videoCategoryId,
+                'id -> id).as(Video.withVideoPlayer *)
+
+      videos.map{case (v, vp) => (v, vp, VideoHtml(v, vp))}
+    }
+  }
+  
   def randomForVideoCategoryWithPlayer(videoCategoryId: Int): Seq[(Video, VideoPlayer)] = {
     DB.withConnection { implicit connection =>
 
@@ -171,7 +190,7 @@ object Video {
           on video.video_player_id = video_player.id
           where video.video_category_id = {videoCategoryId}
           order by RAND()
-          limit 10
+          limit 3
         """).on('videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
 
       videos
@@ -189,7 +208,7 @@ object Video {
           join video_player
           on video.video_player_id = video_player.id
           order by video.id desc
-          limit 10
+          limit 6
         """).as(Video.withVideoCategoryPlayer *)
 
       videos
@@ -308,22 +327,22 @@ object Video {
   }
   def listForVideoCategory(page: Int = 0, pageSize: Int = 15, filter: String = "%", videoCategoryId: Int): Page[Video] = {
     
-    val offest = pageSize * page
+    val offset = pageSize * page
         
         DB.withConnection { implicit connection =>
         
         val videos = SQL(
             """
-            select * from video
+            select * from video 
             where video.title like {filter}
             and video.video_category_id = {videoCategoryId} 
             order by video.id desc
             limit {pageSize} offset {offset}
             """).on(
                 'pageSize -> pageSize,
-                'offset -> offest,
+                'offset -> offset,
                 'filter -> filter,
-                'videoCategoryId -> videoCategoryId).as(Video.simple *)
+                'videoCategoryId -> videoCategoryId).as(Video.simple *) 
                 
                 val totalRows = SQL(
                     """
@@ -334,10 +353,42 @@ object Video {
                         'filter -> filter,
                 'videoCategoryId -> videoCategoryId).as(scalar[Long].single)
                         
-                        Page(videos, page, offest, totalRows)
+                        Page(videos, page, offset, totalRows)
                         
     }
     
+  }
+  
+   def listWithVideoPlayer(page: Int = 0, pageSize: Int = 6, filter: String = "%", videoCategoryId: Int): Page[(Video, VideoPlayer, VideoHtml)] = {
+     val offset = pageSize * page
+     DB.withConnection { implicit connection =>
+
+      val videos = SQL(
+        """
+          select * from video
+          left join video_player
+          on video.video_player_id = video_player.id
+          where video.title like {filter}
+          and video.video_category_id = {videoCategoryId} 
+          order by video.id desc
+          limit {pageSize} offset {offset}
+        """).on(
+                'pageSize -> pageSize,
+                'offset -> offset,
+                'filter -> filter,
+                'videoCategoryId -> videoCategoryId).as(Video.withVideoPlayer *)
+
+      val totalRows = SQL(
+                    """
+                    select count(*) from video
+                    where video.title like {filter}
+                    and video.video_category_id = {videoCategoryId} 
+                    """).on(
+                        'filter -> filter,
+                'videoCategoryId -> videoCategoryId).as(scalar[Long].single)
+                        
+                        Page(videos.map{case (v, vp) => (v, vp, VideoHtml(v, vp))}, page, offset, totalRows)
+    }
   }
   
 }
