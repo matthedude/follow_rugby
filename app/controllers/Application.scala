@@ -106,7 +106,7 @@ object Application extends Controller {
         videoPlayer <- VideoPlayer.findById(video.videoPlayerId)
         videoCategory <- VideoCategory.findById(videoCategoryId)
         videoHtml = VideoHtml(video, videoPlayer)
-        openGraph = OpenGraph(video.description, videoHtml.largeThumbnail, video.title)
+        openGraph = OpenGraph(video.title, videoHtml.largeThumbnail, video.title)
       } yield {
         Ok(views.html.videos(video, videoCategory, videoPlayer, Video.previousForVideoCategoryWithPlayer(id, videoCategoryId), videoHtml, openGraph))
       }

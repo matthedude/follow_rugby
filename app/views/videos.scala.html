@@ -28,7 +28,7 @@
     <h4><a href="@routes.Application.selectVideoCategory(videoCategory.id.get, Linker.strip(videoCategory.name))">@videoCategory.name</a></h4>  
     <h1>@video.title</h1>
     @video.description.split("\\n").map { line =>
-      <p class="lead">@line</p>
+      <p class="lead">@Html(line)</p>
     }
     
     
